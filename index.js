@@ -14,6 +14,10 @@ function loadDaily() {
     document.getElementById("gameHidden").innerHTML = text;
 }
 
+/**
+ * Hide text function
+ */
+
 function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
@@ -25,7 +29,7 @@ function hideGame() {
 }
 
 function Getversion() {
-    document.getElementById("vers").innerText = "v1.0";
+    document.getElementById("vers").innerText = "v. Beta";
 }
 
 
