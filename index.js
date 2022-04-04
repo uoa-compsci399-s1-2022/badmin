@@ -1,4 +1,4 @@
-const textBank = ["andys text", "joji's text", "angel's text"];
+const textBank = ["andy's text", "joji's text", "angel's text"];
 /**
  * @function loadDaily displays today's text
  */
