@@ -1,14 +1,36 @@
+#title {
+    font-size: 80px;
+    margin-left: 25%;
+}
+
 #gameText {
+    font-size: 50px;
+    text-align: center;
+ }
+
+
+#gameHidden {
     font-size: 50px;
     color: transparent;
     text-shadow: 0 0 13px rgba(0,0,0,0.8);
+    text-align: center;
+
  }
 
-#gameText {
+ .body {
+     margin: 20%;
+     margin-top: 10%;
+ }
+
+.game {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+footer {
+    text-align: right;
 }
