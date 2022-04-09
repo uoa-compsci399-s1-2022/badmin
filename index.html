@@ -1,23 +1,93 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Spellz</title>
-        <link rel="stylesheet" href="index.css"/>
-        <link rel="icon" href="Images/logo.png" type="image/png"/>
-        <script src="index.js"></script>
-    </head>
-    <body>
-        <div id="title">Spellz</div>
-        <div class="body">
-            <div class="game">
-                <div id="gameText" onclick="hideGame();"></div>
-                <div id="gameHidden" onclick="showGame()"></div>
+
+<head>
+    <title>Spellz</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="icon" href="Images/logo.png" type="image/png" />
+    <script src="index.js" defer></script>
+</head>
+
+<body>
+
+
+    <table id="mainTable">
+        <tr>
+            <!-- <header> -->
+            <td>
+                <div id="title">Spellz</div>
+            </td>
+            <div id = "difficultyBar">
+                <td>
+                    <button class="levelButton" id="easyButton" onclick="setEasy()">Easy</button>
+                </td>
+                <td>
+                    <button class="levelButton" id="mediumButton" onclick="setMedium()">Medium</button>
+                </td>
+                <td>
+                    <button class="levelButton" id="hardButton" onclick="setHard()">Hard</button>
+                </td>
+                <td>
+                    <select id="genre" onchange="setGenre()">
+                        <option value="none" selected disabled hidden>Genre</option>
+                        <option>Sci-Fi</option>
+                        <option>Slice of Life</option>
+                        <option>Non-Fiction</option>
+                        <option>Romance</option>
+                        <option>Article</option>
+                        <option>Mystery</option>
+                        <option>Comedy</option>
+                        <option>Wikipedia</option>
+                    </select>
+                </td>
             </div>
-        </div>
-        <footer>
-            <hr 100% />
-            <div>&copy; Badmin </div>
-            <div id="vers"></div>
-        </footer>
-    </body>
+
+            <!-- </header> -->
+        </tr>
+
+        <tr>
+
+            <td style="width: 300%">
+                <div class="body">
+                    <div class="game">
+                        <div id="gameText" style="width: 100%"></div>
+                        <div id="gameHidden"></div>
+                    </div>
+                </div>
+            </td>
+
+            <!-- <td style="width: 10%">
+                <div id="timer">Timer: </div>
+
+                <button id="startTimer" onclick="startTimer()">Start Timer</button>
+                <button id="stopTimer" onclick="stopTimer()">Stop time</button> -->
+            <!-- </td>-->
+        
+            <!-- <form action="" id = "form">
+                <input type = "inputbox" id = input"/>
+            </form> -->
+
+            <td>
+            <div>Game Status: </div>
+            <div>Score:</div>
+            <div>Combo:</div>
+            <div>HINT:</div>
+            <div>Timer:</div>
+            <div id="timer"> </div>
+
+            <button id="startTimer" onclick="startTimer()">Start Timer</button>
+            <button id="stopTimer" onclick="stopTimer()">Stop time</button>
+            
+        </td>
+
+        </tr>
+    </table>
+
+    <footer>
+        <hr 100% />
+        <div>&copy; Badmin </div>
+        <div id="vers"></div>
+    </footer>
+</body>
+
 </html>
