@@ -7,9 +7,10 @@
 #gameText {
     font-size: 20px;
     text-align: center;
-    margin-left: 10 px;
+    margin-left: 20 px;
     margin-right: 70 px;
     width: 70px;
+    max-width: 110 ch;
 }
 
 
@@ -23,7 +24,7 @@
 .body {
     margin: 20%;
     margin-top: 10%;
-    margin-left: 0px;
+    margin-left: 10 px;
     text-align: left;
     
 }
@@ -63,6 +64,15 @@ h4 {
 
 }
 
+th[scope="score"] { 
+    margin: 0px;
+    width: 0px; 
+    border-collapse: 
+    collapse; 
+    background: white;
+    margin-right: 20 px;
+}
+
 
 
 /* menu buttons- cant get buttons to merge together to connect*/
@@ -94,3 +104,11 @@ h4 {
 #headerTable {
     float: right;
 }
+
+
+#genre {
+    width: 150px;
+    background-color: rgb(242, 242, 242);
+    height: 50px;
+    border: none;
+  }

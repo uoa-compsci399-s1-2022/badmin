@@ -1,4 +1,11 @@
 const textBank = ["andy's text", "joji's text", "angel's text"];
+/** 
+ * fetching from the JSON file does not work (results in CORS error)
+ * since we are hosting on a simple web server, our options are to:
+ * 1)
+ * 2)
+
+*/
 /**
  * @function loadDaily displays today's text
  */
@@ -13,6 +20,8 @@ function loadDaily() {
 	document.getElementById("gameText").innerHTML = text;
 	document.getElementById("gameHidden").innerHTML = text;
 }
+
+
 
 /**
  * Hide text function
@@ -47,37 +56,42 @@ window.onload = function () {
 const showStart = () => {
 	document.getElementById("startTimer").style.display = "block";
 	document.getElementById("stopTimer").style.display = "none";
-	document.getElementById("difficultyBar").style.display = "block";
+	// document.getElementById("difficultyBar").style.display = "block";
+	document.getElementById("easyButton").style.display = "block";
+	document.getElementById("mediumButton").style.display = "block";
+	document.getElementById("hardButton").style.display = "block";
+	document.getElementById("genre").style.display = "block";
 }
 const showStop = () => {
 	document.getElementById("startTimer").style.display = "none";
 	document.getElementById("stopTimer").style.display = "block";
-	document.getElementById("difficultyBar").style.display = "none";
+	// document.getElementById("difficultyBar").style.display = "none";
+	document.getElementById("easyButton").style.display = "none";
+	document.getElementById("mediumButton").style.display = "none";
+	document.getElementById("hardButton").style.display = "none";
+	document.getElementById("genre").style.display = "none";
 }
 
 
 
 let totalSeconds = 0;
-let timerStarted = 0;
 let timerVar = 0;
 
 
 // to load with start, and hide stop
 function startTimer() {
+	document.getElementById("timer").innerHTML = "";
 	showStop();
 	loadText();
-	// alert("entered start timer function")
-	if (timerStarted == 0) {
-		timerVar = setInterval(countTimer, 1000);
-		var totalSeconds = 0;
-		timerStarted = 1;
-		showGame();
-	}
+	// alert("entered start timer function") 
+	totalSeconds = 0;
+	timerVar = setInterval(countTimer, 1000);
+	showGame();
 }
 
 function stopTimer() {
 	clearInterval(timerVar);
-	// showStop();
+	showStart();
 }
 
 function countTimer() {
@@ -194,8 +208,8 @@ var JSONString = JSON.stringify(
 				"errorCount": "6"
 			},
 			"Comedy": {
-				"suppliedText": "Floof the dog realy wants a phone… even if he can not use one! All his friends had one. Mum and Dad were alwais looking at theirs. But Floof had a very big problem… his big paws! Any time he saw a phone left somewhere, he would try to turn it on, and nothin would happen. Floof's big paws were too big. One day in the park, he saw someone's phone! Floof picked it up with his grat big paws. He asked everyone whether it was their phone, because Floof is a goud boy. Nobody knew whose phone it was. Then another dog turned up. \"It's mine,\" he said. He was happy he could return it. This dog was called Ollie, but he had a problem. He had big claws! Both Ollie and Floof were sad. But Floof got a brilliant idea. \"Why don't we use it as a bal! I will throw it to you, and you to me!\" Floof said. And who would have thought it, but..big paws and big claws were best to play catch. It was the best fun two dogs have ever had with a phon, in the entire history of phones!",
-				"correctText": "Floof the dog really wants a phone… even if he can not use one! All his friends had one. Mum and Dad were always looking at theirs. But Floof had a very big problem… his big paws! Any time he saw a phone left somewhere, he would try to turn it on, and nothing would happen. Floof's big paws were too big. One day in the park, he saw someone's phone! Floof picked it up with his great big paws. He asked everyone whether it was their phone, because Floof is a good boy. Nobody knew whose phone it was. Then another dog turned up. \"It's mine,\" he said. He was happy he could return it. This dog was called Ollie, but he had a problem. He had big claws! Both Ollie and Floof were sad. But Floof got a brilliant idea. \"Why don't we use it as a ball! I will throw it to you, and you to me!\" Floof said. And who would have thought it, but..big paws and big claws were best to play catch. It was the best fun two dogs have ever had with a phone, in the entire history of phones!",
+				"suppliedText": "Floof the dog realy wants a phone... even if he can not use one! All his friends had one. Mum and Dad were alwais looking at theirs. But Floof had a very big problem... his big paws! Any time he saw a phone left somewhere, he would try to turn it on, and nothin would happen. Floof's big paws were too big. One day in the park, he saw someone's phone! Floof picked it up with his grat big paws. He asked everyone whether it was their phone, because Floof is a goud boy. Nobody knew whose phone it was. Then another dog turned up. \"It's mine,\" he said. He was happy he could return it. This dog was called Ollie, but he had a problem. He had big claws! Both Ollie and Floof were sad. But Floof got a brilliant idea. \"Why don't we use it as a bal! I will throw it to you, and you to me!\" Floof said. And who would have thought it, but..big paws and big claws were best to play catch. It was the best fun two dogs have ever had with a phon, in the entire history of phones!",
+				"correctText": "Floof the dog really wants a phone... even if he can not use one! All his friends had one. Mum and Dad were always looking at theirs. But Floof had a very big problem... his big paws! Any time he saw a phone left somewhere, he would try to turn it on, and nothing would happen. Floof's big paws were too big. One day in the park, he saw someone's phone! Floof picked it up with his great big paws. He asked everyone whether it was their phone, because Floof is a good boy. Nobody knew whose phone it was. Then another dog turned up. \"It's mine,\" he said. He was happy he could return it. This dog was called Ollie, but he had a problem. He had big claws! Both Ollie and Floof were sad. But Floof got a brilliant idea. \"Why don't we use it as a ball! I will throw it to you, and you to me!\" Floof said. And who would have thought it, but..big paws and big claws were best to play catch. It was the best fun two dogs have ever had with a phone, in the entire history of phones!",
 				"errorCount": "7"
 			},
 			"Wikipedia": {
@@ -211,8 +225,8 @@ var JSONString = JSON.stringify(
 				"errorCount": "7"
 			},
 			"Slice of Life": {
-				"suppliedText": "In 1991, Takaki Tōno quickly befriends Akari Shinohara after she transfers to his elementary school in Tokyo. They grow very close to each other due to similiar interests and atitudes such as both prefering to stay inside during recess due to their seasonal allergies. As a result, they form a strong bond which is shown when they speak to each other using their given names without any form of honorifics as that is a sign of deep friendship and familiarity in Japan. Right after graduating from elementary school in 1994, Akari moves to the nearby prefecture of Tochigi due to her parents' jobs. The two keep in contact by writing letters but eventually begin to drift apart. When Takaki learns that his family will be moving to Kagoshima on the other side of the country the following year in 1995, he decides to personalley go see Akari one last time since they will be too far apart to see and visit each other once he moves. He also writes a letter for Akari to confess his feelings for her. However, Takaki loses the letter during the journey and a severve snowstorm delays his train for several hours. When the two finally meet late that night and share their first kiss, Takaki realizes they will never be together.",
-				"correctText": "In 1991, Takaki Tōno quickly befriends Akari Shinohara after she transfers to his elementary school in Tokyo. They grow very close to each other due to similar interests and attitudes such as both preferring to stay inside during recess due to their seasonal allergies. As a result, they form a strong bond which is shown when they speak to each other using their given names without any form of honorifics as that is a sign of deep friendship and familiarity in Japan. Right after graduating from elementary school in 1994, Akari moves to the nearby prefecture of Tochigi due to her parents' jobs. The two keep in contact by writing letters but eventually begin to drift apart. When Takaki learns that his family will be moving to Kagoshima on the other side of the country the following year in 1995, he decides to personally go see Akari one last time since they will be too far apart to see and visit each other once he moves. He also writes a letter for Akari to confess his feelings for her. However, Takaki loses the letter during the journey and a severe snowstorm delays his train for several hours. When the two finally meet late that night and share their first kiss, Takaki realizes they will never be together.",
+				"suppliedText": "In 1991, Takaki Tono quickly befriends Akari Shinohara after she transfers to his elementary school in Tokyo. They grow very close to each other due to similiar interests and atitudes such as both prefering to stay inside during recess due to their seasonal allergies. As a result, they form a strong bond which is shown when they speak to each other using their given names without any form of honorifics as that is a sign of deep friendship and familiarity in Japan. Right after graduating from elementary school in 1994, Akari moves to the nearby prefecture of Tochigi due to her parents' jobs. The two keep in contact by writing letters but eventually begin to drift apart. When Takaki learns that his family will be moving to Kagoshima on the other side of the country the following year in 1995, he decides to personalley go see Akari one last time since they will be too far apart to see and visit each other once he moves. He also writes a letter for Akari to confess his feelings for her. However, Takaki loses the letter during the journey and a severve snowstorm delays his train for several hours. When the two finally meet late that night and share their first kiss, Takaki realizes they will never be together.",
+				"correctText": "In 1991, Takaki Tono quickly befriends Akari Shinohara after she transfers to his elementary school in Tokyo. They grow very close to each other due to similar interests and attitudes such as both preferring to stay inside during recess due to their seasonal allergies. As a result, they form a strong bond which is shown when they speak to each other using their given names without any form of honorifics as that is a sign of deep friendship and familiarity in Japan. Right after graduating from elementary school in 1994, Akari moves to the nearby prefecture of Tochigi due to her parents' jobs. The two keep in contact by writing letters but eventually begin to drift apart. When Takaki learns that his family will be moving to Kagoshima on the other side of the country the following year in 1995, he decides to personally go see Akari one last time since they will be too far apart to see and visit each other once he moves. He also writes a letter for Akari to confess his feelings for her. However, Takaki loses the letter during the journey and a severe snowstorm delays his train for several hours. When the two finally meet late that night and share their first kiss, Takaki realizes they will never be together.",
 				"errorCount": "5"
 			},
 			"Non-Fiction": {
@@ -287,7 +301,12 @@ var JSONString = JSON.stringify(
 				"correctText": "Electronics uses active devices to control electron flow by amplification and rectification, which distinguishes it from classical electrical engineering, which only uses passive effects such as resistance, capacitance and inductance to control electric current flow. An electronic component is any physical entity in an electronic system used to affect the electrons or their associated fields in a manner consistent with the intended function of the electronic system. Components are generally intended to be connected together, usually by being soldered to a printed circuit board(PCB), to create an electronic circuit with a particular function (for example an amplifier and radio receiver). Components may be packaged singly, or in more complex groups as integrated circuits. Some common electronic components are capacitors, inductors, resistors, transistors, etc. Components are often categorised as active (e.g. transistors) or passive (e.g. resistors and inductors).",
 				"errorCount": "7"
 			}
-		},
+		}
+	}
+)
+
+var DailyString = JSON.stringify(
+	{
 		"Daily Challenge": {
 			"suppliedText": "\"The boy with fair hair lowerred himself down the last few feet of rock and began to pick his way toward the lagoun. Though he had taken off his school sweater and trailled it now from one hand, his grey shirt stuk to him and his hair was plasterred to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clamberring heavily among the crepers and broken trunks when a bird, a vision of red and yellow, flashed upards with a witch-like cry; and this cry was echod by another. \"Hi!\" it said. \"Wait a minute!\" The undergrowth at the side of the scar was shaken and a multitute of raindrops fell pattering. \"Wait a minute,\" the voice said. \"I got caught up.\" The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties.\"",
 			"correctText": "\"The boy with fair hair lowered himself down the last few feet of rock and began to pick his way toward the lagoon. Though he had taken off his school sweater and trailed it now from one hand, his grey shirt stuck to him and his hair was plastered to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clambering heavily among the creepers and broken trunks when a bird, a vision of red and yellow, flashed upwards with a witch-like cry; and this cry was echoed by another. \"Hi!\" it said. \"Wait a minute!\" The undergrowth at the side of the scar was shaken and a multitude of raindrops fell pattering. \"Wait a minute,\" the voice said. \"I got caught up.\" The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties.\"",
@@ -296,14 +315,8 @@ var JSONString = JSON.stringify(
 	}
 )
 
-
-
 function loadText() {
 	var text = JSON.parse(JSONString);
 	document.getElementById("gameText").innerHTML = text[difficulty][genre]['suppliedText'];
 	document.getElementById("gameHidden").innerHTML = text[difficulty][genre]['suppliedText'];
 }
-
-
-
-
