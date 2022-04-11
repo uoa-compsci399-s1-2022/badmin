@@ -289,14 +289,14 @@ function loadText() {
 	if (typeof genre == 'undefined') {
 		let text = JSON.parse(DailyString);
 		 passage = text["Daily Challenge"]['suppliedText']
-		alert(passage)
+		
 	}else{
 		let text = JSON.parse(JSONString);
 		 passage = text[difficulty][genre]['suppliedText']
 	}
 
 	const passageSurr = separateWords(passage)
-	alert(passageSurr)
+	
 	document.getElementById("gameText").innerHTML = passageSurr
 	document.getElementById("gameHidden").innerHTML = passageSurr
 	
@@ -317,4 +317,3 @@ function separateWords(passage) {
 
 
 
-// alert(setGenre())
