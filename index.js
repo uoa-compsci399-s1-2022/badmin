@@ -56,7 +56,6 @@ window.onload = function () {
 const showStart = () => {
 	document.getElementById("startTimer").style.display = "block";
 	document.getElementById("stopTimer").style.display = "none";
-	// document.getElementById("difficultyBar").style.display = "block";
 	document.getElementById("easyButton").style.display = "block";
 	document.getElementById("mediumButton").style.display = "block";
 	document.getElementById("hardButton").style.display = "block";
@@ -65,7 +64,6 @@ const showStart = () => {
 const showStop = () => {
 	document.getElementById("startTimer").style.display = "none";
 	document.getElementById("stopTimer").style.display = "block";
-	// document.getElementById("difficultyBar").style.display = "none";
 	document.getElementById("easyButton").style.display = "none";
 	document.getElementById("mediumButton").style.display = "none";
 	document.getElementById("hardButton").style.display = "none";
@@ -317,6 +315,22 @@ var DailyString = JSON.stringify(
 
 function loadText() {
 	var text = JSON.parse(JSONString);
-	document.getElementById("gameText").innerHTML = text[difficulty][genre]['suppliedText'];
-	document.getElementById("gameHidden").innerHTML = text[difficulty][genre]['suppliedText'];
+	const passage = text[difficulty][genre]['suppliedText']
+
+	const passageSurr = separateWords(passage)
+	document.getElementById("gameText").innerHTML = passageSurr//text[difficulty][genre]['suppliedText'];
+	document.getElementById("gameHidden").innerHTML = passageSurr//text[difficulty][genre]['suppliedText'];
+}
+
+// to add divs between each word
+function separateWords(passage) {
+	const passageArr = passage.split(" ")
+	let wordArr = []
+	for (let i = 0; i < passageArr.length; i++){
+		wordElement = "<word>" + passageArr[i] + "</word>"
+		wordArr.push(wordElement)
+	}
+	
+	return wordArr.join(" ")
+
 }
