@@ -96,9 +96,9 @@ function countTimer() {
 	// alert("counter function entered")
 
 	++totalSeconds;
-	var hour = Math.floor(totalSeconds / 3600);
-	var minute = Math.floor((totalSeconds - hour * 3600) / 60);
-	var seconds = totalSeconds - (hour * 3600 + minute * 60);
+	let hour = Math.floor(totalSeconds / 3600);
+	let minute = Math.floor((totalSeconds - hour * 3600) / 60);
+	let seconds = totalSeconds - (hour * 3600 + minute * 60);
 	if (hour < 10)
 		hour = "0" + hour;
 	if (minute < 10)
@@ -108,7 +108,7 @@ function countTimer() {
 	document.getElementById("timer").innerHTML = hour + ":" + minute + ":" + seconds;
 }
 
-var difficulty;
+let difficulty;
 
 function setEasy() {
 	difficulty = "Easy"
@@ -122,17 +122,17 @@ function setHard() {
 	difficulty = "Hard"
 }
 
-var genre;
+let genre;
 
 function setGenre() {
-	var x = document.getElementById("genre");
+	let x = document.getElementById("genre");
 	genre = x.value;
 }
 
-var btns = document.getElementsByClassName("levelButton");
-for (var i = 0; i < btns.length; i++) {
+let btns = document.getElementsByClassName("levelButton");
+for (let i = 0; i < btns.length; i++) {
 	btns[i].addEventListener("click", function () {
-		var current = document.getElementsByClassName("active");
+		let current = document.getElementsByClassName("active");
 		if (current.length > 0) {
 			current[0].className = current[0].className.replace(" active", "");
 		}
@@ -140,39 +140,9 @@ for (var i = 0; i < btns.length; i++) {
 	});
 }
 
-/* const form = document.getElementbyId('form');
-form.addEventListener() */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var JSONString = JSON.stringify(
+let JSONString = JSON.stringify(
 	{
 		"Easy": {
 			"Sci-Fi": {
@@ -303,7 +273,7 @@ var JSONString = JSON.stringify(
 	}
 )
 
-var DailyString = JSON.stringify(
+let DailyString = JSON.stringify(
 	{
 		"Daily Challenge": {
 			"suppliedText": "\"The boy with fair hair lowerred himself down the last few feet of rock and began to pick his way toward the lagoun. Though he had taken off his school sweater and trailled it now from one hand, his grey shirt stuk to him and his hair was plasterred to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clamberring heavily among the crepers and broken trunks when a bird, a vision of red and yellow, flashed upards with a witch-like cry; and this cry was echod by another. \"Hi!\" it said. \"Wait a minute!\" The undergrowth at the side of the scar was shaken and a multitute of raindrops fell pattering. \"Wait a minute,\" the voice said. \"I got caught up.\" The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties.\"",
@@ -314,12 +284,22 @@ var DailyString = JSON.stringify(
 )
 
 function loadText() {
-	var text = JSON.parse(JSONString);
-	const passage = text[difficulty][genre]['suppliedText']
+	// if genere not selected, show daily
+	let passage = "text"
+	if (typeof genre == 'undefined') {
+		let text = JSON.parse(DailyString);
+		 passage = text["Daily Challenge"]['suppliedText']
+		alert(passage)
+	}else{
+		let text = JSON.parse(JSONString);
+		 passage = text[difficulty][genre]['suppliedText']
+	}
 
 	const passageSurr = separateWords(passage)
-	document.getElementById("gameText").innerHTML = passageSurr//text[difficulty][genre]['suppliedText'];
-	document.getElementById("gameHidden").innerHTML = passageSurr//text[difficulty][genre]['suppliedText'];
+	alert(passageSurr)
+	document.getElementById("gameText").innerHTML = passageSurr
+	document.getElementById("gameHidden").innerHTML = passageSurr
+	
 }
 
 // to add divs between each word
@@ -334,3 +314,7 @@ function separateWords(passage) {
 	return wordArr.join(" ")
 
 }
+
+
+
+// alert(setGenre())
