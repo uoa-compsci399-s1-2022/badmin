@@ -87,6 +87,7 @@ function highlightText(element) {
 		}
 	}
 }
+
 window.onload = function () {
 	loadDaily()
 	hideGame()
