@@ -1,4 +1,6 @@
-const textBank = ["andy's text", "joji's text", "angel's text"];
+const textBank = ["andy's text", "joji's text text.", "angel's text"];
+//TODO: we need global variables to store the game text that the user chooses, along with other global variables such as its corresponding error count etc
+let gameText;
 /**
  * @function loadDaily displays today's text
  */
@@ -10,8 +12,9 @@ function loadDaily() {
 	// modulus formula [ ((a % n ) + n ) % n ] to account for negative values
 	const length = textBank.length;
 	const text = textBank[((daysPassed % length) + length) % length];
-	document.getElementById("gameText").innerHTML = text;
-	document.getElementById("gameHidden").innerHTML = text;
+	document.getElementById("gameText").innerHTML = separateWords(text);
+	document.getElementById("gameHidden").innerHTML = separateWords(text);
+	gameText = text;
 }
 
 // to add divs between each word
@@ -59,18 +62,36 @@ function sanitizeInput(e, element) {
 	return true;
 }
 /**
- * @function textInputHandler() uses the input text to search & highlight relevant words
- * @param e - the event @type - "beforeinput"
+ * @function highlightText() highlights words in the passage given a search text, the function is only run when the search has been updated
+ * @param e - the event @type - "before input"
  * @param element - the textarea element inputTextBox
  */
-function textInputHandler(e, element) {
-	if (!sanitizeInput(e)) { // if the text has been changed
-		//highlight text
+let previousSearch = new Array();
+function highlightText(e, element) {
+	const gameTextArr = gameText.split(" ");
+	const gameTextElements = document.getElementById("gameText").children;
+	for (let index of previousSearch) {
+		gameTextElements[index].style.backgroundColor="transparent";
 	}
+	previousSearch = new Array();
+	const searchText = element.value;
+	if (searchText.length >= 1) {
+		for (let i = 0; i < gameTextArr.length; i++) {
+			const word = gameTextArr[i];
+			console.log(word, searchText, word.startsWith(searchText))
+			if (word.startsWith(searchText)) {
+				gameTextElements[i].style.backgroundColor="lightblue";
+				previousSearch.push(i);
+			}
+		}
+	}
+
 }
+
 window.onload = function () {
 	loadDaily()
 	hideGame()
 	Getversion()
-	document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { textInputHandler(e, this); });
+	document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e, this); });
+	document.getElementById("inputTextBox").addEventListener("input", function(e) { highlightText(e, this); });
 }
