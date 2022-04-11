@@ -25,9 +25,7 @@ function separateWords(passage) {
 		wordElement = "<word>" + passageArr[i] + "</word>"
 		wordArr.push(wordElement)
 	}
-
 	return wordArr.join(" ")
-
 }
 
 /**
@@ -53,7 +51,7 @@ function Getversion() {
  * @param e - the event @type - "beforeinput"
  * @returns if the text has been changed
  */
-function sanitizeInput(e, element) {
+function sanitizeInput(e) {
 	// case: delete or single alphabetical character //TODO: add quotation marks etc? would prefer if the retyping was just words, TBC w team
 	if (e.inputType == 'deleteContentBackward' || e.inputType == 'deleteContentForward' || /^[a-zA-Z()]$/.test(e.data)) {
 		return false;
@@ -62,36 +60,37 @@ function sanitizeInput(e, element) {
 	return true;
 }
 /**
- * @function highlightText() highlights words in the passage given a search text, the function is only run when the search has been updated
+ * @function highlightText() highlights prefixes of words in the passage given a search text, the function is only run when the search has been updated
  * @param e - the event @type - "before input"
  * @param element - the textarea element inputTextBox
  */
-let previousSearch = new Array();
-function highlightText(e, element) {
+let previousSearchIndicies = new Array();
+let correctedWordsIndicies = new Array();
+function highlightText(element) {
 	const gameTextArr = gameText.split(" ");
 	const gameTextElements = document.getElementById("gameText").children;
-	for (let index of previousSearch) {
-		gameTextElements[index].style.backgroundColor="transparent";
-	}
-	previousSearch = new Array();
 	const searchText = element.value;
+	for (let index of previousSearchIndicies) {
+		const gameTextElement = gameTextElements[index];
+		const prefix = gameTextElement.innerHTML.split("<mark>")[1];
+		gameTextElement.innerHTML = prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+	}
+	previousSearchIndicies = new Array();
 	if (searchText.length >= 1) {
 		for (let i = 0; i < gameTextArr.length; i++) {
+			const gameTextElement = gameTextElements[i];
 			const word = gameTextArr[i];
-			console.log(word, searchText, word.startsWith(searchText))
-			if (word.startsWith(searchText)) {
-				gameTextElements[i].style.backgroundColor="lightblue";
-				previousSearch.push(i);
+			if (word.startsWith(searchText) && !correctedWordsIndicies.includes(i)) {
+				gameTextElement.innerHTML = "<mark>" + gameTextElement.innerHTML.slice(0, searchText.length) + "</mark>" + gameTextElement.innerHTML.slice(searchText.length);
+				previousSearchIndicies.push(i);
 			}
 		}
 	}
-
 }
-
 window.onload = function () {
 	loadDaily()
 	hideGame()
 	Getversion()
-	document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e, this); });
-	document.getElementById("inputTextBox").addEventListener("input", function(e) { highlightText(e, this); });
+	document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
+	document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
 }
