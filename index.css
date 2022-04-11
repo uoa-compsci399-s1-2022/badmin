@@ -42,21 +42,15 @@ footer {
     text-align: right;
 }
 
+mark {
+    background-color:darkorange;
+}
 h4 {
     display: inline-block;
 }
 
-/* formating for main table */
-
-/* th, td {
-    padding: 10px;
-  } */
-
-
-
 /* timer buttons */
-#startTimer,
-#stopTimer {
+#startTimer, #stopTimer {
     background-color: #919191;
     color: white;
     font-size: 16px;
@@ -75,7 +69,7 @@ th[scope="score"] {
 
 
 
-/* menu buttons- cant get buttons to merge together to connect*/
+/* menu buttons- cant get buttons to merge together to connect */
 .levelButton {
     transition-duration: 0.4s;
     background-color: rgb(242, 242, 242);
