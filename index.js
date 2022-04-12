@@ -1,28 +1,3 @@
-const textBank = ["andy's text", "joji's text", "angel's text"];
-/** 
- * fetching from the JSON file does not work (results in CORS error)
- * since we are hosting on a simple web server, our options are to:
- * 1)
- * 2)
-
-*/
-/**
- * @function loadDaily displays today's text
- */
-function loadDaily() {
-	const today = new Date();
-	// One day (24 hours) is 86,400,000 milliseconds
-	const daysPassed = Math.floor(today.getTime() / 86400000);
-	// if a user sets their local machine date to before January 1, 1970 -> negative days since starting date -> negative array index (remainder) -> undefined
-	// modulus formula [ ((a % n ) + n ) % n ] to account for negative values
-	const length = textBank.length;
-	const text = textBank[((daysPassed % length) + length) % length];
-	document.getElementById("gameText").innerHTML = text;
-	document.getElementById("gameHidden").innerHTML = text;
-}
-
-
-
 /**
  * Hide text function
  */
@@ -47,32 +22,49 @@ function Getversion() {
  * @param e - the event @type - "beforeinput"
  * @returns if the text has been changed
  */
- function sanitizeInput(e, element) {
-    // case: delete or single alphabetical character //TODO: add quotation marks etc? would prefer if the retyping was just words, TBC w team
-    if (e.inputType == 'deleteContentBackward' || e.inputType == 'deleteContentForward' || /^[a-zA-Z()]$/.test(e.data)) {
-        return false;
-    }
-    e.preventDefault();
-    return true;
- }
-
- /**
- * @function textInputHandler() uses the input text to search & highlight relevant words
- * @param e - the event @type - "beforeinput"
+function sanitizeInput(e) {
+	// case: delete or single alphabetical character //TODO: add quotation marks etc? would prefer if the retyping was just words, TBC w team
+	if (e.inputType == 'deleteContentBackward' || e.inputType == 'deleteContentForward' || /^[a-zA-Z()]$/.test(e.data)) {
+		return false;
+	}
+	e.preventDefault();
+	return true;
+}
+/**
+ * @function highlightText() highlights prefixes of words in the passage given a search text, the function is only run when the search has been updated
+ * @param e - the event @type - "before input"
  * @param element - the textarea element inputTextBox
  */
-function textInputHandler(e, element) {
-    if (!sanitizeInput(e)) { // if the text has been changed
-        //highlight text
-    }
+let previousSearchIndicies = new Array();
+let correctedWordsIndicies = new Array();
+function highlightText(element) {
+	const gameTextArr = gameText.split(" ");
+	const gameTextElements = document.getElementById("gameText").children;
+	const searchText = element.value;
+	for (let index of previousSearchIndicies) {
+		const gameTextElement = gameTextElements[index];
+		const prefix = gameTextElement.innerHTML.split("<mark>")[1];
+		gameTextElement.innerHTML = prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+	}
+	previousSearchIndicies = new Array();
+	if (searchText.length >= 1) {
+		for (let i = 0; i < gameTextArr.length; i++) {
+			const gameTextElement = gameTextElements[i];
+			const word = gameTextArr[i];
+			if (word.startsWith(searchText) && !correctedWordsIndicies.includes(i)) {
+				gameTextElement.innerHTML = "<mark>" + gameTextElement.innerHTML.slice(0, searchText.length) + "</mark>" + gameTextElement.innerHTML.slice(searchText.length);
+				previousSearchIndicies.push(i);
+			}
+		}
+	}
 }
 
 window.onload = function () {
-	loadDaily()
 	hideGame()
 	Getversion()
 	showStart();
-    document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { textInputHandler(e, this); });
+	document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
+	document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
 }
 
 //working timer
@@ -305,38 +297,59 @@ let DailyString = JSON.stringify(
 			"suppliedText": "\"The boy with fair hair lowerred himself down the last few feet of rock and began to pick his way toward the lagoun. Though he had taken off his school sweater and trailled it now from one hand, his grey shirt stuk to him and his hair was plasterred to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clamberring heavily among the crepers and broken trunks when a bird, a vision of red and yellow, flashed upards with a witch-like cry; and this cry was echod by another. \"Hi!\" it said. \"Wait a minute!\" The undergrowth at the side of the scar was shaken and a multitute of raindrops fell pattering. \"Wait a minute,\" the voice said. \"I got caught up.\" The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties.\"",
 			"correctText": "\"The boy with fair hair lowered himself down the last few feet of rock and began to pick his way toward the lagoon. Though he had taken off his school sweater and trailed it now from one hand, his grey shirt stuck to him and his hair was plastered to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clambering heavily among the creepers and broken trunks when a bird, a vision of red and yellow, flashed upwards with a witch-like cry; and this cry was echoed by another. \"Hi!\" it said. \"Wait a minute!\" The undergrowth at the side of the scar was shaken and a multitude of raindrops fell pattering. \"Wait a minute,\" the voice said. \"I got caught up.\" The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties.\"",
 			"errorCount": "11"
+		},
+		"2": {
+			"suppliedText": "2",
+			"correctText": "2",
+			"errorCount": 0,
 		}
 	}
 )
 
+/**
+ * @function loadDaily displays today's text
+ */
+function loadDaily() {
+	const today = new Date();
+	//One day (24 hours) is 86,400,000 milliseconds
+	const daysPassed = Math.floor(today.getTime() / 86400000);
+	// if a user sets their local machine date to before January 1, 1970 -> negative days since starting date -> negative array index (remainder) -> undefined
+	// modulus formula [ ((a % n ) + n ) % n ] to account for negative values
+	const textBank = JSON.parse(DailyString);
+	const keys = Object.keys(textBank);
+	const length = keys.length;
+	const key = keys[((daysPassed % length) + length) % length];
+	const text = textBank[key]['suppliedText'];
+	return text;
+}
+
 function loadText() {
-	// if genere not selected, show daily
-	let passage = "text"
+	// if genre not selected, show daily
+	let passage;
 	if (typeof genre == 'undefined') {
-		let text = JSON.parse(DailyString);
-		 passage = text["Daily Challenge"]['suppliedText']
-		
-	}else{
+		passage = loadDaily()
+	} else {
 		let text = JSON.parse(JSONString);
-		 passage = text[difficulty][genre]['suppliedText']
+		passage = text[difficulty][genre]['suppliedText']
 	}
 
 	const passageSurr = separateWords(passage)
-	
+	gameText = passage;
+
 	document.getElementById("gameText").innerHTML = passageSurr
 	document.getElementById("gameHidden").innerHTML = passageSurr
-	
+
 }
 
 // to add divs between each word
 function separateWords(passage) {
 	const passageArr = passage.split(" ")
 	let wordArr = []
-	for (let i = 0; i < passageArr.length; i++){
+	for (let i = 0; i < passageArr.length; i++) {
 		wordElement = "<word>" + passageArr[i] + "</word>"
 		wordArr.push(wordElement)
 	}
-	
+
 	return wordArr.join(" ")
 
 }

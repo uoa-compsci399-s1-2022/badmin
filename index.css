@@ -111,4 +111,8 @@ th[scope="score"] {
     background-color: rgb(242, 242, 242);
     height: 50px;
     border: none;
-  }
+}
+
+mark {
+    background-color: lightgrey;
+}
