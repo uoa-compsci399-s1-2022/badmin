@@ -26,6 +26,7 @@ function sanitizeInput(e) {
   if (
     e.inputType == "deleteContentBackward" ||
     e.inputType == "deleteContentForward" ||
+    //e.inputType == "insertParagraph" ||
     /^[a-zA-Z()]$/.test(e.data)
   ) {
     return false;
@@ -67,6 +68,41 @@ function highlightText(element) {
   }
 }
 
+let usedWords = [];
+
+function checkUserInput(element) {
+  if (element.value.length >= 2) {
+    let text = JSON.parse(DailyString);
+    passage = text["Daily Challenge"]["words"];
+
+    if (genre != null && difficulty != null) {
+      let text = JSON.parse(JSONString);
+      passage = text[difficulty][genre]["words"];
+    }
+
+    if (passage[element.value]) {
+      if (usedWords.includes(element.value) == false) {
+        alert("true");
+        //userInputCorrect();
+        usedWords.push(element.value);
+      } else {
+        alert("repeated word!");
+      }
+    } else {
+      alert("false");
+      //userInputWrong();
+    }
+  }
+}
+
+function userInputCorrect() {
+  pass;
+}
+
+function userInputWrong() {
+  pass;
+}
+
 window.onload = function () {
   hideGame();
   Getversion();
@@ -81,6 +117,13 @@ window.onload = function () {
     .getElementById("inputTextBox")
     .addEventListener("input", function () {
       highlightText(this);
+    });
+  document
+    .getElementById("inputTextBox")
+    .addEventListener("keydown", function (e) {
+      if (e.key == "Enter") {
+        checkUserInput(this);
+      }
     });
 };
 
@@ -119,13 +162,13 @@ function startTimer() {
 }
 
 function stopTimer() {
+  usedWords = [];
   clearInterval(timerVar);
   showStart();
 }
 
 function countTimer() {
   // alert("counter function entered")
-
   ++totalSeconds;
   let hour = Math.floor(totalSeconds / 3600);
   let minute = Math.floor((totalSeconds - hour * 3600) / 60);
@@ -173,9 +216,15 @@ let JSONString = JSON.stringify({
   Easy: {
     "Sci-Fi": {
       suppliedText:
-        "There was once an alien that lived on a plannet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other differente planets. One day he wanted to go look for friends, and so he travalled to a planet neaby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked him to join him on his planet.",
+        "There was once an alien that lived on a plannet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other differente planets. One day he wanted to go look for friends, and so he travalled to a planet neaby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
       correctText:
-        "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he traveled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked him to join him on his planet.",
+        "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he traveled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
+      words: {
+        planet: "plannet",
+        different: "differente",
+        travelled: "travalled",
+        nearby: "neaby",
+      },
       errorCount: "4",
     },
     "Slice of Life": {
@@ -183,6 +232,11 @@ let JSONString = JSON.stringify({
         'On an early Sunday morning, a caterpilar hatches from his egg. The text describes him as "a tiny and very hungry caterpillar". He begins to look for something to eat. The very hungry caterpillar eats through increasing quantitys of fruit for the following five days (Monday through Friday). First he starts with one apple on Monday, then two pears on Tuesday, then three plums on Wednesday, four straweberries on Thursday, and five oranges on Friday, but he is still hungry.',
       correctText:
         'On an early Sunday morning, a caterpillar hatches from his egg. The text describes him as "a tiny and very hungry caterpillar". He begins to look for something to eat. The very hungry caterpillar eats through increasing quantities of fruit for the following five days (Monday through Friday). First he starts with one apple on Monday, then two pears on Tuesday, then three plums on Wednesday, four strawberries on Thursday, and five oranges on Friday, but he is still hungry.',
+      words: {
+        caterpillar: "caterpilar",
+        quantities: "quantitys",
+        strawberries: "straweberries",
+      },
       errorCount: "3",
     },
     "Non-Fiction": {
@@ -191,6 +245,12 @@ let JSONString = JSON.stringify({
       correctText:
         "The dog is a mammal with sharp teeth, an excellent sense of smell, and a fine sense of hearing. Each of its four legs ends in a foot, or paw, with five toes. Each toe has a soft pad and a claw. A coat of hair keeps the dog warm. It cools off by panting and hanging its tongue out of its mouth. People around the world keep dogs as pets, guards, or work animals. Some dogs, called feral dogs, do not live with people. These homeless dogs often roam around in groups, called packs. One type of dog, called the dingo, lives in the wild in Australia.",
       errorCount: "4",
+      words: {
+        excellent: "excelent",
+        cools: "cooles",
+        dogs: "doges",
+        feral: "ferel",
+      },
     },
     Romance: {
       suppliedText:
@@ -198,6 +258,12 @@ let JSONString = JSON.stringify({
       correctText:
         "Love is a word with many definitions. But the common thing about love is that it is a strong feeling of attraction towards a human being or an object. But to me love is not just a feeling, but it is the way you treat the ones you care for. You should treat the ones you love so considerately through your actions. They'll know you care and love them. Love in my eyes, is making that sacrifice for someone, knowing that you might regret it sooner or later. Love is how you make another person feel when you are in their presence. Many people show or express their love for someone in many and different ways. To me, love is in actions not in words. The true meaning of love like what is the meaning of life is one of the questions that will remain unsolved forever. But right now, love is a great thing that should be treasured forever and valued as an important part of your life.",
       errorCount: "4",
+      words: {
+        common: "comomn",
+        regrat: "regret",
+        their: "there",
+        words: "werds",
+      },
     },
     Article: {
       suppliedText:
@@ -205,6 +271,12 @@ let JSONString = JSON.stringify({
       correctText:
         "Street signs and markings are all around us. It is important to pay attention to them. They help keep us safe. Learn about some of them here. Crosswalks tell us where to cross the street. An orange hand tells walkers to stop. It is not safe to cross a street when you see this sign. The green walking sign means it is safe to cross. Cars are supposed to wait. But you should always look both ways before crossing a street. Have you ever noticed a bumpy strip? It warns that the pavement is changing or ending. It helps people who have trouble seeing. A person who is walking is called a pedestrian. Some street signs use that word. See if you can spot the word pedestrian next time you are out!",
       errorCount: "4",
+      words: {
+        "them": "dem",
+        "stope": "stop",
+        "sign": "sine",
+        "wait": "wate"
+      }
     },
     Mystery: {
       suppliedText:
@@ -212,6 +284,14 @@ let JSONString = JSON.stringify({
       correctText:
         "Ted and Kat's cousin Joe came over to their house to stay over the summer break. Every day all three of them went to the beach and park and had a lot of fun. On the day before Joe had to leave to go back to his home, they took him to see the London Eye. Since they had gone on the ride before, Ted and Kat let Joe go on the ride by himself. They watch the wheel move around and around until the ride finishes. Everybody leaves, but where is their cousin Joe? They look here and there and everywhere, but they can not find Joe. Where is he? Why can they not see him? Maybe he flew away?",
       errorCount: "6",
+      words: {
+        "came": "camee",
+        "al": "all",
+        "move": "mov",
+        "but": "bute",
+        "is": "iss",
+        "flew": "flewe"
+      }
     },
     Comedy: {
       suppliedText:
@@ -219,13 +299,17 @@ let JSONString = JSON.stringify({
       correctText:
         "Floof the dog really wants a phone... even if he can not use one! All his friends had one. Mum and Dad were always looking at theirs. But Floof had a very big problem... his big paws! Any time he saw a phone left somewhere, he would try to turn it on, and nothing would happen. Floof's big paws were too big. One day in the park, he saw someone's phone! Floof picked it up with his great big paws. He asked everyone whether it was their phone, because Floof is a good boy. Nobody knew whose phone it was. Then another dog turned up. \"It's mine,\" he said. He was happy he could return it. This dog was called Ollie, but he had a problem. He had big claws! Both Ollie and Floof were sad. But Floof got a brilliant idea. \"Why don't we use it as a ball! I will throw it to you, and you to me!\" Floof said. And who would have thought it, but..big paws and big claws were best to play catch. It was the best fun two dogs have ever had with a phone, in the entire history of phones!",
       errorCount: "7",
+      words: {
+
+      }
     },
     Wikipedia: {
       suppliedText:
-        "A movie or film is something whic uses pictures that move and sound to tell stories or teach people something. Most people watch movies as a type of fun. For some people, funn movies can mean movies that make them laugh, while for others it can mean movies that make them cry, or feel scared. A movie is made with a camera that takes pictures very quickly, at 24 or 25 pictures everi second. Movies can be made up, or show real life, or a mix of the two. To make a movie someone needs to write the story with what each person says and does. There needs to be som people who pay money to people working on the movie. Movies also need someune who tells others what to do, and everyone listens to that persun to make the movie.",
+        "A movie or film is something whic uses pictures that move and sound to tell stories or teach people something. Most people watch movies as a type of fun. For some people, funni movies can mean movies that make them laugh, while for others it can mean movies that make them cry, or feel scared. A movie is made with a camera that takes pictures very quickly, at 24 or 25 pictures everi second. Movies can be made up, or show real life, or a mix of the two. To make a movie someone needs to write the story with what each person says and does. There needs to be som people who pay money to people working on the movie. Movies also need someune who tells others what to do, and everyone listens to that persun to make the movie.",
       correctText:
         "A movie or film is something which uses pictures that move and sound to tell stories or teach people something. Most people watch movies as a type of fun. For some people, funny movies can mean movies that make them laugh, while for others it can mean movies that make them cry, or feel scared. A movie is made with a camera that takes pictures very quickly, at 24 or 25 pictures every second. Movies can be made up, or show real life, or a mix of the two. To make a movie someone needs to write the story with what each person says and does. There needs to be some people who pay money to people working on the movie. Movies also need someone who tells others what to do, and everyone listens to that person to make the movie.",
       errorCount: "6",
+      
     },
   },
   Medium: {
@@ -351,8 +435,21 @@ let DailyString = JSON.stringify({
     suppliedText:
       '"The boy with fair hair lowerred himself down the last few feet of rock and began to pick his way toward the lagoun. Though he had taken off his school sweater and trailled it now from one hand, his grey shirt stuk to him and his hair was plasterred to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clamberring heavily among the crepers and broken trunks when a bird, a vision of red and yellow, flashed upards with a witch-like cry; and this cry was echod by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitute of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
     correctText:
-      '"The boy with fair hair lowered himself down the last few feet of rock and began to pick his way toward the lagoon. Though he had taken off his school sweater and trailed it now from one hand, his grey shirt stuck to him and his hair was plastered to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clambering heavily among the creepers and broken trunks when a bird, a vision of red and yellow, flashed upwards with a witch-like cry; and this cry was echoed by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitude of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
+      '"The boy with fair hair lowered himself down the last few feet of rock and began to pick his way toward the lagoon. Though he had taken off his school sweater and trailed it now from one hand, his grey shirt stuck to him and his hair was plastered to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clambering heavily among the creepers and broken trunks when a bird, a vision of red and yellow, flashed upwards with a witch-like cry; and this cry was echoed by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitude of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
     errorCount: "11",
+    words: {
+      lowered: "lowerred",
+      lagoon: "lagoun",
+      trailed: "trailled",
+      stuck: "stuk",
+      plastered: "plasterred",
+      clambering: "clamberring",
+      creepers: "crepers",
+      upwards: "upards",
+      echoed: "echod",
+      multitude: "multitute",
+      echoed: "echod",
+    },
   },
 });
 
