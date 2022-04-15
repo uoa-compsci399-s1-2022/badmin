@@ -103,8 +103,8 @@ function startTimer() {
 function stopTimer() {
   clearInterval(timerVar);
   showStart();
+  document.getElementById("inputTextBox").value = "";
   document.getElementById("inputTextBox").setAttribute("disabled", '');
-  document.getElementById("")
 }
 
 function countTimer() {
