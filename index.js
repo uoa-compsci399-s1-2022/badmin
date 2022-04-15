@@ -41,12 +41,7 @@ function highlightText(element) {
   const gameTextArr = gameText.split(" ");
   const gameTextElements = document.getElementById("gameText").children;
   const searchText = element.value;
-  for (let index of previousSearchIndicies) {
-    const gameTextElement = gameTextElements[index];
-    const prefix = gameTextElement.innerHTML.split("<mark>")[1];
-    gameTextElement.innerHTML = prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
-  }
-  previousSearchIndicies = new Array();
+  clearPreviousHighlight();
   if (searchText.length >= 1) {
     for (let i = 0; i < gameTextArr.length; i++) {
       const gameTextElement = gameTextElements[i];
@@ -57,6 +52,15 @@ function highlightText(element) {
       }
     }
   }
+}
+function clearPreviousHighlight() {
+  const gameTextElements = document.getElementById("gameText").children;
+  for (let index of previousSearchIndicies) {
+    const gameTextElement = gameTextElements[index];
+    const prefix = gameTextElement.innerHTML.split("<mark>")[1];
+    gameTextElement.innerHTML = prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+  }
+  previousSearchIndicies = new Array();
 }
 
 //working timer
@@ -91,8 +95,7 @@ function startTimer() {
   document.getElementById("timer").innerHTML = "";
   showStop();
   loadText();
-  previousSearchIndicies = new Array();
-  correctedWordsIndicies = new Array(); //TO DO: 
+  correctedWordsIndicies = new Array();
   document.getElementById("inputTextBox").removeAttribute("disabled");
   document.getElementById("inputTextBox").focus();
   totalSeconds = 0;
@@ -103,8 +106,10 @@ function startTimer() {
 function stopTimer() {
   clearInterval(timerVar);
   showStart();
+  clearPreviousHighlight();
   document.getElementById("inputTextBox").value = "";
   document.getElementById("inputTextBox").setAttribute("disabled", '');
+
 }
 
 function countTimer() {
