@@ -76,18 +76,16 @@ function checkUserInput(element) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(i) == false) {
-                if (correctIndicies[Object.keys(correctIndicies)[i]] == element.value) {
+                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.value) {
                     index = Object.keys(correctIndicies)[i];
                 }
             }
         }
-        console.log(index);
         if (index != -1) {
             if (correctedWordsIndicies.includes(index) == false) {
                 alert("Correct");
                 replaceWord1(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
-                console.log(correctedWordsIndicies);
             }else {
                 alert("You have already fixed this word!");
             }
@@ -101,14 +99,15 @@ function checkUserInput(element) {
 let correctIndicies = {};
 
 function compareText() {
-    let text = JSON.parse(JSONString);
 
     if (genre != null && difficulty != null) {
+        let text = JSON.parse(JSONString);
         suppliedText = text[difficulty][genre]["suppliedText"];
         correctText = text[difficulty][genre]["correctText"];
     }
 
     else {
+        let text = JSON.parse(DailyString);
         suppliedText = text["Daily Challenge"]["suppliedText"];
         correctText = text["Daily Challenge"]["correctText"];
     }
