@@ -83,15 +83,10 @@ function checkUserInput(element) {
         }
         if (index != -1) {
             if (correctedWordsIndicies.includes(index) == false) {
-                alert("Correct");
-                replaceWord1(correctIndicies[index], index);
+                replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
             }else {
-                alert("You have already fixed this word!");
             }
-        }
-        else {
-            alert("Wrong");
         }
     }
 }
@@ -121,31 +116,17 @@ function compareText() {
     return correctIndicies
 }
 
-function replaceWord1(correctedWord, correctedIndex ){ 
+function replaceWord(correctedWord, correctedIndex ){ 
 
     const searchText = document.getElementById("inputTextBox").value
     if (searchText.length > 1){
-        //check the word is correct SP-25
-        // IF (check certain index/or where highighted marked word is)- trying with index 1
         const highlightedWord = document.getElementById("gameHidden").innerHTML.split(" ")[correctedIndex]
-
-
-        // let marklessWord = highlightedWord.replace("<word>", "")
-        // marklessWord = marklessWord.replace("</word>", " ")
-        // marklessWord = marklessWord.trim()
-
         if (searchText == correctedWord){
             document.getElementById("gameText").children[correctedIndex].innerText = searchText //marklessWord
             document.getElementById("gameText").children[correctedIndex].style.color = "green"
-            //correctedWordsIndicies.push(marklessWord)
             document.getElementById("inputTextBox").value = ""
-            //to pump the score up
         }
     }
-}
-
-function userInputCorrect() {
-    pass;
 }
 
 window.onload = function () {
@@ -395,20 +376,7 @@ let DailyString = JSON.stringify({
         correctText:
             '"The boy with fair hair lowered himself down the last few feet of rock and began to pick his way toward the lagoon. Though he had taken off his school sweater and trailed it now from one hand, his grey shirt stuck to him and his hair was plastered to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clambering heavily among the creepers and broken trunks when a bird, a vision of red and yellow, flashed upwards with a witch-like cry; and this cry was echoed by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitude of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
         errorCount: "11",
-        words: {
-            lowered: "lowerred",
-            lagoon: "lagoun",
-            trailed: "trailled",
-            stuck: "stuk",
-            plastered: "plasterred",
-            clambering: "clamberring",
-            creepers: "crepers",
-            upwards: "upards",
-            echoed: "echod",
-            multitude: "multitute",
-            echoed: "echod",
-        },
-    },
+    }
 });
 
 /**
