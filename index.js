@@ -12,7 +12,7 @@ function hideGame() {
     document.getElementById("gameHidden").style.display = "block";
 }
 
-function Getversion() {
+function getVersion() {
     document.getElementById("vers").innerText = "v. Beta";
 }
 
@@ -44,13 +44,7 @@ function highlightText(element) {
     const gameTextArr = gameText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
     const searchText = element.value;
-    for (let index of previousSearchIndicies) {
-        const gameTextElement = gameTextElements[index];
-        const prefix = gameTextElement.innerHTML.split("<mark>")[1];
-        gameTextElement.innerHTML =
-            prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
-    }
-    previousSearchIndicies = new Array();
+    clearPreviousHighlight();
     if (searchText.length >= 1) {
         for (let i = 0; i < gameTextArr.length; i++) {
             const gameTextElement = gameTextElements[i];
@@ -68,6 +62,16 @@ function highlightText(element) {
             }
         }
     }
+}
+
+function clearPreviousHighlight() {
+  const gameTextElements = document.getElementById("gameText").children;
+  for (let index of previousSearchIndicies) {
+    const gameTextElement = gameTextElements[index];
+    const prefix = gameTextElement.innerHTML.split("<mark>")[1];
+    gameTextElement.innerHTML = prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+  }
+  previousSearchIndicies = new Array();
 }
 
 function checkUserInput(element) {
@@ -131,7 +135,7 @@ function replaceWord(correctedWord, correctedIndex ){
 
 window.onload = function () {
     hideGame();
-    Getversion();
+    getVersion();
     showStart();
     loadText();
     document
@@ -153,9 +157,6 @@ window.onload = function () {
         });
 };
 
-//working timer
-
-// to set the state of timer
 const showStart = () => {
     document.getElementById("startTimer").style.display = "block";
     document.getElementById("stopTimer").style.display = "none";
@@ -176,12 +177,10 @@ const showStop = () => {
 let totalSeconds = 0;
 let timerVar = 0;
 
-// to load with start, and hide stop
 function startTimer() {
     document.getElementById("timer").innerHTML = "";
     showStop();
     loadText();
-    // alert("entered start timer function")
     totalSeconds = 0;
     timerVar = setInterval(countTimer, 1000);
     showGame();
@@ -194,7 +193,6 @@ function stopTimer() {
 }
 
 function countTimer() {
-    // alert("counter function entered")
     ++totalSeconds;
     let hour = Math.floor(totalSeconds / 3600);
     let minute = Math.floor((totalSeconds - hour * 3600) / 60);
@@ -392,8 +390,7 @@ function loadDaily() {
     const keys = Object.keys(textBank);
     const length = keys.length;
     const key = keys[((daysPassed % length) + length) % length];
-    //const text = textBank[key]['suppliedText'];
-    const text = textBank["Daily Challenge"]["suppliedText"];
+    const text = textBank[key]['suppliedText'];
     return text;
 }
 
