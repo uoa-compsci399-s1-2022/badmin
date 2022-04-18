@@ -1,12 +1,13 @@
 /**
- * Hide text function
+ * Show text function
  */
-
 function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
 }
-
+/**
+ * Blur text function
+ */
 function hideGame() {
     document.getElementById("gameText").style.display = "none";
     document.getElementById("gameHidden").style.display = "block";
@@ -24,22 +25,19 @@ function getVersion() {
 function sanitizeInput(e) {
     // case: delete or single alphabetical character //TODO: add quotation marks etc? would prefer if the retyping was just words, TBC w team
     if (
-        e.inputType == "deleteContentBackward" ||
-        e.inputType == "deleteContentForward" ||
-        /^[a-zA-Z()]$/.test(e.data)
+        e.inputType == "deleteContentBackward" || e.inputType == "deleteContentForward" || /^[a-zA-Z()]$/.test(e.data)
     ) {
         return false;
     }
     e.preventDefault();
     return true;
 }
+
 /**
 * @function highlightText() highlights prefixes of words in the passage given a search text, the function is only run when the search has been updated
 * @param e - the event @type - "before input"
 * @param element - the textarea element inputTextBox
 */
-
-
 let previousSearchIndicies = new Array();
 let correctedWordsIndicies = new Array();
 function highlightText(element) {
@@ -51,15 +49,8 @@ function highlightText(element) {
         for (let i = 0; i < gameTextArr.length; i++) {
             const gameTextElement = gameTextElements[i];
             const word = gameTextArr[i];
-            if (
-                word.startsWith(searchText) &&
-                !correctedWordsIndicies.includes(i)
-            ) {
-                gameTextElement.innerHTML =
-                    "<mark>" +
-                    gameTextElement.innerHTML.slice(0, searchText.length) +
-                    "</mark>" +
-                    gameTextElement.innerHTML.slice(searchText.length);
+            if (word.startsWith(searchText) && !correctedWordsIndicies.includes(i)) {
+                gameTextElement.innerHTML = "<mark>" + gameTextElement.innerHTML.slice(0, searchText.length) + "</mark>" + gameTextElement.innerHTML.slice(searchText.length);
                 previousSearchIndicies.push(i);
             }
         }
@@ -78,7 +69,6 @@ function clearPreviousHighlight() {
 
 function checkUserInput(element) {
     if (element.value.length >= 2) {
-        correctIndicies = compareText();
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(i) == false) {
@@ -96,20 +86,8 @@ function checkUserInput(element) {
     }
 }
 
-
-function compareText() {
-    let correctIndicies = {};
-    if (genre != null && difficulty != null) {
-        let text = JSON.parse(JSONString);
-        suppliedText = text[difficulty][genre]["suppliedText"];
-        correctText = text[difficulty][genre]["correctText"];
-    }
-
-    else {
-        let text = JSON.parse(DailyString);
-        suppliedText = text["Daily Challenge"]["suppliedText"];
-        correctText = text["Daily Challenge"]["correctText"];
-    }
+let correctIndicies = {};
+function generateCorrectIndicies() {
     suppliedArray = suppliedText.split(" ");
     correctArray = correctText.split(" ");
     for (let i = 0; i < suppliedArray.length; i++) {
@@ -117,38 +95,32 @@ function compareText() {
             correctIndicies[i] = correctArray[i];
         }
     }
-    return correctIndicies
 }
 
-function replaceWord(correctedWord, correctedIndex) {
-    const searchText = document.getElementById("inputTextBox").value
-    document.getElementById("gameText").children[correctedIndex].innerText = searchText //marklessWord
-    document.getElementById("gameText").children[correctedIndex].style.color = "green"
-    document.getElementById("inputTextBox").value = ""
+function replaceWord(correctWord, correctedIndex) {
+    document.getElementById("gameText").children[correctedIndex].innerText = correctWord;
+    document.getElementById("gameText").children[correctedIndex].style.color = "green";
+    document.getElementById("inputTextBox").value = "";
 }
 
 window.onload = function () {
+    let btns = document.getElementsByClassName("levelButton");
+    for (let i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function () {
+            let current = document.getElementsByClassName("active");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" active", "");
+            }
+            this.className += " active";
+        });
+    }
     hideGame();
     getVersion();
     showStart();
     loadText();
-    document
-        .getElementById("inputTextBox")
-        .addEventListener("beforeinput", function (e) {
-            sanitizeInput(e);
-        });
-    document
-        .getElementById("inputTextBox")
-        .addEventListener("input", function () {
-            highlightText(this);
-        });
-    document
-        .getElementById("inputTextBox")
-        .addEventListener("keydown", function (e) {
-            if (e.key == "Enter") {
-                checkUserInput(this);
-            }
-        });
+    document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
+    document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
+    document.getElementById("inputTextBox").addEventListener("keydown", function (e) { if (e.code == "Enter" || e.code == "Space") { checkUserInput(this); } });
 };
 
 const showStart = () => {
@@ -172,6 +144,7 @@ let totalSeconds = 0;
 let timerVar = 0;
 
 function startTimer() {
+    correctIndicies = {};
     correctedWordsIndicies = new Array();
     document.getElementById("inputTextBox").removeAttribute("disabled");
     document.getElementById("inputTextBox").focus();
@@ -181,6 +154,7 @@ function startTimer() {
     totalSeconds = 0;
     timerVar = setInterval(countTimer, 1000);
     showGame();
+    generateCorrectIndicies();
 }
 
 function stopTimer() {
@@ -222,17 +196,6 @@ let genre;
 function setGenre() {
     let x = document.getElementById("genre");
     genre = x.value;
-}
-
-let btns = document.getElementsByClassName("levelButton");
-for (let i = 0; i < btns.length; i++) {
-    btns[i].addEventListener("click", function () {
-        let current = document.getElementsByClassName("active");
-        if (current.length > 0) {
-            current[0].className = current[0].className.replace(" active", "");
-        }
-        this.className += " active";
-    });
 }
 
 let JSONString = JSON.stringify(
@@ -389,27 +352,22 @@ function loadDaily() {
     const keys = Object.keys(textBank);
     const length = keys.length;
     const key = keys[((daysPassed % length) + length) % length];
-    const text = textBank[key]["suppliedText"];
-    correctText = textBank[key]["correctText"];
     suppliedText = textBank[key]["suppliedText"];
-    return text;
+    correctText = textBank[key]["correctText"];
 }
 
 let correctText;
 let suppliedText;
-
 function loadText() {
     // if genre not selected, show daily
     if (typeof genre == "undefined") {
         loadDaily();
     } else {
-        let text = JSON.parse(JSONString);
-        suppliedText = text[difficulty][genre]["suppliedText"];
-        correctText = text[difficulty][genre]["correctText"];
+        const textBank = JSON.parse(JSONString);
+        suppliedText = textBank[difficulty][genre]["suppliedText"];
+        correctText = textBank[difficulty][genre]["correctText"];
     }
-
     const passageSurr = separateWords();
-
     document.getElementById("gameText").innerHTML = passageSurr;
     document.getElementById("gameHidden").innerHTML = passageSurr;
 }
@@ -422,6 +380,5 @@ function separateWords() {
         wordElement = "<word>" + passageArr[i] + "</word>";
         wordArr.push(wordElement);
     }
-
     return wordArr.join(" ");
 }
