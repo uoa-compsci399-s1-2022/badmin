@@ -40,6 +40,7 @@ function sanitizeInput(e) {
 */
 let previousSearchIndicies = new Array();
 let correctedWordsIndicies = new Array();
+let currentSearchIndex = 0;
 function highlightText(element) {
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
@@ -49,22 +50,39 @@ function highlightText(element) {
         for (let i = 0; i < gameTextArr.length; i++) {
             const gameTextElement = gameTextElements[i];
             const word = gameTextArr[i];
-            if (word.startsWith(searchText) && !correctedWordsIndicies.includes(i)) {
+            if (word.startsWith(searchText) && !correctedWordsIndicies.includes(i.toString())) {
                 gameTextElement.innerHTML = "<mark>" + gameTextElement.innerHTML.slice(0, searchText.length) + "</mark>" + gameTextElement.innerHTML.slice(searchText.length);
                 previousSearchIndicies.push(i);
             }
         }
     }
+    if (previousSearchIndicies.length >= 1) {
+        gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "lightblue";
+    }
 }
 
 function clearPreviousHighlight() {
     const gameTextElements = document.getElementById("gameText").children;
+    if (previousSearchIndicies.length >= 1) {
+        const searchElement = gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild;
+        searchElement.outerHTML = `<mark>${searchElement.innerHTML}</mark>`; //clearing the attributes (including style) of the current selected search result
+    }
     for (let index of previousSearchIndicies) {
         const gameTextElement = gameTextElements[index];
         const prefix = gameTextElement.innerHTML.split("<mark>")[1];
         gameTextElement.innerHTML = prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
     }
     previousSearchIndicies = new Array();
+    currentSearchIndex = 0;
+}
+
+function inputHandler(element, event) {
+    if (event.code == "Enter" || event.code == "Space") {
+        checkUserInput(element);
+    }
+    else if (event.code == "ArrowUp" || event.code == "ArrowDown") {
+        navigateSearchResults(event.code);
+    }
 }
 
 function checkUserInput(element) {
@@ -83,6 +101,22 @@ function checkUserInput(element) {
                 correctedWordsIndicies.push(index);
             }
         }
+    }
+}
+
+function navigateSearchResults(key) {
+    if (previousSearchIndicies.length >= 1) {
+        const gameTextElements = document.getElementById("gameText").children;
+        const searchElement = gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild;
+        searchElement.outerHTML = `<mark>${searchElement.innerHTML}</mark>`; //clearing the attributes (including style) of the current selected search result
+        const length = previousSearchIndicies.length;
+        if (key == "ArrowUp") {
+            currentSearchIndex = (((currentSearchIndex - 1) % length) + length) % length // modulus formula [ ((a % n ) + n ) % n ] to account for negative values
+        }
+        if (key == "ArrowDown") {
+            currentSearchIndex = (currentSearchIndex + 1) % length // currentSearchIndex can't be negative, so currentSearchIndex + 1 can't be negative => use positive only modulus
+        }
+        gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "lightblue";
     }
 }
 
@@ -120,7 +154,7 @@ window.onload = function () {
     loadText();
     document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
     document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
-    document.getElementById("inputTextBox").addEventListener("keydown", function (e) { if (e.code == "Enter" || e.code == "Space") { checkUserInput(this); } });
+    document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
 };
 
 const showStart = () => {
