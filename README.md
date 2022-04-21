@@ -1,4 +1,4 @@
-# badmin
+# Badmin
 
 Spelling has always been an integral part of any language and literature, since the dawn of civilization, with applications that are ubiquitous.  It has been found that the level of spelling has deteriorated as more and more people rely on technology to autocorrect any words. 
 
