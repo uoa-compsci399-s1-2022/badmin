@@ -158,27 +158,30 @@ window.onload = function () {
 };
 
 const showStart = () => {
-    document.getElementById("startTimer").style.display = "block";
-    document.getElementById("stopTimer").style.display = "none";
-    document.getElementById("easyButton").style.display = "block";
-    document.getElementById("mediumButton").style.display = "block";
-    document.getElementById("hardButton").style.display = "block";
-    document.getElementById("genre").style.display = "block";
+    //document.getElementById("startTimer").style.display = "block";
+    //document.getElementById("stopTimer").style.display = "none";
+    //document.getElementById("easyButton").style.display = "block";
+    //document.getElementById("mediumButton").style.display = "block";
+    //document.getElementById("hardButton").style.display = "block";
+    //document.getElementById("genre").style.display = "block";
 };
 const showStop = () => {
+  /**
     document.getElementById("startTimer").style.display = "none";
     document.getElementById("stopTimer").style.display = "block";
     document.getElementById("easyButton").style.display = "none";
-    document.getElementById("mediumButton").style.display = "none";
-    document.getElementById("hardButton").style.display = "none";
-    document.getElementById("genre").style.display = "none";
+    //document.getElementById("mediumButton").style.display = "none";
+    //document.getElementById("hardButton").style.display = "none";
+    //document.getElementById("genre").style.display = "none";
+  */
 };
+
 
 let totalSeconds = 0;
 let timerVar = 0;
 
 function startTimer() {
-    document.getElementById("timer").innerHTML = "";
+    document.getElementById("gameHidden").innerHTML = "";
     showStop();
     loadText();
     totalSeconds = 0;
@@ -208,22 +211,140 @@ let difficulty;
 
 function setEasy() {
     difficulty = "Easy";
+
+    document.getElementById("easy").style.color = "#EDD9A3";
+    document.getElementById("medium").style.color = "#B2A3B5";
+    document.getElementById("hard").style.color = "#B2A3B5";
 }
 
 function setMedium() {
     difficulty = "Medium";
+
+    document.getElementById("easy").style.color = "#B2A3B5";
+    document.getElementById("medium").style.color = "#EDD9A3";
+    document.getElementById("hard").style.color = "#B2A3B5";
 }
 
 function setHard() {
     difficulty = "Hard";
+
+    document.getElementById("easy").style.color = "#B2A3B5";
+    document.getElementById("medium").style.color = "#B2A3B5";
+    document.getElementById("hard").style.color = "#EDD9A3";
+}
+
+function setSF() {
+  genre = "Sci-Fi"
+
+  document.getElementById("sci-fi").style.color = "#EDD9A3";
+  document.getElementById("slice_of_life").style.color = "#B2A3B5";
+  document.getElementById("non-fiction").style.color = "#B2A3B5";
+  document.getElementById("article").style.color = "#B2A3B5";
+  document.getElementById("romance").style.color = "#B2A3B5";
+  document.getElementById("comedy").style.color = "#B2A3B5";
+  document.getElementById("wikipedia").style.color = "#B2A3B5";
+  document.getElementById("mystery").style.color = "#B2A3B5";
+}
+
+function setSoL() {
+  genre = "Slice of Life"
+
+  document.getElementById("sci-fi").style.color = "#B2A3B5";
+  document.getElementById("slice_of_life").style.color = "#EDD9A3";
+  document.getElementById("non-fiction").style.color = "#B2A3B5";
+  document.getElementById("article").style.color = "#B2A3B5";
+  document.getElementById("romance").style.color = "#B2A3B5";
+  document.getElementById("comedy").style.color = "#B2A3B5";
+  document.getElementById("wikipedia").style.color = "#B2A3B5";
+  document.getElementById("mystery").style.color = "#B2A3B5";
+}
+
+function setNF() {
+  genre = "Non-Fiction"
+
+  document.getElementById("sci-fi").style.color = "#B2A3B5";
+  document.getElementById("slice_of_life").style.color = "#B2A3B5";
+  document.getElementById("non-fiction").style.color = "#EDD9A3";
+  document.getElementById("article").style.color = "#B2A3B5";
+  document.getElementById("romance").style.color = "#B2A3B5";
+  document.getElementById("comedy").style.color = "#B2A3B5";
+  document.getElementById("wikipedia").style.color = "#B2A3B5";
+  document.getElementById("mystery").style.color = "#B2A3B5";
+}
+
+function setRom() {
+  genre = "Romance"
+
+  document.getElementById("sci-fi").style.color = "#B2A3B5";
+  document.getElementById("slice_of_life").style.color = "#B2A3B5";
+  document.getElementById("non-fiction").style.color = "#B2A3B5";
+  document.getElementById("article").style.color = "#B2A3B5";
+  document.getElementById("romance").style.color = "#EDD9A3";
+  document.getElementById("comedy").style.color = "#B2A3B5";
+  document.getElementById("wikipedia").style.color = "#B2A3B5";
+  document.getElementById("mystery").style.color = "#B2A3B5";
+}
+
+function setArt() {
+  genre = "Article"
+
+  document.getElementById("sci-fi").style.color = "#B2A3B5";
+  document.getElementById("slice_of_life").style.color = "#B2A3B5";
+  document.getElementById("non-fiction").style.color = "#B2A3B5";
+  document.getElementById("article").style.color = "#EDD9A3";
+  document.getElementById("romance").style.color = "#B2A3B5";
+  document.getElementById("comedy").style.color = "#B2A3B5";
+  document.getElementById("wikipedia").style.color = "#B2A3B5";
+  document.getElementById("mystery").style.color = "#B2A3B5";
+}
+
+function setMy() {
+  genre = "Mystery"
+
+  document.getElementById("sci-fi").style.color = "#B2A3B5";
+  document.getElementById("slice_of_life").style.color = "#B2A3B5";
+  document.getElementById("non-fiction").style.color = "#B2A3B5";
+  document.getElementById("article").style.color = "#B2A3B5";
+  document.getElementById("romance").style.color = "#B2A3B5";
+  document.getElementById("comedy").style.color = "#B2A3B5";
+  document.getElementById("wikipedia").style.color = "#B2A3B5";
+  document.getElementById("mystery").style.color = "#EDD9A3";
+}
+
+function setCom() {
+  genre = "Comedy"
+
+  document.getElementById("sci-fi").style.color = "#B2A3B5";
+  document.getElementById("slice_of_life").style.color = "#B2A3B5";
+  document.getElementById("non-fiction").style.color = "#B2A3B5";
+  document.getElementById("article").style.color = "#B2A3B5";
+  document.getElementById("romance").style.color = "#B2A3B5";
+  document.getElementById("comedy").style.color = "#EDD9A3";
+  document.getElementById("wikipedia").style.color = "#B2A3B5";
+  document.getElementById("mystery").style.color = "#B2A3B5";
+}
+
+function setWiki() {
+  genre = "Wikipedia"
+
+  document.getElementById("sci-fi").style.color = "#B2A3B5";
+  document.getElementById("slice_of_life").style.color = "#B2A3B5";
+  document.getElementById("non-fiction").style.color = "#B2A3B5";
+  document.getElementById("article").style.color = "#B2A3B5";
+  document.getElementById("romance").style.color = "#B2A3B5";
+  document.getElementById("comedy").style.color = "#B2A3B5";
+  document.getElementById("wikipedia").style.color = "#EDD9A3";
+  document.getElementById("mystery").style.color = "#B2A3B5";
 }
 
 let genre;
 
+/**
 function setGenre() {
     let x = document.getElementById("genre");
     genre = x.value;
 }
+*/
 
 let btns = document.getElementsByClassName("levelButton");
 for (let i = 0; i < btns.length; i++) {
