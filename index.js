@@ -180,7 +180,6 @@ function startTimer() {
     document.getElementById("inputTextBox").removeAttribute("disabled");
     document.getElementById("inputTextBox").focus();
     document.getElementById("timer").innerHTML = "";
-    showStop();
     loadText();
     totalSeconds = 0;
     timerVar = setInterval(countTimer, 1000);
