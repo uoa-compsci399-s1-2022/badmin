@@ -11,7 +11,7 @@
 
     <div class="top">
 
-        <div class="title">
+        <div id="title">
             Spellz
         </div>
 
@@ -19,7 +19,7 @@
 
         </div>
 
-        <div class="text-sel">
+        <div id="text-sel">
         
           <div id="blank"></div>
           <div id="easy" onclick="setEasy()">easy</div>
@@ -46,9 +46,13 @@
 
       </div>
 
-      <div id="timer"></div>
+      <div id="score"></div>
 
-      <div id="inputTextBox">
+      <div id="timer"></div>
+      
+      <div id="gameControls">
+        <textarea id="inputTextBox"></textarea>
+        <div id = "stopTimer" onclick= "stopTimer()">Stop Timer</div>
       </div>
 
     </div>
@@ -59,7 +63,7 @@
 
       </div>
       
-      <div class="pageInfo">
+      <div id="pageInfo">
         <div> themes </div>
         <div id="vers"></div>
       </div>

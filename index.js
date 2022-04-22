@@ -5,11 +5,25 @@
 function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
+    document.getElementById("gameControls").style.display = "grid";
+    document.getElementById("text-sel").style.display = "none";
+    document.getElementById("pageInfo").style.display = "none";
+    document.getElementById("title").style.color = "#60525F" 
 }
 
 function hideGame() {
     document.getElementById("gameText").style.display = "none";
     document.getElementById("gameHidden").style.display = "block";
+    document.getElementById("gameControls").style.display = "none";
+}
+
+function pause() {
+  document.getElementById("gameText").style.display = "none";
+  document.getElementById("gameHidden").style.display = "block";
+  document.getElementById("gameControls").style.display = "grid";
+  document.getElementById("text-sel").style.display = "grid";
+  document.getElementById("pageInfo").style.display = "grid";
+  document.getElementById("title").style.color = "#EDD9A3" 
 }
 
 function getVersion() {
@@ -127,7 +141,7 @@ function replaceWord(correctedWord, correctedIndex ){
         const highlightedWord = document.getElementById("gameHidden").innerHTML.split(" ")[correctedIndex]
         if (searchText == correctedWord){
             document.getElementById("gameText").children[correctedIndex].innerText = searchText //marklessWord
-            document.getElementById("gameText").children[correctedIndex].style.color = "green"
+            document.getElementById("gameText").children[correctedIndex].style.color = "#EDD9A3"
             document.getElementById("inputTextBox").value = ""
         }
     }
@@ -136,7 +150,6 @@ function replaceWord(correctedWord, correctedIndex ){
 window.onload = function () {
     hideGame();
     getVersion();
-    showStart();
     loadText();
     document
         .getElementById("inputTextBox")
@@ -157,32 +170,11 @@ window.onload = function () {
         });
 };
 
-const showStart = () => {
-    //document.getElementById("startTimer").style.display = "block";
-    //document.getElementById("stopTimer").style.display = "none";
-    //document.getElementById("easyButton").style.display = "block";
-    //document.getElementById("mediumButton").style.display = "block";
-    //document.getElementById("hardButton").style.display = "block";
-    //document.getElementById("genre").style.display = "block";
-};
-const showStop = () => {
-  /**
-    document.getElementById("startTimer").style.display = "none";
-    document.getElementById("stopTimer").style.display = "block";
-    document.getElementById("easyButton").style.display = "none";
-    //document.getElementById("mediumButton").style.display = "none";
-    //document.getElementById("hardButton").style.display = "none";
-    //document.getElementById("genre").style.display = "none";
-  */
-};
-
 
 let totalSeconds = 0;
 let timerVar = 0;
 
 function startTimer() {
-    document.getElementById("gameHidden").innerHTML = "";
-    showStop();
     loadText();
     totalSeconds = 0;
     timerVar = setInterval(countTimer, 1000);
@@ -192,7 +184,7 @@ function startTimer() {
 function stopTimer() {
     usedWords = [];
     clearInterval(timerVar);
-    showStart();
+    pause();
 }
 
 function countTimer() {
@@ -204,7 +196,7 @@ function countTimer() {
     if (minute < 10) minute = "0" + minute;
     if (seconds < 10) seconds = "0" + seconds;
     document.getElementById("timer").innerHTML =
-        hour + ":" + minute + ":" + seconds;
+        minute + ":" + seconds;
 }
 
 let difficulty;
