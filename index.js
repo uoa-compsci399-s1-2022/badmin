@@ -151,6 +151,17 @@ function replaceWord(correctWord, correctedIndex) {
     document.getElementById("inputTextBox").value = "";
 }
 
+function provideHint() {
+    //need to create a hint button and add onclick
+    //replace hint button with text that says how many words left
+    //"There are still x words spelt incorrectly" if x > 0
+    //"Well done, there are no more words left!" if x = 0??
+    //onclick= "provideHint()"
+    wordsLeft = Object.keys(correctIndicies).length - correctedWordsIndicies.length
+    alert(wordsLeft)
+}
+
+
 window.onload = function () {
     let btns = document.getElementsByClassName("levelButton");
     for (let i = 0; i < btns.length; i++) {
