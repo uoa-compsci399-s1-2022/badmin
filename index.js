@@ -124,13 +124,13 @@ function checkUserInput(element) {
                 if (previousCorrectedTime == null) {
                     comboCounter = 1;
                 }
-                else if (currentTime - previousCorrectedTime <= 5000) { //5000 milliseconds = 5 seconds
+                else if (currentTime - previousCorrectedTime <= 6000) { //5000 milliseconds = 5 seconds
                     if (comboCounter < 3) {
                         comboCounter++;
                         //reset the timer so a new 5 seconds available
-
-                        comboTimePassed = 0
-                        startCombo()
+                        comboTimePassed = 0;
+                        comboTimeLeft = comboTimeInterval;
+                        startCombo();
                     }
                 }
                 else {
@@ -158,17 +158,20 @@ const comboTimeInterval = 5;
 let comboTimePassed = 0;
 let comboTimeLeft = comboTimeInterval;
 let comboActivated = false;
-let resetTimer = false;
+
 
 function startCombo() {
-    // comboActivated = true;
+    comboActivated = true;
     comboTimer();
     startComboTimer()
+
 }
 
 // call this function when person starts a combo by correcting a word
 function comboTimer() {
-    document.getElementById("comboTimer").innerHTML = `
+    {
+        comboActivated ?
+            (document.getElementById("comboTimer").innerHTML = `
     <div class="base-timer">
       <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <g class="base-timer__circle">
@@ -186,29 +189,78 @@ function comboTimer() {
       ></path>
         </g>
       </svg>
+      <span id="base-timer-label" class="base-timer__label">${formatTime(
+                comboTimeLeft
+            )}</span>
+    </div>`) : (
+                document.getElementById("comboTimer").innerHTML = `
+    <div class="base-timer">
+      <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g class="base-timer__circle">
+          <circle class="base-timer__path-elapsed" cx="50" cy="50" r="40" />
+          <path
+        id="base-timer-path-remaining"
+        stroke-dasharray="283"
+        class="base-timer__path-remaining "
+        
+      ></path>
+        </g>
+      </svg>
+      <span id="base-timer-label" class="base-timer__label">${formatTime(
+                    comboTimeLeft
+                )}</span>
     </div>`
+
+
+            )
+    }
 }
+
+// for debugging
+function formatTime(time) {
+    const minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+
+    if (seconds < 10) {
+        seconds = `0${seconds}`;
+    }
+
+    return `${minutes}:${seconds}`;
+}
+function onTimesUp() {
+    clearInterval(timerInterval);
+    // to hide the box
+    comboActivated = false
+    comboTimer()
+}
+
+
 
 function startComboTimer() {
     timerInterval = setInterval(() => {
+
         comboTimePassed = comboTimePassed += 1;
         comboTimeLeft = comboTimeInterval - comboTimePassed;
-        //to accomodate the 1 sec elapse before it shows
-        // if (comboTimePassed === 6) {
 
-        // }
+        document.getElementById("base-timer-label").innerHTML = formatTime(comboTimeLeft);
+
+        if (comboTimeLeft === 0) {
+            onTimesUp();
+        }
         setCircleDasharray();
+
     }, 1000);
 
 }
 
+function calculateTimeFraction() {
+    const rawTimeFraction = comboTimeLeft / comboTimeInterval;
+    return rawTimeFraction - (1 / comboTimeInterval) * (1 - rawTimeFraction);
+}
+
 function setCircleDasharray() {
-    // if (comboTimePassed === 6) {
-    //     comboActivated = false;
-    //     comboTimer(comboActivated);
-    // }
     const circleDasharray = `${(
-        comboTimeLeft / comboTimeInterval * fullDashArr
+        calculateTimeFraction() * fullDashArr
     ).toFixed(0)} 252`;
     document
         .getElementById("base-timer-path-remaining")
