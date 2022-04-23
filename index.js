@@ -7,7 +7,7 @@ function showGame() {
     document.getElementById("gameControls").style.display = "grid";
     document.getElementById("text-sel").style.display = "none";
     document.getElementById("pageInfo").style.display = "none";
-    document.getElementById("title").style.color = "#60525F" 
+    document.getElementById("title").style.color = "#60525F"
     document.getElementById("score").style.display = "grid";
 }
 /**
@@ -21,12 +21,12 @@ function hideGame() {
 }
 
 function pause() {
-  document.getElementById("gameText").style.display = "none";
-  document.getElementById("gameHidden").style.display = "block";
-  document.getElementById("gameControls").style.display = "grid";
-  document.getElementById("text-sel").style.display = "grid";
-  document.getElementById("pageInfo").style.display = "grid";
-  document.getElementById("title").style.color = "#EDD9A3" 
+    document.getElementById("gameText").style.display = "none";
+    document.getElementById("gameHidden").style.display = "block";
+    document.getElementById("gameControls").style.display = "grid";
+    document.getElementById("text-sel").style.display = "grid";
+    document.getElementById("pageInfo").style.display = "grid";
+    document.getElementById("title").style.color = "#EDD9A3"
 }
 
 function getVersion() {
@@ -127,6 +127,10 @@ function checkUserInput(element) {
                 else if (currentTime - previousCorrectedTime <= 5000) { //5000 milliseconds = 5 seconds
                     if (comboCounter < 3) {
                         comboCounter++;
+                        //reset the timer so a new 5 seconds available
+
+                        comboTimePassed = 0
+                        startCombo()
                     }
                 }
                 else {
@@ -146,6 +150,72 @@ function checkUserInput(element) {
         }
     }
 }
+
+
+
+const fullDashArr = 252;
+const comboTimeInterval = 5;
+let comboTimePassed = 0;
+let comboTimeLeft = comboTimeInterval;
+let comboActivated = false;
+let resetTimer = false;
+
+function startCombo() {
+    // comboActivated = true;
+    comboTimer();
+    startComboTimer()
+}
+
+// call this function when person starts a combo by correcting a word
+function comboTimer() {
+    document.getElementById("comboTimer").innerHTML = `
+    <div class="base-timer">
+      <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g class="base-timer__circle">
+          <circle class="base-timer__path-elapsed" cx="50" cy="50" r="40" />
+          <path
+        id="base-timer-path-remaining"
+        stroke-dasharray="283"
+        class="base-timer__path-remaining "
+        d="
+          M 50, 50
+          m -40, 0
+          a 40,40 0 1,0 80,0
+          a 40,40 0 1,0 -80,0
+        "
+      ></path>
+        </g>
+      </svg>
+    </div>`
+}
+
+function startComboTimer() {
+    timerInterval = setInterval(() => {
+        comboTimePassed = comboTimePassed += 1;
+        comboTimeLeft = comboTimeInterval - comboTimePassed;
+        //to accomodate the 1 sec elapse before it shows
+        // if (comboTimePassed === 6) {
+
+        // }
+        setCircleDasharray();
+    }, 1000);
+
+}
+
+function setCircleDasharray() {
+    // if (comboTimePassed === 6) {
+    //     comboActivated = false;
+    //     comboTimer(comboActivated);
+    // }
+    const circleDasharray = `${(
+        comboTimeLeft / comboTimeInterval * fullDashArr
+    ).toFixed(0)} 252`;
+    document
+        .getElementById("base-timer-path-remaining")
+        .setAttribute("stroke-dasharray", circleDasharray);
+}
+
+
 
 function navigateSearchResults(key) {
     if (previousSearchIndicies.length >= 1) {
@@ -178,7 +248,7 @@ function replaceWord(correctWord, correctedIndex) {
     document.getElementById("gameText").children[correctedIndex].innerText = correctWord;
     document.getElementById("gameText").children[correctedIndex].style.color = "#EDD9A3";
     //document.getElementById("inputTextBox").value = "";
-    document.getElementById("inputTextBox").innerText= "";
+    document.getElementById("inputTextBox").innerText = "";
 }
 
 window.onload = function () {
@@ -273,107 +343,107 @@ function setHard() {
 }
 
 function setSF() {
-  genre = "Sci-Fi"
+    genre = "Sci-Fi"
 
-  document.getElementById("sci-fi").style.color = "#EDD9A3";
-  document.getElementById("slice_of_life").style.color = "#B2A3B5";
-  document.getElementById("non-fiction").style.color = "#B2A3B5";
-  document.getElementById("article").style.color = "#B2A3B5";
-  document.getElementById("romance").style.color = "#B2A3B5";
-  document.getElementById("comedy").style.color = "#B2A3B5";
-  document.getElementById("wikipedia").style.color = "#B2A3B5";
-  document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("sci-fi").style.color = "#EDD9A3";
+    document.getElementById("slice_of_life").style.color = "#B2A3B5";
+    document.getElementById("non-fiction").style.color = "#B2A3B5";
+    document.getElementById("article").style.color = "#B2A3B5";
+    document.getElementById("romance").style.color = "#B2A3B5";
+    document.getElementById("comedy").style.color = "#B2A3B5";
+    document.getElementById("wikipedia").style.color = "#B2A3B5";
+    document.getElementById("mystery").style.color = "#B2A3B5";
 }
 
 function setSoL() {
-  genre = "Slice of Life"
+    genre = "Slice of Life"
 
-  document.getElementById("sci-fi").style.color = "#B2A3B5";
-  document.getElementById("slice_of_life").style.color = "#EDD9A3";
-  document.getElementById("non-fiction").style.color = "#B2A3B5";
-  document.getElementById("article").style.color = "#B2A3B5";
-  document.getElementById("romance").style.color = "#B2A3B5";
-  document.getElementById("comedy").style.color = "#B2A3B5";
-  document.getElementById("wikipedia").style.color = "#B2A3B5";
-  document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("sci-fi").style.color = "#B2A3B5";
+    document.getElementById("slice_of_life").style.color = "#EDD9A3";
+    document.getElementById("non-fiction").style.color = "#B2A3B5";
+    document.getElementById("article").style.color = "#B2A3B5";
+    document.getElementById("romance").style.color = "#B2A3B5";
+    document.getElementById("comedy").style.color = "#B2A3B5";
+    document.getElementById("wikipedia").style.color = "#B2A3B5";
+    document.getElementById("mystery").style.color = "#B2A3B5";
 }
 
 function setNF() {
-  genre = "Non-Fiction"
+    genre = "Non-Fiction"
 
-  document.getElementById("sci-fi").style.color = "#B2A3B5";
-  document.getElementById("slice_of_life").style.color = "#B2A3B5";
-  document.getElementById("non-fiction").style.color = "#EDD9A3";
-  document.getElementById("article").style.color = "#B2A3B5";
-  document.getElementById("romance").style.color = "#B2A3B5";
-  document.getElementById("comedy").style.color = "#B2A3B5";
-  document.getElementById("wikipedia").style.color = "#B2A3B5";
-  document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("sci-fi").style.color = "#B2A3B5";
+    document.getElementById("slice_of_life").style.color = "#B2A3B5";
+    document.getElementById("non-fiction").style.color = "#EDD9A3";
+    document.getElementById("article").style.color = "#B2A3B5";
+    document.getElementById("romance").style.color = "#B2A3B5";
+    document.getElementById("comedy").style.color = "#B2A3B5";
+    document.getElementById("wikipedia").style.color = "#B2A3B5";
+    document.getElementById("mystery").style.color = "#B2A3B5";
 }
 
 function setRom() {
-  genre = "Romance"
+    genre = "Romance"
 
-  document.getElementById("sci-fi").style.color = "#B2A3B5";
-  document.getElementById("slice_of_life").style.color = "#B2A3B5";
-  document.getElementById("non-fiction").style.color = "#B2A3B5";
-  document.getElementById("article").style.color = "#B2A3B5";
-  document.getElementById("romance").style.color = "#EDD9A3";
-  document.getElementById("comedy").style.color = "#B2A3B5";
-  document.getElementById("wikipedia").style.color = "#B2A3B5";
-  document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("sci-fi").style.color = "#B2A3B5";
+    document.getElementById("slice_of_life").style.color = "#B2A3B5";
+    document.getElementById("non-fiction").style.color = "#B2A3B5";
+    document.getElementById("article").style.color = "#B2A3B5";
+    document.getElementById("romance").style.color = "#EDD9A3";
+    document.getElementById("comedy").style.color = "#B2A3B5";
+    document.getElementById("wikipedia").style.color = "#B2A3B5";
+    document.getElementById("mystery").style.color = "#B2A3B5";
 }
 
 function setArt() {
-  genre = "Article"
+    genre = "Article"
 
-  document.getElementById("sci-fi").style.color = "#B2A3B5";
-  document.getElementById("slice_of_life").style.color = "#B2A3B5";
-  document.getElementById("non-fiction").style.color = "#B2A3B5";
-  document.getElementById("article").style.color = "#EDD9A3";
-  document.getElementById("romance").style.color = "#B2A3B5";
-  document.getElementById("comedy").style.color = "#B2A3B5";
-  document.getElementById("wikipedia").style.color = "#B2A3B5";
-  document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("sci-fi").style.color = "#B2A3B5";
+    document.getElementById("slice_of_life").style.color = "#B2A3B5";
+    document.getElementById("non-fiction").style.color = "#B2A3B5";
+    document.getElementById("article").style.color = "#EDD9A3";
+    document.getElementById("romance").style.color = "#B2A3B5";
+    document.getElementById("comedy").style.color = "#B2A3B5";
+    document.getElementById("wikipedia").style.color = "#B2A3B5";
+    document.getElementById("mystery").style.color = "#B2A3B5";
 }
 
 function setMy() {
-  genre = "Mystery"
+    genre = "Mystery"
 
-  document.getElementById("sci-fi").style.color = "#B2A3B5";
-  document.getElementById("slice_of_life").style.color = "#B2A3B5";
-  document.getElementById("non-fiction").style.color = "#B2A3B5";
-  document.getElementById("article").style.color = "#B2A3B5";
-  document.getElementById("romance").style.color = "#B2A3B5";
-  document.getElementById("comedy").style.color = "#B2A3B5";
-  document.getElementById("wikipedia").style.color = "#B2A3B5";
-  document.getElementById("mystery").style.color = "#EDD9A3";
+    document.getElementById("sci-fi").style.color = "#B2A3B5";
+    document.getElementById("slice_of_life").style.color = "#B2A3B5";
+    document.getElementById("non-fiction").style.color = "#B2A3B5";
+    document.getElementById("article").style.color = "#B2A3B5";
+    document.getElementById("romance").style.color = "#B2A3B5";
+    document.getElementById("comedy").style.color = "#B2A3B5";
+    document.getElementById("wikipedia").style.color = "#B2A3B5";
+    document.getElementById("mystery").style.color = "#EDD9A3";
 }
 
 function setCom() {
-  genre = "Comedy"
+    genre = "Comedy"
 
-  document.getElementById("sci-fi").style.color = "#B2A3B5";
-  document.getElementById("slice_of_life").style.color = "#B2A3B5";
-  document.getElementById("non-fiction").style.color = "#B2A3B5";
-  document.getElementById("article").style.color = "#B2A3B5";
-  document.getElementById("romance").style.color = "#B2A3B5";
-  document.getElementById("comedy").style.color = "#EDD9A3";
-  document.getElementById("wikipedia").style.color = "#B2A3B5";
-  document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("sci-fi").style.color = "#B2A3B5";
+    document.getElementById("slice_of_life").style.color = "#B2A3B5";
+    document.getElementById("non-fiction").style.color = "#B2A3B5";
+    document.getElementById("article").style.color = "#B2A3B5";
+    document.getElementById("romance").style.color = "#B2A3B5";
+    document.getElementById("comedy").style.color = "#EDD9A3";
+    document.getElementById("wikipedia").style.color = "#B2A3B5";
+    document.getElementById("mystery").style.color = "#B2A3B5";
 }
 
 function setWiki() {
-  genre = "Wikipedia"
+    genre = "Wikipedia"
 
-  document.getElementById("sci-fi").style.color = "#B2A3B5";
-  document.getElementById("slice_of_life").style.color = "#B2A3B5";
-  document.getElementById("non-fiction").style.color = "#B2A3B5";
-  document.getElementById("article").style.color = "#B2A3B5";
-  document.getElementById("romance").style.color = "#B2A3B5";
-  document.getElementById("comedy").style.color = "#B2A3B5";
-  document.getElementById("wikipedia").style.color = "#EDD9A3";
-  document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("sci-fi").style.color = "#B2A3B5";
+    document.getElementById("slice_of_life").style.color = "#B2A3B5";
+    document.getElementById("non-fiction").style.color = "#B2A3B5";
+    document.getElementById("article").style.color = "#B2A3B5";
+    document.getElementById("romance").style.color = "#B2A3B5";
+    document.getElementById("comedy").style.color = "#B2A3B5";
+    document.getElementById("wikipedia").style.color = "#EDD9A3";
+    document.getElementById("mystery").style.color = "#B2A3B5";
 }
 
 let genre;

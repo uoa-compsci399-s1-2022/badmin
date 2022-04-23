@@ -11,7 +11,7 @@ body {
 /* The top area of the page */
 .top {
     display: grid;
-    grid-template-columns:  repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
     grid-template-areas: "title title-op text-sel";
     margin-left: 15%;
@@ -32,7 +32,7 @@ body {
 #text-sel {
     grid-area: text-sel;
     display: grid;
-    grid-template-columns:  repeat(4, fit-content);
+    grid-template-columns: repeat(4, fit-content);
     grid-template-rows: 2fr 1fr 1fr;
     font-size: 14px;
     text-align: right;
@@ -116,10 +116,10 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 175px max-content 200px;
-    grid-template-areas: 
-    "lh timer h rh" 
-    "combo m m score" 
-    "lf input input rf";
+    grid-template-areas:
+        "lh timer h rh"
+        "combo m m score"
+        "lf input input rf";
 }
 
 #score {
@@ -200,7 +200,7 @@ body {
 
 }
 
-#combo{
+#combo {
     grid-area: combo;
     color: #EDD9A3;
     font-size: 30px;
@@ -230,5 +230,45 @@ body {
     color: #B2A3B5;
     text-align: right;
     font-size: 15px;
+    padding-top: 10px;
 
+}
+
+
+/* combotimer */
+
+.base-timer {
+    grid-area: combo;
+    text-align: center;
+    justify-self: end;
+    align-self: center;
+    height: 50px;
+    width: 50px;
+}
+
+
+.base-timer__circle {
+    fill: none;
+    stroke: none;
+}
+
+
+.base-timer__path-elapsed {
+    stroke-width: 13px;
+    stroke: #443742;
+}
+
+
+.base-timer__path-remaining {
+    stroke-width: 13px;
+    stroke-linecap: round;
+    transform: rotate(90deg);
+    transform-origin: center;
+    transition: 1s linear all;
+    stroke: #EDD9A3;
+    ;
+}
+
+.base-timer__svg {
+    transform: scaleX(-1);
 }
