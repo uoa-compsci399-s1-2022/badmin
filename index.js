@@ -107,7 +107,7 @@ let score = 0;
 let comboCounter = 0;
 let previousCorrectedTime = null;
 function checkUserInput(element) {
-    if (element.innerText.length >= 2) {
+    if (element.innerText.length >= 1) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(i) == false) {
