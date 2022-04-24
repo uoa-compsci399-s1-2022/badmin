@@ -126,10 +126,11 @@ body {
     grid-area: ls;
 }
 
+
+
 #gameText {
+    display: none;
     grid-area: m;
-
-
     font-size: 19px;
     text-align: center;
     color: #B2A3B5;
@@ -144,6 +145,7 @@ body {
 }
 
 #gameHidden {
+    display: block;
     grid-area: m;
     font-size: 19px;
     color: transparent;
@@ -171,9 +173,9 @@ body {
 }
 
 #gameControls {
+    display: none;
     grid-area: input;
 }
-
 
 #inputTextBox {
     grid-area: 1 / 1 / 2 / 2;
@@ -190,6 +192,7 @@ body {
 
 
 #score {
+    display: none;
     grid-area: score;
     color: #EDD9A3;
     font-size: 30px;
@@ -197,16 +200,13 @@ body {
     margin-right: 25px;
     justify-self: start;
     align-self: center;
-
 }
 
 #combo {
-    grid-area: combo;
     color: #EDD9A3;
     font-size: 30px;
     text-align: center;
     justify-self: end;
-    align-self: center;
 }
 
 
@@ -231,14 +231,26 @@ body {
     text-align: right;
     font-size: 15px;
     padding-top: 10px;
-
 }
 
+#comboContainer {
+    grid-area: combo;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 2vh;
+    width: 100%;
+}
 
-
-/* combotimer */
-
-
+#comboBar {
+    width: 0%;
+    height: 8%;
+    background: #EDD9A3;
+    align-self: flex-start;
+    margin-left: 20%;
+    margin-right: 20%;
+}
 
 .base-timer {
     text-align: center;

@@ -9,6 +9,9 @@ function showGame() {
     document.getElementById("pageInfo").style.display = "none";
     document.getElementById("title").style.color = "#60525F"
     document.getElementById("score").style.display = "grid";
+    document.getElementById("comboContainer").style.display = "flex";
+    document.getElementById("timer").style.display = "inline";
+    document.getElementById("timer").innerText = "00:00";
 }
 /**
  * Blur text function
@@ -18,6 +21,8 @@ function hideGame() {
     document.getElementById("gameHidden").style.display = "block";
     document.getElementById("gameControls").style.display = "none";
     document.getElementById("score").style.display = "none";
+    document.getElementById("comboContainer").style.display = "none";
+    document.getElementById("timer").style.display = "none";
 }
 
 function pause() {
@@ -60,7 +65,6 @@ let currentSearchIndex = 0;
 function highlightText(element) {
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
-    //const searchText = element.value;
     const searchText = element.innerText;
     clearPreviousHighlight();
     if (searchText.length >= 1) {
@@ -124,7 +128,7 @@ function checkUserInput(element) {
                 if (previousCorrectedTime == null) {
                     comboCounter = 1;
                 }
-                else if (currentTime - previousCorrectedTime <= timeLimit * 1000) {
+                else if (currentTime - previousCorrectedTime <= TIME_LIMIT * 1000) {
                     if (comboCounter < 3) {
                         comboCounter++;
                     }
@@ -132,14 +136,7 @@ function checkUserInput(element) {
                 else {
                     comboCounter = 1;
                 }
-                //RESET the current timer so a NEW 5 seconds available 
-                /*
-                resetFlag = true
-                comboTimePassed = 0;
-                comboTimeLeft = comboTimeInterval;
-                startCombo();
-                */
-                restartTimer();
+                restartComboTimer();
                 previousCorrectedTime = currentTime;
                 score += 100 * comboCounter;
                 document.getElementById("score").innerText = "score: \n" + score;
@@ -154,145 +151,22 @@ function checkUserInput(element) {
         }
     }
 }
-
-const timeLimit = 10;
-let testTimeRemaining = null;
-let testComboTimer = null;
-function restartTimer() {
-    if (testComboTimer != null) {
-        clearInterval(testComboTimer);
-    }
-    testComboTimer = setInterval(countdown, 100);
+const WIDTH = 60 //make sure it's the same as in the CSS under #comboBar
+const TIME_LIMIT = 5 //make sure it's the same as in the CSS under #comboBar
+function restartComboTimer() {
+    const comboBar = document.getElementById("comboBar");
+    comboBar.style.transition = `none`;
+    comboBar.style.width = `${WIDTH}%`;
+    comboBar.offsetHeight; // Refresh the user's cache
+    comboBar.style.transition = `width ${TIME_LIMIT}s linear 0s`;
+    comboBar.style.width = `0px`;
 }
 
-function countdown() {
-    const currentTime = Date.now();
-    const secondsElapsed = Math.floor((currentTime - previousCorrectedTime) / 1000)
-    testTimeRemaining = Math.max(0, timeLimit - secondsElapsed);
-    if (testTimeRemaining >= 0) {
-        setCircleDasharray();
-    }
+function stopComboTimer() {
+    const comboBar = document.getElementById("comboBar");
+    comboBar.style.transition = `none`;
+    comboBar.style.width = `0%`;
 }
-
-
-const fullDashArr = 252;
-const comboTimeInterval = 20;
-let comboTimePassed = 0;
-let comboTimeLeft = comboTimeInterval;
-let comboActivated = false;
-//to stop the current running timer
-let resetFlag = false;
-
-
-let timerInterval;
-function startCombo() {
-    comboActivated = true;
-    resetFlag = false
-    // just to show the countdown animation
-    comboTimer();
-    startComboTimer()
-}
-
-// call this function when person starts a combo by correcting a word
-function comboTimer() {
-    {
-        comboActivated ?
-            (document.getElementById("comboTimer").innerHTML = `
-        <div class="base-timer">
-        <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <g class="base-timer__circle">
-            <circle class="base-timer__path-elapsed" cx="50" cy="50" r="40" />
-            <path
-            id="base-timer-path-remaining"
-            stroke-dasharray="252"
-            class="base-timer__path-remaining "
-            d="
-            M 50, 50
-            m -40, 0
-            a 40,40 0 1,0 80,0
-            a 40,40 0 1,0 -80,0
-            "
-        ></path>
-            </g>
-        </svg>
-        <span id="base-timer-label" class="base-timer__label">${formatTime(
-                comboTimeLeft
-            )}</span>
-        </div>`) : (
-                document.getElementById("comboTimer").innerHTML = `
-    <div class="base-timer">
-      <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <g class="base-timer__circle">
-          <circle class="base-timer__path-elapsed" cx="50" cy="50" r="40" />
-          <path
-        id="base-timer-path-remaining"
-        stroke-dasharray="252"
-        class="base-timer__path-remaining "
-        
-      ></path>
-        </g>
-      </svg>
-      <span id="base-timer-label" class="base-timer__label">${formatTime(
-                    comboTimeLeft
-                )}</span>
-    </div>`
-            )
-    }
-}
-
-// for debugging
-function formatTime(time) {
-    const minutes = Math.floor(time / 60);
-    let seconds = time % 60;
-
-    if (seconds < 10) {
-        seconds = `0${seconds}`;
-    }
-
-    return `${minutes}:${seconds}`;
-}
-function onTimesUp() {
-    clearInterval(timerInterval);
-
-    // to hide the box
-    comboActivated = false
-    comboTimer()
-}
-
-
-function startComboTimer() {
-    timerInterval = setInterval(() => {
-        if (resetFlag) {
-            clearInterval(timerInterval);
-            resetFlag = false;
-
-            return
-        }
-        if (comboTimeLeft <= 0) {
-            onTimesUp();
-            return
-        }
-        comboTimePassed = comboTimePassed + 1;
-        comboTimeLeft = comboTimeInterval - comboTimePassed;
-        document.getElementById("base-timer-label").innerHTML = formatTime(comboTimeLeft);
-        setCircleDasharray();
-    }, 1000);
-
-}
-
-function calculateTimeFraction() {
-    //const rawTimeFraction = comboTimeLeft / comboTimeInterval;
-    //const rawTimeFraction = testTimeRemaining / testComboTimer;
-    const rawTimeFraction = testTimeRemaining / timeLimit;
-    return rawTimeFraction - (1 / timeLimit) * (1 - rawTimeFraction);
-}
-//this is only entered when startComboTimer is called
-function setCircleDasharray() {
-    const circleDasharray = `${(calculateTimeFraction() * fullDashArr).toFixed(0)} 252`;
-    document.getElementById("base-timer-path-remaining").setAttribute("stroke-dasharray", circleDasharray);
-}
-
-
 
 function navigateSearchResults(key) {
     if (previousSearchIndicies.length >= 1) {
@@ -324,21 +198,10 @@ function generateCorrectIndicies() {
 function replaceWord(correctWord, correctedIndex) {
     document.getElementById("gameText").children[correctedIndex].innerText = correctWord;
     document.getElementById("gameText").children[correctedIndex].style.color = "#EDD9A3";
-    //document.getElementById("inputTextBox").value = "";
     document.getElementById("inputTextBox").innerText = "";
 }
 
 window.onload = function () {
-    let btns = document.getElementsByClassName("levelButton");
-    for (let i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", function () {
-            let current = document.getElementsByClassName("active");
-            if (current.length > 0) {
-                current[0].className = current[0].className.replace(" active", "");
-            }
-            this.className += " active";
-        });
-    }
     hideGame();
     getVersion();
     loadText();
@@ -347,15 +210,12 @@ window.onload = function () {
     document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
 };
 
-
 let totalSeconds = 0;
 let timerVar = 0;
 
 function startTimer() {
     correctIndicies = {};
     correctedWordsIndicies = new Array();
-    //document.getElementById("inputTextBox").removeAttribute("disabled");
-    //document.getElementById("inputTextBox").focus();
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
     document.getElementById("inputTextBox").focus();
     document.getElementById("timer").innerHTML = "";
@@ -372,10 +232,9 @@ function startTimer() {
 }
 
 function stopTimer() {
+    stopComboTimer();
     clearPreviousHighlight();
-    //document.getElementById("inputTextBox").value = "";
     document.getElementById("inputTextBox").innerText = "";
-    //document.getElementById("inputTextBox").setAttribute("disabled", '');
     document.getElementById("inputTextBox").setAttribute("contenteditable", false);
     clearInterval(timerVar);
     pause();
