@@ -235,10 +235,12 @@ body {
 }
 
 
+
 /* combotimer */
 
+
+
 .base-timer {
-    grid-area: combo;
     text-align: center;
     justify-self: end;
     align-self: center;
@@ -254,7 +256,7 @@ body {
 
 
 .base-timer__path-elapsed {
-    stroke-width: 13px;
+    stroke-width: 7px;
     stroke: #443742;
 }
 
@@ -271,4 +273,5 @@ body {
 
 .base-timer__svg {
     transform: scaleX(-1);
+    grid-area: lh;
 }

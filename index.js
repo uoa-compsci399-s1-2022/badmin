@@ -124,19 +124,22 @@ function checkUserInput(element) {
                 if (previousCorrectedTime == null) {
                     comboCounter = 1;
                 }
-                else if (currentTime - previousCorrectedTime <= 6000) { //5000 milliseconds = 5 seconds
+                else if (currentTime - previousCorrectedTime <= timeLimit * 1000) {
                     if (comboCounter < 3) {
                         comboCounter++;
-                        //reset the timer so a new 5 seconds available
-                        resetFlag = true
-                        comboTimePassed = 0;
-                        comboTimeLeft = comboTimeInterval;
-                        startCombo();
                     }
                 }
                 else {
                     comboCounter = 1;
                 }
+                //RESET the current timer so a NEW 5 seconds available 
+                /*
+                resetFlag = true
+                comboTimePassed = 0;
+                comboTimeLeft = comboTimeInterval;
+                startCombo();
+                */
+                restartTimer();
                 previousCorrectedTime = currentTime;
                 score += 100 * comboCounter;
                 document.getElementById("score").innerText = "score: \n" + score;
@@ -152,22 +155,42 @@ function checkUserInput(element) {
     }
 }
 
+const timeLimit = 10;
+let testTimeRemaining = null;
+let testComboTimer = null;
+function restartTimer() {
+    if (testComboTimer != null) {
+        clearInterval(testComboTimer);
+    }
+    testComboTimer = setInterval(countdown, 100);
+}
+
+function countdown() {
+    const currentTime = Date.now();
+    const secondsElapsed = Math.floor((currentTime - previousCorrectedTime) / 1000)
+    testTimeRemaining = Math.max(0, timeLimit - secondsElapsed);
+    if (testTimeRemaining >= 0) {
+        setCircleDasharray();
+    }
+}
 
 
 const fullDashArr = 252;
-const comboTimeInterval = 5;
+const comboTimeInterval = 20;
 let comboTimePassed = 0;
 let comboTimeLeft = comboTimeInterval;
 let comboActivated = false;
 //to stop the current running timer
 let resetFlag = false;
 
+
+let timerInterval;
 function startCombo() {
     comboActivated = true;
     resetFlag = false
+    // just to show the countdown animation
     comboTimer();
     startComboTimer()
-
 }
 
 // call this function when person starts a combo by correcting a word
@@ -175,27 +198,27 @@ function comboTimer() {
     {
         comboActivated ?
             (document.getElementById("comboTimer").innerHTML = `
-    <div class="base-timer">
-      <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <g class="base-timer__circle">
-          <circle class="base-timer__path-elapsed" cx="50" cy="50" r="40" />
-          <path
-        id="base-timer-path-remaining"
-        stroke-dasharray="283"
-        class="base-timer__path-remaining "
-        d="
-          M 50, 50
-          m -40, 0
-          a 40,40 0 1,0 80,0
-          a 40,40 0 1,0 -80,0
-        "
-      ></path>
-        </g>
-      </svg>
-      <span id="base-timer-label" class="base-timer__label">${formatTime(
+        <div class="base-timer">
+        <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <g class="base-timer__circle">
+            <circle class="base-timer__path-elapsed" cx="50" cy="50" r="40" />
+            <path
+            id="base-timer-path-remaining"
+            stroke-dasharray="252"
+            class="base-timer__path-remaining "
+            d="
+            M 50, 50
+            m -40, 0
+            a 40,40 0 1,0 80,0
+            a 40,40 0 1,0 -80,0
+            "
+        ></path>
+            </g>
+        </svg>
+        <span id="base-timer-label" class="base-timer__label">${formatTime(
                 comboTimeLeft
             )}</span>
-    </div>`) : (
+        </div>`) : (
                 document.getElementById("comboTimer").innerHTML = `
     <div class="base-timer">
       <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -203,7 +226,7 @@ function comboTimer() {
           <circle class="base-timer__path-elapsed" cx="50" cy="50" r="40" />
           <path
         id="base-timer-path-remaining"
-        stroke-dasharray="283"
+        stroke-dasharray="252"
         class="base-timer__path-remaining "
         
       ></path>
@@ -213,8 +236,6 @@ function comboTimer() {
                     comboTimeLeft
                 )}</span>
     </div>`
-
-
             )
     }
 }
@@ -232,6 +253,7 @@ function formatTime(time) {
 }
 function onTimesUp() {
     clearInterval(timerInterval);
+
     // to hide the box
     comboActivated = false
     comboTimer()
@@ -240,34 +262,34 @@ function onTimesUp() {
 
 function startComboTimer() {
     timerInterval = setInterval(() => {
+        if (resetFlag) {
+            clearInterval(timerInterval);
+            resetFlag = false;
 
-        if (!resetFlag)
-            comboTimePassed = comboTimePassed += 1;
-        comboTimeLeft = comboTimeInterval - comboTimePassed;
-
-        document.getElementById("base-timer-label").innerHTML = formatTime(comboTimeLeft);
-
-        if (comboTimeLeft === 0) {
-            onTimesUp();
+            return
         }
+        if (comboTimeLeft <= 0) {
+            onTimesUp();
+            return
+        }
+        comboTimePassed = comboTimePassed + 1;
+        comboTimeLeft = comboTimeInterval - comboTimePassed;
+        document.getElementById("base-timer-label").innerHTML = formatTime(comboTimeLeft);
         setCircleDasharray();
-
     }, 1000);
 
 }
 
 function calculateTimeFraction() {
-    const rawTimeFraction = comboTimeLeft / comboTimeInterval;
-    return rawTimeFraction - (1 / comboTimeInterval) * (1 - rawTimeFraction);
+    //const rawTimeFraction = comboTimeLeft / comboTimeInterval;
+    //const rawTimeFraction = testTimeRemaining / testComboTimer;
+    const rawTimeFraction = testTimeRemaining / timeLimit;
+    return rawTimeFraction - (1 / timeLimit) * (1 - rawTimeFraction);
 }
-
+//this is only entered when startComboTimer is called
 function setCircleDasharray() {
-    const circleDasharray = `${(
-        calculateTimeFraction() * fullDashArr
-    ).toFixed(0)} 252`;
-    document
-        .getElementById("base-timer-path-remaining")
-        .setAttribute("stroke-dasharray", circleDasharray);
+    const circleDasharray = `${(calculateTimeFraction() * fullDashArr).toFixed(0)} 252`;
+    document.getElementById("base-timer-path-remaining").setAttribute("stroke-dasharray", circleDasharray);
 }
 
 
