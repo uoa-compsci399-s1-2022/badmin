@@ -118,7 +118,7 @@ body {
     grid-template-rows: 175px max-content 200px;
     grid-template-areas: 
     "lh timer h rh" 
-    "ls m m rs" 
+    "combo m m score" 
     "lf input input rf";
 }
 
@@ -134,14 +134,22 @@ body {
     text-align: center;
     color: #B2A3B5;
     margin: 10px;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 #gameHidden {
     grid-area: m;
     font-size: 19px;
     color: transparent;
-    text-shadow: 0 0 13px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 0 13px rgba(178, 163, 181, 0.8);
     text-align: center;
+    margin: 10px;
 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -158,23 +166,58 @@ body {
 }
 
 #stopTimer {
-    grid-area: input;
+    grid-area: 1 / 2 / 2 / 3;
     color: #EDD9A3;
 }
 
-#gameControls{
+#gameControls {
     grid-area: input;
 }
 
 
-#temp_main_side{
-    grid-area: main_side;
-    
+#inputTextBox {
+    grid-area: 1 / 1 / 2 / 2;
+    width: 650px;
+    height: 30px;
+    background: #60525F;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    margin-left: 100px;
+    color: #B2A3B5;
+    padding-left: 3%;
+    padding-top: 5px;
+    outline-style: none;
 }
 
-#temp_main_foot{
-    grid-area: main_foot;
+
+#score {
+    grid-area: score;
+    color: #EDD9A3;
+    font-size: 30px;
+    text-align: center;
+    margin-right: 25px;
+    justify-self: start;
+    align-self: center;
+
 }
+
+#combo{
+    grid-area: combo;
+    color: #EDD9A3;
+    font-size: 30px;
+    text-align: center;
+    justify-self: end;
+    align-self: center;
+}
+
+#hint {
+    grid-area: h;
+    align-self: end;
+    justify-self: end;
+    color: #EDD9A3;
+    visibility: hidden;
+
+}
+
 
 /* Bottom of the page */
 
@@ -198,3 +241,55 @@ body {
     font-size: 15px;
 
 }
+
+.fade-out {
+    animation: fadeOut ease 10s;
+    -webkit-animation: fadeOut ease 10s;
+    -moz-animation: fadeOut ease 10s;
+    -o-animation: fadeOut ease 10s;
+    -ms-animation: fadeOut ease 10s;
+  }
+  @keyframes fadeOut {
+    0% {
+      opacity:1;
+    }
+    100% {
+      opacity:0;
+    }
+  }
+  
+  @-moz-keyframes fadeOut {
+    0% {
+      opacity:1;
+    }
+    100% {
+      opacity:0;
+    }
+  }
+  
+  @-webkit-keyframes fadeOut {
+    0% {
+      opacity:1;
+    }
+    100% {
+      opacity:0;
+    }
+  }
+  
+  @-o-keyframes fadeOut {
+    0% {
+      opacity:1;
+    }
+    100% {
+      opacity:0;
+    }
+  }
+  
+  @-ms-keyframes fadeOut {
+    0% {
+      opacity:1;
+    }
+    100% {
+      opacity:0;
+    }
+  }

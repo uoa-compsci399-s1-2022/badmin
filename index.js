@@ -1,13 +1,14 @@
 /**
  * Show text function
  */
-function showGame() {
+ function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
     document.getElementById("gameControls").style.display = "grid";
     document.getElementById("text-sel").style.display = "none";
     document.getElementById("pageInfo").style.display = "none";
     document.getElementById("title").style.color = "#60525F" 
+    document.getElementById("score").style.display = "grid";
 }
 /**
  * Blur text function
@@ -16,6 +17,7 @@ function hideGame() {
     document.getElementById("gameText").style.display = "none";
     document.getElementById("gameHidden").style.display = "block";
     document.getElementById("gameControls").style.display = "none";
+    document.getElementById("score").style.display = "none";
 }
 
 function pause() {
@@ -58,7 +60,8 @@ let currentSearchIndex = 0;
 function highlightText(element) {
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
-    const searchText = element.value;
+    //const searchText = element.value;
+    const searchText = element.innerText;
     clearPreviousHighlight();
     if (searchText.length >= 1) {
         for (let i = 0; i < gameTextArr.length; i++) {
@@ -90,21 +93,27 @@ function clearPreviousHighlight() {
     currentSearchIndex = 0;
 }
 
+let lastUserInputTime;
 function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
         checkUserInput(element);
+        lastUserInputTime = Date.now()
     }
-    else if (event.code == "ArrowUp" || event.code == "ArrowDown") {
+    else if (event.code == "ArrowUp" || event.code == "ArrowDown" || event.code == "ArrowLeft" || event.code == "ArrowRight") {
         navigateSearchResults(event.code);
+        event.preventDefault();
     }
 }
 
+let score = 0;
+let comboCounter = 0;
+let previousCorrectedTime = null;
 function checkUserInput(element) {
-    if (element.value.length >= 2) {
+    if (element.innerText.length >= 1) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(i) == false) {
-                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.value) {
+                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText) {
                     index = Object.keys(correctIndicies)[i];
                 }
             }
@@ -113,7 +122,29 @@ function checkUserInput(element) {
             if (correctedWordsIndicies.includes(index) == false) {
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
+                const currentTime = Date.now();
+                if (previousCorrectedTime == null) {
+                    comboCounter = 1;
+                }
+                else if (currentTime - previousCorrectedTime <= 5000) { //5000 milliseconds = 5 seconds
+                    if (comboCounter < 3) {
+                        comboCounter++;
+                    }
+                }
+                else {
+                    comboCounter = 1;
+                }
+                previousCorrectedTime = currentTime;
+                score += 100 * comboCounter;
+                document.getElementById("score").innerText = "score: \n" + score;
+                document.getElementById("combo").innerText = "combo: \n" + comboCounter;
             }
+        }
+        else {
+            comboCounter = 0;
+            score -= 30;
+            document.getElementById("score").innerText = "score: \n" + score;
+            document.getElementById("combo").innerText = "combo: \n" + comboCounter;
         }
     }
 }
@@ -124,10 +155,10 @@ function navigateSearchResults(key) {
         const searchElement = gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild;
         searchElement.outerHTML = `<mark>${searchElement.innerHTML}</mark>`; //clearing the attributes (including style) of the current selected search result
         const length = previousSearchIndicies.length;
-        if (key == "ArrowUp") {
+        if (key == "ArrowUp" || key == "ArrowLeft") {
             currentSearchIndex = (((currentSearchIndex - 1) % length) + length) % length // modulus formula [ ((a % n ) + n ) % n ] to account for negative values
         }
-        if (key == "ArrowDown") {
+        if (key == "ArrowDown" || key == "ArrowRight") {
             currentSearchIndex = (currentSearchIndex + 1) % length // currentSearchIndex can't be negative, so currentSearchIndex + 1 can't be negative => use positive only modulus
         }
         gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "lightblue";
@@ -148,19 +179,37 @@ function generateCorrectIndicies() {
 function replaceWord(correctWord, correctedIndex) {
     document.getElementById("gameText").children[correctedIndex].innerText = correctWord;
     document.getElementById("gameText").children[correctedIndex].style.color = "#EDD9A3";
-    document.getElementById("inputTextBox").value = "";
+    //document.getElementById("inputTextBox").value = "";
+    document.getElementById("inputTextBox").innerText= "";
+}
+
+let hintProvided = 0;
+
+function showHint() {
+    if (hintProvided == 0) {
+        if (Date.now() - lastUserInputTime >= 30000) {
+            document.getElementById("hint").style.visibility = "visible";
+        }
+    }
+}
+
+function resetHint() {
+    document.getElementById("hint").innerText = "Hint";
+    document.getElementById("hint").style.visibility = "hidden";
+    hintProvided = 0;
+    var element = document.getElementById("hint");
+    element.classList.remove("fade-out");
 }
 
 function provideHint() {
-    //need to create a hint button and add onclick
-    //replace hint button with text that says how many words left
-    //"There are still x words spelt incorrectly" if x > 0
-    //"Well done, there are no more words left!" if x = 0??
-    //onclick= "provideHint()"
-    wordsLeft = Object.keys(correctIndicies).length - correctedWordsIndicies.length
-    alert(wordsLeft)
+    if (hintProvided == 0) {
+        wordsLeft = Object.keys(correctIndicies).length - correctedWordsIndicies.length;
+        document.getElementById("hint").innerText = wordsLeft + " words left!";
+        document.getElementById("hint").className = "fade-out";
+        setTimeout(() => {  document.getElementById("hint").style.visibility = "hidden"; }, 10000);
+        hintProvided = 1;
+    }
 }
-
 
 window.onload = function () {
     let btns = document.getElementsByClassName("levelButton");
@@ -184,25 +233,38 @@ window.onload = function () {
 
 let totalSeconds = 0;
 let timerVar = 0;
-
+let hintVar = 0;
 function startTimer() {
     correctIndicies = {};
     correctedWordsIndicies = new Array();
-    document.getElementById("inputTextBox").removeAttribute("disabled");
+    //document.getElementById("inputTextBox").removeAttribute("disabled");
+    //document.getElementById("inputTextBox").focus();
+    document.getElementById("inputTextBox").setAttribute("contenteditable", true);
     document.getElementById("inputTextBox").focus();
     document.getElementById("timer").innerHTML = "";
     loadText();
     totalSeconds = 0;
     timerVar = setInterval(countTimer, 1000);
+    hintVar = setInterval(showHint, 1000);
+    lastUserInputTime = Date.now()
     showGame();
     generateCorrectIndicies();
+    score = 0;
+    comboCounter = 0;
+    document.getElementById("score").innerText = `score: \n ${score}`;
+    document.getElementById("combo").innerText = `combo: \n ${comboCounter}`;
+    previousCorrectedTime = null;
 }
 
 function stopTimer() {
     clearPreviousHighlight();
-    document.getElementById("inputTextBox").value = "";
-    document.getElementById("inputTextBox").setAttribute("disabled", '');
+    //document.getElementById("inputTextBox").value = "";
+    document.getElementById("inputTextBox").innerText = "";
+    //document.getElementById("inputTextBox").setAttribute("disabled", '');
+    document.getElementById("inputTextBox").setAttribute("contenteditable", false);
     clearInterval(timerVar);
+    clearInterval(hintVar);
+    resetHint();
     pause();
 }
 
