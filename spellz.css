@@ -11,36 +11,48 @@ body {
 /* The top area of the page */
 .top {
     display: grid;
-    grid-template-columns:  repeat(3, 1fr);
+    grid-template-columns:  repeat(3, max-content);
     grid-template-rows: 1fr;
     grid-template-areas: "title title-op text-sel";
     margin-left: 15%;
     margin-right: 15%;
     margin-top: 35px;
+    justify-content: space-between;
 }
 
 #title {
     grid-area: title;
     font-size: 60px;
     color: #EDD9A3;
+
+    cursor:pointer;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .title-op {
     grid-area: title-op;
+
 }
 
 #text-sel {
     grid-area: text-sel;
     display: grid;
-    grid-template-columns:  repeat(4, fit-content);
+    grid-template-columns:  repeat(4, auto);
     grid-template-rows: 2fr 1fr 1fr;
     font-size: 14px;
     text-align: right;
     color: #B2A3B5;
     column-gap: 5px;
     row-gap: 0px;
-    justify-self: end;
+
     align-items: end;
+    justify-items: end;
 }
 
 /*
@@ -54,57 +66,68 @@ body {
 #easy {
     grid-area: 1 / 2 / 2 / 3;
     font-size: 22px;
+    cursor:pointer;
 }
 
 #medium {
     grid-area: 1 / 3 / 2 / 4;
     font-size: 22px;
+    cursor:pointer;
 }
 
 #hard {
     grid-area: 1 / 4 / 2 / 5;
     font-size: 22px;
+    cursor:pointer;
 }
 
 /* genre*/
 
 #sci-fi {
     grid-area: 2 / 1 / 3 / 2;
+    cursor:pointer;
 
 }
 
 #slice_of_life {
     grid-area: 2 / 2 / 3 / 3;
+    cursor:pointer;
 
 }
 
 #non-fiction {
     grid-area: 2 / 3 / 3 / 4;
+    cursor:pointer;
 
 }
 
 #article {
     grid-area: 2 / 4 / 3 / 5;
+    cursor:pointer;
 
 }
 
 #romance {
     grid-area: 3 / 1 / 4 / 2;
+    cursor:pointer;
 
 }
 
 #comedy {
     grid-area: 3 / 2 / 4 / 3;
+    cursor:pointer;
 
 }
 
 #wikipedia {
     grid-area: 3 / 3 / 4 / 4;
+    cursor:pointer;
 
 }
 
 #mystery {
     grid-area: 3 / 4 / 4 / 5;
+    cursor:pointer;
 
 }
 
@@ -168,6 +191,7 @@ body {
 #stopTimer {
     grid-area: 1 / 2 / 2 / 3;
     color: #EDD9A3;
+    cursor:pointer;
 }
 
 #gameControls {

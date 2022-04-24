@@ -181,17 +181,13 @@ function replaceWord(correctWord, correctedIndex) {
     document.getElementById("inputTextBox").innerText= "";
 }
 
+
+function refresh() {
+    window.location.reload();
+}
+
 window.onload = function () {
-    let btns = document.getElementsByClassName("levelButton");
-    for (let i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", function () {
-            let current = document.getElementsByClassName("active");
-            if (current.length > 0) {
-                current[0].className = current[0].className.replace(" active", "");
-            }
-            this.className += " active";
-        });
-    }
+    //document.getElementById("gameHidden").addEventListener("keydown", function (e) { startTimer(); });
     hideGame();
     getVersion();
     loadText();
@@ -205,6 +201,7 @@ let totalSeconds = 0;
 let timerVar = 0;
 
 function startTimer() {
+    showGame();
     correctIndicies = {};
     correctedWordsIndicies = new Array();
     //document.getElementById("inputTextBox").removeAttribute("disabled");
@@ -215,7 +212,6 @@ function startTimer() {
     loadText();
     totalSeconds = 0;
     timerVar = setInterval(countTimer, 1000);
-    showGame();
     generateCorrectIndicies();
     score = 0;
     comboCounter = 0;
