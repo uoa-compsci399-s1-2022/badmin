@@ -128,6 +128,7 @@ function checkUserInput(element) {
                     if (comboCounter < 3) {
                         comboCounter++;
                         //reset the timer so a new 5 seconds available
+                        resetFlag = true
                         comboTimePassed = 0;
                         comboTimeLeft = comboTimeInterval;
                         startCombo();
@@ -158,10 +159,12 @@ const comboTimeInterval = 5;
 let comboTimePassed = 0;
 let comboTimeLeft = comboTimeInterval;
 let comboActivated = false;
-
+//to stop the current running timer
+let resetFlag = false;
 
 function startCombo() {
     comboActivated = true;
+    resetFlag = false
     comboTimer();
     startComboTimer()
 
@@ -235,11 +238,11 @@ function onTimesUp() {
 }
 
 
-
 function startComboTimer() {
     timerInterval = setInterval(() => {
 
-        comboTimePassed = comboTimePassed += 1;
+        if (!resetFlag)
+            comboTimePassed = comboTimePassed += 1;
         comboTimeLeft = comboTimeInterval - comboTimePassed;
 
         document.getElementById("base-timer-label").innerHTML = formatTime(comboTimeLeft);
