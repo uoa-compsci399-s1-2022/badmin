@@ -202,7 +202,6 @@ function replaceWord(correctWord, correctedIndex) {
 }
 
 window.onload = function () {
-    hideGame();
     getVersion();
     loadText();
     document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
