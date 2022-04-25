@@ -336,7 +336,7 @@ body {
 
 #comboBar {
     width: 0%;
-    height: 8%;
+    height: 2%;
     background: #EDD9A3;
     align-self: flex-start;
     margin-left: 20%;
@@ -371,7 +371,7 @@ body {
 
 .close {
     color: #aaaaaa;
-    float: right;
+    float: left;
     font-size: 28px;
     font-weight: bold;
 }
