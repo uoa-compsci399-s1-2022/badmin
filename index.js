@@ -280,6 +280,25 @@ function stopTimer() {
     pause();
 }
 
+function showModal() {
+    let endModal = document.getElementById("endGameModal");
+    endModal.style.display = "block"
+
+}
+
+function closeGameModal() {
+    endGameModal.style.display = "none";
+}
+
+// closes modal when anywhere is clicked
+window.onclick = function (event) {
+    if (event.target == endGameModal) {
+        endGameModal.style.display = "none";
+    }
+}
+
+
+
 function countTimer() {
     ++totalSeconds;
     let hour = Math.floor(totalSeconds / 3600);
