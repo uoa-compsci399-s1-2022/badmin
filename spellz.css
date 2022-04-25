@@ -11,7 +11,7 @@ body {
 /* The top area of the page */
 .top {
     display: grid;
-    grid-template-columns:  repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
     grid-template-areas: "title title-op text-sel";
     margin-left: 15%;
@@ -32,7 +32,7 @@ body {
 #text-sel {
     grid-area: text-sel;
     display: grid;
-    grid-template-columns:  repeat(4, fit-content);
+    grid-template-columns: repeat(4, fit-content);
     grid-template-rows: 2fr 1fr 1fr;
     font-size: 14px;
     text-align: right;
@@ -116,10 +116,10 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 175px max-content 200px;
-    grid-template-areas: 
-    "lh timer h rh" 
-    "combo m m score" 
-    "lf input input rf";
+    grid-template-areas:
+        "lh timer h rh"
+        "combo m m score"
+        "lf input input rf";
 }
 
 #score {
@@ -200,13 +200,22 @@ body {
 
 }
 
-#combo{
+#combo {
     grid-area: combo;
     color: #EDD9A3;
     font-size: 30px;
     text-align: center;
     justify-self: end;
     align-self: center;
+}
+
+#hint {
+    grid-area: h;
+    align-self: end;
+    justify-self: end;
+    color: #EDD9A3;
+    visibility: hidden;
+
 }
 
 
@@ -231,4 +240,62 @@ body {
     text-align: right;
     font-size: 15px;
 
+}
+
+.fade-out {
+    animation: fadeOut ease 10s;
+    -webkit-animation: fadeOut ease 10s;
+    -moz-animation: fadeOut ease 10s;
+    -o-animation: fadeOut ease 10s;
+    -ms-animation: fadeOut ease 10s;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-o-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-ms-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
