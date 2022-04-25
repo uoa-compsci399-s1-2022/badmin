@@ -9,6 +9,9 @@ function showGame() {
     document.getElementById("pageInfo").style.display = "none";
     document.getElementById("title").style.color = "#60525F"
     document.getElementById("score").style.display = "grid";
+    document.getElementById("comboContainer").style.display = "flex";
+    document.getElementById("timer").style.display = "inline";
+    document.getElementById("timer").innerText = "00:00";
 }
 /**
  * Blur text function
@@ -18,6 +21,8 @@ function hideGame() {
     document.getElementById("gameHidden").style.display = "block";
     document.getElementById("gameControls").style.display = "none";
     document.getElementById("score").style.display = "none";
+    document.getElementById("comboContainer").style.display = "none";
+    document.getElementById("timer").style.display = "none";
 }
 
 function pause() {
@@ -60,7 +65,6 @@ let currentSearchIndex = 0;
 function highlightText(element) {
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
-    //const searchText = element.value;
     const searchText = element.innerText;
     clearPreviousHighlight();
     if (searchText.length >= 1) {
@@ -126,7 +130,7 @@ function checkUserInput(element) {
                 if (previousCorrectedTime == null) {
                     comboCounter = 1;
                 }
-                else if (currentTime - previousCorrectedTime <= 5000) { //5000 milliseconds = 5 seconds
+                else if (currentTime - previousCorrectedTime <= TIME_LIMIT * 1000) {
                     if (comboCounter < 3) {
                         comboCounter++;
                     }
@@ -134,6 +138,7 @@ function checkUserInput(element) {
                 else {
                     comboCounter = 1;
                 }
+                restartComboTimer();
                 previousCorrectedTime = currentTime;
                 score += 100 * comboCounter;
                 document.getElementById("score").innerText = "score: \n" + score;
@@ -147,6 +152,22 @@ function checkUserInput(element) {
             document.getElementById("combo").innerText = "combo: \n" + comboCounter;
         }
     }
+}
+const WIDTH = 60 //make sure it's the same as in the CSS under #comboBar
+const TIME_LIMIT = 5 //make sure it's the same as in the CSS under #comboBar
+function restartComboTimer() {
+    const comboBar = document.getElementById("comboBar");
+    comboBar.style.transition = `none`;
+    comboBar.style.width = `${WIDTH}%`;
+    comboBar.offsetHeight; // Refresh the user's cache
+    comboBar.style.transition = `width ${TIME_LIMIT}s linear 0s`;
+    comboBar.style.width = `0px`;
+}
+
+function stopComboTimer() {
+    const comboBar = document.getElementById("comboBar");
+    comboBar.style.transition = `none`;
+    comboBar.style.width = `0%`;
 }
 
 function navigateSearchResults(key) {
@@ -212,17 +233,6 @@ function provideHint() {
 }
 
 window.onload = function () {
-    let btns = document.getElementsByClassName("levelButton");
-    for (let i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", function () {
-            let current = document.getElementsByClassName("active");
-            if (current.length > 0) {
-                current[0].className = current[0].className.replace(" active", "");
-            }
-            this.className += " active";
-        });
-    }
-    hideGame();
     getVersion();
     loadText();
     document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
@@ -230,15 +240,12 @@ window.onload = function () {
     document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
 };
 
-
 let totalSeconds = 0;
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
     correctIndicies = {};
     correctedWordsIndicies = new Array();
-    //document.getElementById("inputTextBox").removeAttribute("disabled");
-    //document.getElementById("inputTextBox").focus();
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
     document.getElementById("inputTextBox").focus();
     document.getElementById("timer").innerHTML = "";
@@ -257,10 +264,9 @@ function startTimer() {
 }
 
 function stopTimer() {
+    stopComboTimer();
     clearPreviousHighlight();
-    //document.getElementById("inputTextBox").value = "";
     document.getElementById("inputTextBox").innerText = "";
-    //document.getElementById("inputTextBox").setAttribute("disabled", '');
     document.getElementById("inputTextBox").setAttribute("contenteditable", false);
     clearInterval(timerVar);
     clearInterval(hintVar);
