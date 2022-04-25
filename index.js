@@ -232,6 +232,11 @@ function provideHint() {
     }
 }
 
+
+function refresh() {
+    window.location.reload();
+}
+
 window.onload = function () {
     getVersion();
     loadText();
@@ -244,6 +249,7 @@ let totalSeconds = 0;
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
+    showGame();
     correctIndicies = {};
     correctedWordsIndicies = new Array();
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
