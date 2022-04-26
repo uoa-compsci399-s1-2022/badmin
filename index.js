@@ -378,7 +378,24 @@ let myChart = new Chart(ctx, {
             }
 
         ]
+    },
+    options: {
+        scales: {
+            yAxis: {
+                ticks: {
+                    color: "#B2A3B5",
+                }
+            },
+            xAxis: {
+                ticks: {
+                    color: "#B2A3B5",
+                }
+            }
+        }
     }
+
+
+
 });
 
 
