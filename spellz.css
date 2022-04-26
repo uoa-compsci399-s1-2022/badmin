@@ -145,10 +145,6 @@ body {
         "lf input input rf";
 }
 
-#score {
-    grid-area: ls;
-}
-
 
 
 #gameText {
@@ -360,10 +356,11 @@ body {
 
 /* Modal Content */
 .endModalContent {
-    background-color: #EDD9A3;
+    color: #B2A3B5;
+    background-color: #60525F;
     margin: auto;
     padding: 10px;
-    border: 10px solid #EDD9A3;
+    border: 10px solid #60525F;
     width: 30%;
     height: 30%;
 }

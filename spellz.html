@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="spellz.css" />
     <link rel="icon" href="Images/logo.png" type="image/png" />
     <script src="index.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -46,8 +47,20 @@
 
             <div class="endModalContent">
                 <span class="close" onclick="closeGameModal()">&times;</span>
-                <p id="modalText">STATISTICS</p>
+                <div id="modalText">STATISTICS</div>
+
+                <div id="modalScore"></div>
+                <div id="modalaccuracy"></div>
+                <div id="modalTimeTaken"></div>
+                <div id="modalComboStreak"></div>
+                <div id="modalGotEverything">message</div>
+
+                <div>
+                    <canvas id="myChart" width="1600" height="900"></canvas>
+                </div>
+
             </div>
+
         </div>
 
         <div id="gameHidden" onclick="startTimer()"></div>

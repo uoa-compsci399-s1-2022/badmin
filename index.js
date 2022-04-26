@@ -108,7 +108,8 @@ function inputHandler(element, event) {
         event.preventDefault();
     }
 }
-
+let countCorrect = 0;
+let countWrong = 0;
 let score = 0;
 let comboCounter = 0;
 let previousCorrectedTime = null;
@@ -139,10 +140,12 @@ function checkUserInput(element) {
                     comboCounter = 1;
                 }
                 restartComboTimer();
+                comboStreak = comboStreak + 5
                 previousCorrectedTime = currentTime;
                 score += 100 * comboCounter;
                 document.getElementById("score").innerText = "score: \n" + score;
                 document.getElementById("combo").innerText = "combo: \n" + comboCounter;
+                countCorrect++;
             }
         }
         else {
@@ -150,9 +153,13 @@ function checkUserInput(element) {
             score -= 30;
             document.getElementById("score").innerText = "score: \n" + score;
             document.getElementById("combo").innerText = "combo: \n" + comboCounter;
+            countWrong++;
         }
     }
 }
+
+let comboStreak = 0;
+
 const WIDTH = 60 //make sure it's the same as in the CSS under #comboBar
 const TIME_LIMIT = 5 //make sure it's the same as in the CSS under #comboBar
 function restartComboTimer() {
@@ -162,6 +169,8 @@ function restartComboTimer() {
     comboBar.offsetHeight; // Refresh the user's cache
     comboBar.style.transition = `width ${TIME_LIMIT}s linear 0s`;
     comboBar.style.width = `0px`;
+
+
 }
 
 function stopComboTimer() {
@@ -169,6 +178,8 @@ function stopComboTimer() {
     comboBar.style.transition = `none`;
     comboBar.style.width = `0%`;
 }
+
+
 
 function navigateSearchResults(key) {
     if (previousSearchIndicies.length >= 1) {
@@ -259,9 +270,13 @@ function startTimer() {
     totalSeconds = 0;
     timerVar = setInterval(countTimer, 1000);
     hintVar = setInterval(showHint, 1000);
+    setInterval(function () { scoreOverTime.push(score) }, 10000);
+    setInterval(function () { xValues.push(totalSeconds); console.log(totalSeconds) }, 10000);
     lastUserInputTime = Date.now()
     showGame();
     generateCorrectIndicies();
+    countCorrect = 0;
+    countWrong = 0;
     score = 0;
     comboCounter = 0;
     document.getElementById("score").innerText = `score: \n ${score}`;
@@ -270,7 +285,6 @@ function startTimer() {
 }
 
 function stopTimer() {
-    showModal();
     stopComboTimer();
     clearPreviousHighlight();
     document.getElementById("inputTextBox").innerText = "";
@@ -279,13 +293,96 @@ function stopTimer() {
     clearInterval(hintVar);
     resetHint();
     pause();
+    scoreOverTime.push(score);
+    xValues.push(totalSeconds);
+    showModal();
+    // alert(xValues);
+    // alert(scoreOverTime);
 }
 
 function showModal() {
-    let endModal = document.getElementById("endGameModal");
-    endModal.style.display = "block"
+    document.getElementById("endGameModal").style.display = "block";
+    displayStats();
+
 
 }
+
+function displayStats() {
+    document.getElementById("modalScore").innerText = "Score " + score;
+    document.getElementById("modalaccuracy").innerText = Math.max(0, Math.round(((countCorrect - countWrong) / Object.keys(correctIndicies).length) * 100)) + '% Accuracy'
+    calculateComboStreak()
+    formatTimeTaken();
+    // console.log(comboStreak)
+    getEveryWord();
+}
+
+function calculateComboStreak() {
+    const minTimeCombo = Math.min(comboStreak, totalSeconds)
+    let hour = Math.floor(minTimeCombo / 3600);
+    let minute = Math.floor((minTimeCombo - hour * 3600) / 60);
+    let seconds = minTimeCombo - (hour * 3600 + minute * 60);
+    if (minute === 0) {
+        document.getElementById("modalComboStreak").innerText = "Longest Streak: " + seconds + " seconds";
+    } else if (minute !== 0 && hour !== 0) {
+        document.getElementById("modalComboStreak").innerText = "Longest Streak: " + hour + " hrs " + minute + " mins " + seconds + " seconds";
+
+    }
+    else {
+        document.getElementById("modalComboStreak").innerText = "Longest Streak: " + minute + " mins " + seconds + " seconds";
+    }
+
+}
+
+function formatTimeTaken() {
+    let hour = Math.floor(totalSeconds / 3600);
+    let minute = Math.floor((totalSeconds - hour * 3600) / 60);
+    let seconds = totalSeconds - (hour * 3600 + minute * 60);
+    if (minute === 0) {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + seconds + " seconds";
+    } else if (minute !== 0 && hour !== 0) {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + hour + " hrs " + minute + " mins " + seconds + " seconds";
+
+    }
+    else {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + minute + " mins " + seconds + " seconds";
+    }
+}
+
+
+
+function getEveryWord() {
+    if (Object.keys(correctIndicies).length === correctedWordsIndicies.length) {
+        document.getElementById("modalGotEverything").innerText = "You got every word!"
+    }
+    else {
+        document.getElementById("modalGotEverything").innerText = "You did not find " + (Object.keys(correctIndicies).length - correctedWordsIndicies.length) + " words in the text!";
+    }
+}
+
+// Our labels along the x-axis
+var xValues = [0];
+// For drawing the lines
+var scoreOverTime = [0];
+
+var ctx = document.getElementById("myChart");
+
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: xValues,
+        datasets: [
+
+            {
+                data: scoreOverTime,
+                label: "Score Over Time",
+                borderColor: "#3e95cd",
+                fill: false,
+            }
+
+        ]
+    }
+});
+
 
 function closeGameModal() {
     endGameModal.style.display = "none";
