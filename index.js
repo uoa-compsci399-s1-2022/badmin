@@ -358,13 +358,13 @@ function getEveryWord() {
 }
 
 // Our labels along the x-axis
-var xValues = [0];
+let xValues = [0];
 // For drawing the lines
-var scoreOverTime = [0];
+let scoreOverTime = [0];
 
-var ctx = document.getElementById("myChart");
+let ctx = document.getElementById("myChart");
 
-var myChart = new Chart(ctx, {
+let myChart = new Chart(ctx, {
     type: 'line',
     data: {
         labels: xValues,
