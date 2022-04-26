@@ -100,6 +100,7 @@ function clearPreviousHighlight() {
 let lastUserInputTime;
 function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
+        clearPreviousHighlight()
         checkUserInput(element);
         lastUserInputTime = Date.now()
     }
