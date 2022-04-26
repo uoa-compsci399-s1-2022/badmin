@@ -358,9 +358,12 @@ function getEveryWord() {
 }
 
 // Our labels along the x-axis
-let xValues = [0];
+// let xValues = [0];
+let xValues = [];
 // For drawing the lines
-let scoreOverTime = [0];
+// let scoreOverTime = [0];
+let scoreOverTime = [];
+
 let ctx = document.getElementById("myChart");
 
 let myChart = new Chart(ctx, {
@@ -382,11 +385,11 @@ let myChart = new Chart(ctx, {
                 display: false
             }
         },
-        aspectRatio: 2,
         scales: {
             yAxis: {
                 ticks: {
                     color: "#B2A3B5",
+                    beginAtZero: true,
                 },
                 grid: {
                     color: "#B2A3B5",
@@ -401,6 +404,7 @@ let myChart = new Chart(ctx, {
             xAxis: {
                 ticks: {
                     color: "#B2A3B5",
+                    beginAtZero: true,
                 },
                 grid: {
                     color: "#B2A3B5",
@@ -416,15 +420,22 @@ let myChart = new Chart(ctx, {
     }
 });
 
+function resetDataSet() {
+    scoreOverTime = [];
+    xValues = []
+}
+
 
 function closeGameModal() {
     endGameModal.style.display = "none";
+    resetDataSet();
 }
 
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
+        resetDataSet();
     }
 }
 
