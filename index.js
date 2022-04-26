@@ -307,8 +307,8 @@ function showModal() {
 }
 
 function displayStats() {
-    document.getElementById("modalScore").innerText = "Score " + score;
-    document.getElementById("modalaccuracy").innerText = Math.max(0, Math.round(((countCorrect - countWrong) / Object.keys(correctIndicies).length) * 100)) + '% Accuracy'
+    document.getElementById("modalScore").innerText = "Score: " + score;
+    document.getElementById("modalaccuracy").innerText = "Accuracy: " + Math.max(0, Math.round(((countCorrect - countWrong) / Object.keys(correctIndicies).length) * 100))
     calculateComboStreak()
     formatTimeTaken();
     getEveryWord();
@@ -361,7 +361,6 @@ function getEveryWord() {
 let xValues = [0];
 // For drawing the lines
 let scoreOverTime = [0];
-
 let ctx = document.getElementById("myChart");
 
 let myChart = new Chart(ctx, {
@@ -369,24 +368,21 @@ let myChart = new Chart(ctx, {
     data: {
         labels: xValues,
         datasets: [
-
             {
                 data: scoreOverTime,
-                label: "Score Over Time",
+                // label: "Score Over Time",
                 borderColor: "#3e95cd",
                 fill: false,
-
             }
-
         ]
     },
     options: {
-
         plugins: {
             legend: {
                 display: false
             }
         },
+        aspectRatio: 2,
         scales: {
             yAxis: {
                 ticks: {
@@ -416,14 +412,8 @@ let myChart = new Chart(ctx, {
                     color: "#B2A3B5",
                 },
             },
-
-
         }
-
     }
-
-
-
 });
 
 
