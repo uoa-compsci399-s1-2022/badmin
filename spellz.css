@@ -336,9 +336,54 @@ body {
 
 #comboBar {
     width: 0%;
-    height: 8%;
+    height: 2%;
     background: #EDD9A3;
     align-self: flex-start;
     margin-left: 20%;
     margin-right: 20%;
+}
+
+
+/* modal */
+.modal {
+    display: none;
+    position: fixed;
+    padding-top: 300px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Modal Content */
+.endModalContent {
+    background-color: #EDD9A3;
+    margin: auto;
+    padding: 10px;
+    border: 10px solid #EDD9A3;
+    width: 30%;
+    height: 30%;
+}
+
+
+.close {
+    color: #aaaaaa;
+    float: left;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#modalText {
+    text-align: center;
+    font-size: 17px;
 }
