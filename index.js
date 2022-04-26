@@ -271,7 +271,7 @@ function startTimer() {
     timerVar = setInterval(countTimer, 1000);
     hintVar = setInterval(showHint, 1000);
     setInterval(function () { scoreOverTime.push(score) }, 10000);
-    setInterval(function () { xValues.push(totalSeconds); console.log(totalSeconds) }, 10000);
+    setInterval(function () { xValues.push(totalSeconds) }, 10000);
     lastUserInputTime = Date.now()
     showGame();
     generateCorrectIndicies();
@@ -296,8 +296,7 @@ function stopTimer() {
     scoreOverTime.push(score);
     xValues.push(totalSeconds);
     showModal();
-    // alert(xValues);
-    // alert(scoreOverTime);
+
 }
 
 function showModal() {
@@ -312,7 +311,6 @@ function displayStats() {
     document.getElementById("modalaccuracy").innerText = Math.max(0, Math.round(((countCorrect - countWrong) / Object.keys(correctIndicies).length) * 100)) + '% Accuracy'
     calculateComboStreak()
     formatTimeTaken();
-    // console.log(comboStreak)
     getEveryWord();
 }
 
