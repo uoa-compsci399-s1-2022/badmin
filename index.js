@@ -1,10 +1,10 @@
 /**
  * Show text function
  */
-function showGame() {
+ function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
-    document.getElementById("gameControls").style.display = "grid";
+    document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "none";
     document.getElementById("pageInfo").style.display = "none";
     document.getElementById("title").style.color = "#60525F"
@@ -28,7 +28,7 @@ function hideGame() {
 function pause() {
     document.getElementById("gameText").style.display = "none";
     document.getElementById("gameHidden").style.display = "block";
-    document.getElementById("gameControls").style.display = "grid";
+    document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "grid";
     document.getElementById("pageInfo").style.display = "grid";
     document.getElementById("title").style.color = "#EDD9A3"
