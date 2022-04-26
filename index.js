@@ -270,6 +270,7 @@ function startTimer() {
 }
 
 function stopTimer() {
+    showModal();
     stopComboTimer();
     clearPreviousHighlight();
     document.getElementById("inputTextBox").innerText = "";
