@@ -375,23 +375,51 @@ let myChart = new Chart(ctx, {
                 label: "Score Over Time",
                 borderColor: "#3e95cd",
                 fill: false,
+
             }
 
         ]
     },
     options: {
+
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
         scales: {
             yAxis: {
                 ticks: {
                     color: "#B2A3B5",
-                }
+                },
+                grid: {
+                    color: "#B2A3B5",
+                },
+                title: {
+                    display: true,
+                    text: "Score",
+                    padding: { top: 0, left: 0, right: 0, bottom: 0 },
+                    color: "#B2A3B5",
+                },
             },
             xAxis: {
                 ticks: {
                     color: "#B2A3B5",
-                }
-            }
+                },
+                grid: {
+                    color: "#B2A3B5",
+                },
+                title: {
+                    display: true,
+                    text: "Time",
+                    padding: { top: 0, left: 0, right: 0, bottom: 0 },
+                    color: "#B2A3B5",
+                },
+            },
+
+
         }
+
     }
 
 
