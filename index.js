@@ -257,8 +257,9 @@ window.onload = function () {
     document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
     document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
 };
-let totalSeconds = math.floor(gameStartTime - Date.now() / 1000);
+
 let gameStartTime;
+let totalSeconds = Math.floor(gameStartTime - Date.now() / 1000);
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
