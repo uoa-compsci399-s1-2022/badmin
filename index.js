@@ -140,7 +140,9 @@ function checkUserInput(element) {
                     comboCounter = 1;
                 }
                 restartComboTimer();
-                comboStreak = comboStreak + 5
+                comboStreak = comboStreak + TIME_LIMIT
+                comboStreakArr.push(comboStreak)
+                alert(comboStreakArr)
                 previousCorrectedTime = currentTime;
                 score += 100 * comboCounter;
                 document.getElementById("score").innerText = "score: \n" + score;
@@ -154,12 +156,13 @@ function checkUserInput(element) {
             document.getElementById("score").innerText = "score: \n" + score;
             document.getElementById("combo").innerText = "combo: \n" + comboCounter;
             countWrong++;
+            comboStreak = 0;
         }
     }
 }
 
 let comboStreak = 0;
-
+let comboStreakArr = [0]
 const WIDTH = 60 //make sure it's the same as in the CSS under #comboBar
 const TIME_LIMIT = 5 //make sure it's the same as in the CSS under #comboBar
 function restartComboTimer() {
@@ -308,7 +311,7 @@ function showModal() {
 
 function displayStats() {
     document.getElementById("modalScore").innerText = "Score: " + score;
-    document.getElementById("modalaccuracy").innerText = "Accuracy: " + Math.max(0, Math.round(((countCorrect - countWrong) / Object.keys(correctIndicies).length) * 100))
+    document.getElementById("modalaccuracy").innerText = "Accuracy: " + Math.max(0, Math.round(((countCorrect - countWrong) / Object.keys(correctIndicies).length) * 100)) + "%"
     calculateComboStreak()
     formatTimeTaken();
     getEveryWord();
@@ -317,18 +320,19 @@ function displayStats() {
 }
 
 function calculateComboStreak() {
-    const minTimeCombo = Math.min(comboStreak, totalSeconds)
+    const maxComboStreak = Math.max(...comboStreakArr)
+    const minTimeCombo = Math.min(maxComboStreak, totalSeconds)
     let hour = Math.floor(minTimeCombo / 3600);
     let minute = Math.floor((minTimeCombo - hour * 3600) / 60);
     let seconds = minTimeCombo - (hour * 3600 + minute * 60);
     if (minute === 0) {
-        document.getElementById("modalComboStreak").innerText = "Longest Streak: " + seconds + " seconds";
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + seconds + " seconds";
     } else if (minute !== 0 && hour !== 0) {
-        document.getElementById("modalComboStreak").innerText = "Longest Streak: " + hour + " hrs " + minute + " mins " + seconds + " seconds";
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + hour + " hrs " + minute + " mins " + seconds + " seconds";
 
     }
     else {
-        document.getElementById("modalComboStreak").innerText = "Longest Streak: " + minute + " mins " + seconds + " seconds";
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + minute + " mins " + seconds + " seconds";
     }
 
 }
