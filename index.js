@@ -259,7 +259,7 @@ window.onload = function () {
 };
 
 let gameStartTime;
-let totalSeconds = Math.floor(gameStartTime - Date.now() / 1000);
+let totalSeconds;
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
@@ -459,6 +459,7 @@ window.onclick = function (event) {
 function countTimer() {
     const timeElapsed = Date.now() - gameStartTime;
     const seconds = Math.floor(timeElapsed / 1000) % 60;
+    totalSeconds = seconds
     const minutes = Math.floor((timeElapsed / 1000) / 60);
     document.getElementById("timer").innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
