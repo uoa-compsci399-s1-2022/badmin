@@ -155,6 +155,7 @@ function checkUserInput(element) {
         }
     }
     setTimeout(() => { document.getElementById("inputTextBox").classList.remove("error"); }, 500);
+    document.getElementById("inputTextBox").innerText = "";
 }
 const WIDTH = 60 //make sure it's the same as in the CSS under #comboBar
 const TIME_LIMIT = 5 //make sure it's the same as in the CSS under #comboBar
