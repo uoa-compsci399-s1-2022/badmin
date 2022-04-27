@@ -111,6 +111,7 @@ function inputHandler(element, event) {
 let score = 0;
 let comboCounter = 0;
 let previousCorrectedTime = null;
+let previousComboTime = null;
 function checkUserInput(element) {
     if (element.innerText.length >= 1) {
         let index = -1;
@@ -126,10 +127,10 @@ function checkUserInput(element) {
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
                 const currentTime = Date.now();
-                if (previousCorrectedTime == null) {
+                if (previousCorrectedTime == null || previousComboTime == null) {
                     comboCounter = 1;
                 }
-                else if (currentTime - previousCorrectedTime <= TIME_LIMIT * 1000) {
+                else if (currentTime - previousCorrectedTime <= TIME_LIMIT * 1000 || currentTime - previousComboTime <= TIME_LIMIT * 1000) {
                     if (comboCounter < 3) {
                         comboCounter++;
                     }
@@ -145,6 +146,7 @@ function checkUserInput(element) {
             }
         }
         else {
+            stopComboTimer();
             document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
             score -= 30;
@@ -155,9 +157,14 @@ function checkUserInput(element) {
     setTimeout(() => { document.getElementById("inputTextBox").classList.remove("error"); }, 500);
     document.getElementById("inputTextBox").innerText = "";
 }
-const WIDTH = 60 //make sure it's the same as in the CSS under #comboBar
-const TIME_LIMIT = 5 //make sure it's the same as in the CSS under #comboBar
+//const WIDTH = 60
+const WIDTH = 100
+const TIME_LIMIT = 5
+let comboTimeOut;
 function restartComboTimer() {
+    previousComboTime = Date.now();
+    clearTimeout(comboTimeOut); //passing invalid ID to clearTimeout() throws no exceptions
+    comboTimeOut = setTimeout(decrementCombo, TIME_LIMIT * 1000);
     const comboBar = document.getElementById("comboBar");
     comboBar.style.transition = `none`;
     comboBar.style.width = `${WIDTH}%`;
@@ -166,10 +173,19 @@ function restartComboTimer() {
     comboBar.style.width = `0px`;
 }
 
+function decrementCombo() {
+    comboCounter = Math.max(0, comboCounter - 1);
+    document.getElementById("combo").innerText = `combo: \n ${comboCounter}`;
+    if (comboCounter > 0) {
+        restartComboTimer();
+    }
+}
+
 function stopComboTimer() {
     const comboBar = document.getElementById("comboBar");
     comboBar.style.transition = `none`;
     comboBar.style.width = `0%`;
+    clearTimeout(comboTimeOut) //so it stops ticking down after StopTimer is called
 }
 
 function navigateSearchResults(key) {
@@ -299,8 +315,6 @@ window.onclick = function (event) {
         endGameModal.style.display = "none";
     }
 }
-
-
 
 function countTimer() {
     const timeElapsed = Date.now() - gameStartTime;
