@@ -1,10 +1,10 @@
 /**
  * Show text function
  */
-function showGame() {
+ function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
-    document.getElementById("gameControls").style.display = "grid";
+    document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "none";
     document.getElementById("pageInfo").style.display = "none";
     document.getElementById("title").style.color = "#60525F"
@@ -28,7 +28,7 @@ function hideGame() {
 function pause() {
     document.getElementById("gameText").style.display = "none";
     document.getElementById("gameHidden").style.display = "block";
-    document.getElementById("gameControls").style.display = "grid";
+    document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "grid";
     document.getElementById("pageInfo").style.display = "grid";
     document.getElementById("title").style.color = "#EDD9A3"
@@ -147,12 +147,15 @@ function checkUserInput(element) {
             }
         }
         else {
+            document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
             score -= 30;
             document.getElementById("score").innerText = "score: \n" + score;
             document.getElementById("combo").innerText = "combo: \n" + comboCounter;
         }
     }
+    setTimeout(() => { document.getElementById("inputTextBox").classList.remove("error"); }, 500);
+    document.getElementById("inputTextBox").innerText = "";
 }
 const WIDTH = 60 //make sure it's the same as in the CSS under #comboBar
 const TIME_LIMIT = 5 //make sure it's the same as in the CSS under #comboBar
@@ -253,6 +256,7 @@ function startTimer() {
     showGame();
     correctIndicies = {};
     correctedWordsIndicies = new Array();
+    document.getElementById("inputTextBox").innerText = ""
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
     document.getElementById("inputTextBox").focus();
     document.getElementById("timer").innerHTML = "";
@@ -274,7 +278,7 @@ function stopTimer() {
     showModal();
     stopComboTimer();
     clearPreviousHighlight();
-    document.getElementById("inputTextBox").innerText = "";
+    document.getElementById("inputTextBox").innerText = "\u2009"
     document.getElementById("inputTextBox").setAttribute("contenteditable", false);
     clearInterval(timerVar);
     clearInterval(hintVar);
@@ -456,8 +460,8 @@ let JSONString = JSON.stringify(
     {
         "Easy": {
             "Sci-Fi": {
-                "suppliedText": "There was once an alien that lived on a plannet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other differente planets. One day he wanted to go look for friends, and so he travalled to a planet neaby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked him to join him on his planet.",
-                "correctText": "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he traveled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked him to join him on his planet.",
+                "suppliedText": "There was once an alien that lived on a plannet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other differente planets. One day he wanted to go look for friends, and so he travalled to a planet neaby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
+                "correctText": "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he traveled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
                 "errorCount": "4"
             },
             "Slice of Life": {

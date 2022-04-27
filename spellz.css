@@ -155,7 +155,8 @@ body {
     display: none;
     grid-area: m;
     font-size: 19px;
-    text-align: center;
+    text-align: justify;
+    text-align-last: center;
     color: #B2A3B5;
     margin: 10px;
 
@@ -173,7 +174,8 @@ body {
     font-size: 19px;
     color: transparent;
     text-shadow: 0 0 13px rgba(178, 163, 181, 0.8);
-    text-align: center;
+    text-align: justify;
+    text-align-last: center;
     margin: 10px;
 
     -webkit-touch-callout: none;
@@ -197,23 +199,22 @@ body {
 }
 
 #gameControls {
+    gap: 0.5rem;
     display: none;
+    flex-direction: column;
+    align-items: center;
     grid-area: input;
 }
 
 #inputTextBox {
-    grid-area: 1 / 1 / 2 / 2;
-    width: 650px;
-    height: 30px;
+    padding: 0.5rem 1rem;
+    width: 60%;
     background: #60525F;
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-    margin-left: 100px;
     color: #B2A3B5;
-    padding-left: 3%;
-    padding-top: 5px;
     outline-style: none;
+    text-align: center;
 }
-
 
 #score {
     display: none;
@@ -221,8 +222,7 @@ body {
     color: #EDD9A3;
     font-size: 30px;
     text-align: center;
-    margin-right: 25px;
-    justify-self: start;
+    justify-self: center;
     align-self: center;
 }
 
@@ -387,3 +387,15 @@ body {
     text-align: center;
     font-size: 17px;
 }
+
+.error{
+    animation: shake 0.2s ease-in-out 0s 2;
+    box-shadow: inset 0px 4px 4px red;
+}
+
+@keyframes shake {
+    0% { margin-left: 0rem; }
+    25% { margin-left: 0.5rem; }
+    75% { margin-left: -0.5rem; }
+    100% { margin-left: 0rem; }
+  }
