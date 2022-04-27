@@ -1,7 +1,7 @@
 /**
  * Show text function
  */
- function showGame() {
+function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
     document.getElementById("gameControls").style.display = "flex";
@@ -11,7 +11,6 @@
     document.getElementById("score").style.display = "grid";
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
-    document.getElementById("timer").innerText = "00:00";
 }
 /**
  * Blur text function
@@ -96,7 +95,6 @@ function clearPreviousHighlight() {
     previousSearchIndicies = new Array();
     currentSearchIndex = 0;
 }
-
 let lastUserInputTime;
 function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
@@ -204,7 +202,6 @@ function generateCorrectIndicies() {
 function replaceWord(correctWord, correctedIndex) {
     document.getElementById("gameText").children[correctedIndex].innerText = correctWord;
     document.getElementById("gameText").children[correctedIndex].style.color = "#EDD9A3";
-    //document.getElementById("inputTextBox").value = "";
     document.getElementById("inputTextBox").innerText = "";
 }
 
@@ -236,7 +233,6 @@ function provideHint() {
     }
 }
 
-
 function refresh() {
     window.location.reload();
 }
@@ -249,10 +245,11 @@ window.onload = function () {
     document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
 };
 
-let totalSeconds = 0;
+let gameStartTime;
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
+    gameStartTime = Date.now();
     showGame();
     correctIndicies = {};
     correctedWordsIndicies = new Array();
@@ -262,8 +259,8 @@ function startTimer() {
     document.getElementById("timer").innerHTML = "";
     loadText();
     totalSeconds = 0;
-    timerVar = setInterval(countTimer, 1000);
-    hintVar = setInterval(showHint, 1000);
+    timerVar = setInterval(countTimer, 100);
+    hintVar = setInterval(showHint, 100);
     lastUserInputTime = Date.now()
     showGame();
     generateCorrectIndicies();
@@ -306,15 +303,10 @@ window.onclick = function (event) {
 
 
 function countTimer() {
-    ++totalSeconds;
-    let hour = Math.floor(totalSeconds / 3600);
-    let minute = Math.floor((totalSeconds - hour * 3600) / 60);
-    let seconds = totalSeconds - (hour * 3600 + minute * 60);
-    if (hour < 10) hour = "0" + hour;
-    if (minute < 10) minute = "0" + minute;
-    if (seconds < 10) seconds = "0" + seconds;
-    document.getElementById("timer").innerHTML =
-        minute + ":" + seconds;
+    const timeElapsed = Date.now() - gameStartTime;
+    const seconds = Math.floor(timeElapsed / 1000) % 60;
+    const minutes = Math.floor((timeElapsed / 1000) / 60);
+    document.getElementById("timer").innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
 let difficulty;
@@ -448,13 +440,6 @@ function setWiki() {
 }
 
 let genre;
-
-/**
-function setGenre() {
-    let x = document.getElementById("genre");
-    genre = x.value;
-}
-*/
 
 let JSONString = JSON.stringify(
     {
