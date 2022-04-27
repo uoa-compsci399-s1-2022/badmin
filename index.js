@@ -142,7 +142,6 @@ function checkUserInput(element) {
                 restartComboTimer();
                 comboStreak = comboStreak + TIME_LIMIT
                 comboStreakArr.push(comboStreak)
-                alert(comboStreakArr)
                 previousCorrectedTime = currentTime;
                 score += 100 * comboCounter;
                 document.getElementById("score").innerText = "score: \n" + score;
