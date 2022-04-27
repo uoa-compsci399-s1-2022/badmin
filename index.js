@@ -107,7 +107,8 @@ function inputHandler(element, event) {
         event.preventDefault();
     }
 }
-
+let countCorrect = 0;
+let countWrong = 0;
 let score = 0;
 let comboCounter = 0;
 let previousCorrectedTime = null;
@@ -138,10 +139,13 @@ function checkUserInput(element) {
                     comboCounter = 1;
                 }
                 restartComboTimer();
+                comboStreak = comboStreak + TIME_LIMIT
+                comboStreakArr.push(comboStreak)
                 previousCorrectedTime = currentTime;
                 score += 100 * comboCounter;
                 document.getElementById("score").innerText = "score: \n" + score;
                 document.getElementById("combo").innerText = "combo: \n" + comboCounter;
+                countCorrect++;
             }
         }
         else {
@@ -150,11 +154,16 @@ function checkUserInput(element) {
             score -= 30;
             document.getElementById("score").innerText = "score: \n" + score;
             document.getElementById("combo").innerText = "combo: \n" + comboCounter;
+            countWrong++;
+            comboStreak = 0;
         }
     }
     setTimeout(() => { document.getElementById("inputTextBox").classList.remove("error"); }, 500);
     document.getElementById("inputTextBox").innerText = "";
 }
+
+let comboStreak = 0;
+let comboStreakArr = [0]
 const WIDTH = 60 //make sure it's the same as in the CSS under #comboBar
 const TIME_LIMIT = 5 //make sure it's the same as in the CSS under #comboBar
 function restartComboTimer() {
@@ -164,6 +173,8 @@ function restartComboTimer() {
     comboBar.offsetHeight; // Refresh the user's cache
     comboBar.style.transition = `width ${TIME_LIMIT}s linear 0s`;
     comboBar.style.width = `0px`;
+
+
 }
 
 function stopComboTimer() {
@@ -171,6 +182,8 @@ function stopComboTimer() {
     comboBar.style.transition = `none`;
     comboBar.style.width = `0%`;
 }
+
+
 
 function navigateSearchResults(key) {
     if (previousSearchIndicies.length >= 1) {
@@ -244,7 +257,7 @@ window.onload = function () {
     document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
     document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
 };
-
+let totalSeconds = math.floor(gameStartTime - Date.now() / 1000);
 let gameStartTime;
 let timerVar = 0;
 let hintVar = 0;
@@ -259,11 +272,15 @@ function startTimer() {
     document.getElementById("timer").innerHTML = "";
     loadText();
     totalSeconds = 0;
-    timerVar = setInterval(countTimer, 100);
-    hintVar = setInterval(showHint, 100);
+    timerVar = setInterval(countTimer, 1000);
+    hintVar = setInterval(showHint, 1000);
+    setInterval(function () { scoreOverTime.push(score) }, 10000);
+    setInterval(function () { xValues.push(totalSeconds) }, 10000);
     lastUserInputTime = Date.now()
     showGame();
     generateCorrectIndicies();
+    countCorrect = 0;
+    countWrong = 0;
     score = 0;
     comboCounter = 0;
     document.getElementById("score").innerText = `score: \n ${score}`;
@@ -272,7 +289,6 @@ function startTimer() {
 }
 
 function stopTimer() {
-    showModal();
     stopComboTimer();
     clearPreviousHighlight();
     document.getElementById("inputTextBox").innerText = "\u2009"
@@ -281,22 +297,159 @@ function stopTimer() {
     clearInterval(hintVar);
     resetHint();
     pause();
+    scoreOverTime.push(score);
+    xValues.push(totalSeconds);
+    showModal();
+
 }
 
 function showModal() {
-    let endModal = document.getElementById("endGameModal");
-    endModal.style.display = "block"
+    document.getElementById("endGameModal").style.display = "block";
+    displayStats();
+
 
 }
 
+function displayStats() {
+    document.getElementById("modalScore").innerText = "Score: " + score;
+    document.getElementById("modalaccuracy").innerText = "Accuracy: " + Math.max(0, Math.round(((countCorrect - countWrong) / Object.keys(correctIndicies).length) * 100)) + "%"
+    calculateComboStreak()
+    formatTimeTaken();
+    getEveryWord();
+    calculateModalGraph();
+
+}
+
+function calculateComboStreak() {
+    const maxComboStreak = Math.max(...comboStreakArr)
+    const minTimeCombo = Math.min(maxComboStreak, totalSeconds)
+    let hour = Math.floor(minTimeCombo / 3600);
+    let minute = Math.floor((minTimeCombo - hour * 3600) / 60);
+    let seconds = minTimeCombo - (hour * 3600 + minute * 60);
+    if (minute === 0) {
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + seconds + " seconds";
+    } else if (minute !== 0 && hour !== 0) {
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + hour + " hrs " + minute + " mins " + seconds + " seconds";
+
+    }
+    else {
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + minute + " mins " + seconds + " seconds";
+    }
+
+}
+
+function formatTimeTaken() {
+    let hour = Math.floor(totalSeconds / 3600);
+    let minute = Math.floor((totalSeconds - hour * 3600) / 60);
+    let seconds = totalSeconds - (hour * 3600 + minute * 60);
+    if (minute === 0) {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + seconds + " seconds";
+    } else if (minute !== 0 && hour !== 0) {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + hour + " hrs " + minute + " mins " + seconds + " seconds";
+
+    }
+    else {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + minute + " mins " + seconds + " seconds";
+    }
+}
+
+
+
+function getEveryWord() {
+    if (Object.keys(correctIndicies).length === correctedWordsIndicies.length) {
+        document.getElementById("modalGotEverything").innerText = "You got every word!"
+    }
+    else {
+        document.getElementById("modalGotEverything").innerText = "You did not find " + (Object.keys(correctIndicies).length - correctedWordsIndicies.length) + " words in the text!";
+    }
+}
+
+// Our labels along the x-axis
+let xValues = [0];
+// For drawing the lines
+let scoreOverTime = [0];
+
+
+
+let myChart;
+let ctx;
+function calculateModalGraph() {
+    ctx = document.getElementById("myChart");
+    myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: xValues,
+            datasets: [
+                {
+                    data: scoreOverTime,
+                    borderColor: "#3e95cd",
+                    fill: false,
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                yAxis: {
+                    ticks: {
+                        color: "#B2A3B5",
+                        beginAtZero: true,
+                    },
+                    grid: {
+                        color: "#B2A3B5",
+                    },
+                    title: {
+                        display: true,
+                        text: "Score",
+                        padding: { top: 0, left: 0, right: 0, bottom: 0 },
+                        color: "#B2A3B5",
+                    },
+                },
+                xAxis: {
+                    ticks: {
+                        color: "#B2A3B5",
+                        beginAtZero: true,
+                    },
+                    grid: {
+                        color: "#B2A3B5",
+                    },
+                    title: {
+                        display: true,
+                        text: "Time",
+                        padding: { top: 0, left: 0, right: 0, bottom: 0 },
+                        color: "#B2A3B5",
+                    },
+                },
+            }
+        }
+    });
+}
+
+// resets global variables added in endGameModal
+function resetDataSet() {
+    scoreOverTime = [0];
+    xValues = [0];
+    myChart.destroy();
+    comboStreak = 0;
+    scoreOverTime = [0];
+
+}
+
+
 function closeGameModal() {
     endGameModal.style.display = "none";
+    resetDataSet();
 }
 
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
+        resetDataSet();
     }
 }
 
