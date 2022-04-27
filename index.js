@@ -125,7 +125,6 @@ function checkUserInput(element) {
         }
         if (index != -1) {
             if (correctedWordsIndicies.includes(index) == false) {
-                document.getElementById("inputTextBox").classList.add("error");
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
                 const currentTime = Date.now();
@@ -148,6 +147,7 @@ function checkUserInput(element) {
             }
         }
         else {
+            document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
             score -= 30;
             document.getElementById("score").innerText = "score: \n" + score;
