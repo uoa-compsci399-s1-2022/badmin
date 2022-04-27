@@ -155,7 +155,8 @@ body {
     display: none;
     grid-area: m;
     font-size: 19px;
-    text-align: center;
+    text-align: justify;
+    text-align-last: center;
     color: #B2A3B5;
     margin: 10px;
 
@@ -173,7 +174,8 @@ body {
     font-size: 19px;
     color: transparent;
     text-shadow: 0 0 13px rgba(178, 163, 181, 0.8);
-    text-align: center;
+    text-align: justify;
+    text-align-last: center;
     margin: 10px;
 
     -webkit-touch-callout: none;
