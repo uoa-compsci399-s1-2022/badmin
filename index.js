@@ -380,7 +380,6 @@ function calculateModalGraph() {
             datasets: [
                 {
                     data: scoreOverTime,
-                    // label: "Score Over Time",
                     borderColor: "#3e95cd",
                     fill: false,
                 }
@@ -483,10 +482,13 @@ function calculateModalGraph() {
 //     }
 // });
 
+// resets global variables added in endGameModal
 function resetDataSet() {
     scoreOverTime = [0];
     xValues = [0];
     myChart.destroy();
+    comboStreak = 0;
+    scoreOverTime = [0];
 
 }
 
