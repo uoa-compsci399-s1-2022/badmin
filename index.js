@@ -82,9 +82,11 @@ function highlightText(element) {
 }
 
 function clearPreviousHighlight() {
+
     const gameTextElements = document.getElementById("gameText").children;
     if (previousSearchIndicies.length >= 1) {
         const searchElement = gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild;
+        console.log(searchElement)
         searchElement.outerHTML = `<mark>${searchElement.innerHTML}</mark>`; //clearing the attributes (including style) of the current selected search result
     }
     for (let index of previousSearchIndicies) {
@@ -275,7 +277,10 @@ function inputHandler(element, event) {
         // testing
         confirmChangeOnBlueHighlight()
 
-        clearPreviousHighlight()
+        // tried to take out due to clearPreviousHighlight() not working
+        // clearPreviousHighlight()
+        resetHighlights()
+
         //to refresh where the blue indicator is
         indexOfBlueHighlight = null
 
