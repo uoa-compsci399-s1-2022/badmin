@@ -146,9 +146,9 @@ function fuzzyHighlight() {
                     previousSearchIndicies.push(i);
 
                     // testing
-                    if (gameTextElement.innerText !== duplicateWord) {
-                        console.log(gameTextElement.innerText, duplicateWord)
-                    }
+                    // if (gameTextElement.innerText !== duplicateWord) {
+                    //     console.log(gameTextElement.innerText, duplicateWord)
+                    // }
 
 
                 } else {
@@ -168,7 +168,7 @@ function fuzzyHighlight() {
 // let currentSuppliedTextDuplicate;
 function revertDynamicHighlightChanges() {
     // compares suppliedText currently during highlighting and the current unchanged suppliedText
-    let inputSearch = document.getElementById("inputTextBox").innerText
+
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
 
@@ -189,13 +189,40 @@ function revertDynamicHighlightChanges() {
 
 
 }
+let indexOfBlueHighlight;
+// this should be called when they press enter or space
+function confirmChangeOnBlueHighlight() {
+    let inputSearch = document.getElementById("inputTextBox")
+
+    const gameTextArr = suppliedText.split(" ");
+    const gameTextElements = document.getElementById("gameText").children;
+    for (let i = 0; i < gameTextArr.length; i++) {
+        const gameTextElement = gameTextElements[i];
+
+        // console.log(gameTextElement.innerHTML.indexOf("lightblue"))
+        if (gameTextElement.innerHTML.indexOf("style") !== -1) {
+            console.log("found highlighting")
+            indexOfBlueHighlight = i
+            //check the user input at highlighted blue's index
+            // console.log(inputSearch)
+            checkUserInput(inputSearch)
+        }
+
+    }
+}
+
+
+
+
+
+
 
 function resetHighlights() {
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
     for (let i = 0; i < gameTextArr.length; i++) {
         const gameTextElement = gameTextElements[i];
-        const word = gameTextArr[i];
+        // const word = gameTextArr[i];
         if (gameTextElement.innerHTML.indexOf("<mark>") !== -1) {
             //strip all words clean of marks
             const gameTextElement = gameTextElements[i];
@@ -243,8 +270,16 @@ function fuzzySearch(testInput) {
 let lastUserInputTime;
 function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
+        console.log("inputHandler " + element.innerHTML)
+
+        // testing
+        confirmChangeOnBlueHighlight()
+
         clearPreviousHighlight()
-        checkUserInput(element);
+        //to refresh where the blue indicator is
+        indexOfBlueHighlight = null
+
+        // checkUserInput(element);
         lastUserInputTime = Date.now()
 
     }
@@ -270,8 +305,12 @@ function checkUserInput(element) {
                 }
             }
         }
-        if (index != -1) {
+        if (index != -1 && indexOfBlueHighlight == index) {
+            console.log(index)
+            console.log(indexOfBlueHighlight)
+            // added end condition to ensure the user is correcting the proper word they choose based on where the blue highlight is
             if (correctedWordsIndicies.includes(index) == false) {
+                console.log("entered")
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
                 const currentTime = Date.now();
@@ -286,6 +325,7 @@ function checkUserInput(element) {
                 else {
                     comboCounter = 1;
                 }
+
                 restartComboTimer();
                 comboStreak = comboStreak + TIME_LIMIT
                 comboStreakArr.push(comboStreak)
@@ -303,6 +343,7 @@ function checkUserInput(element) {
             }
         }
         else {
+            console.log("wrong and broke combo")
             document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
             score -= 30;
