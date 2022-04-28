@@ -293,6 +293,20 @@ function closeGameModal() {
     endGameModal.style.display = "none";
 }
 
+function shareGame() {
+    shareString = "\u2328"
+    for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
+        if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
+            shareString += " \u2705"
+        }
+        else {
+            shareString += " \u274E"
+        }
+    }
+    navigator.clipboard.writeText(shareString);
+    alert("Copied results to clipboard!")
+}
+
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
     if (event.target == endGameModal) {
