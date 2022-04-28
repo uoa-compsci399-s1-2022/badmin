@@ -339,11 +339,13 @@ function checkUserInput(element) {
                 resetHighlights();
                 // to update the comparator passage
                 currentSuppliedTextDuplicate = suppliedText;
-
+                // to try reset the changed texts after correction
+                revertDynamicHighlightChanges();
             }
         }
         else {
             console.log("wrong and broke combo")
+            revertDynamicHighlightChanges();
             document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
             score -= 30;
