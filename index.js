@@ -4,14 +4,13 @@
 function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
-    document.getElementById("gameControls").style.display = "grid";
+    document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "none";
     document.getElementById("pageInfo").style.display = "none";
     document.getElementById("title").style.color = "#60525F"
     document.getElementById("score").style.display = "grid";
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
-    document.getElementById("timer").innerText = "00:00";
 }
 /**
  * Blur text function
@@ -28,7 +27,7 @@ function hideGame() {
 function pause() {
     document.getElementById("gameText").style.display = "none";
     document.getElementById("gameHidden").style.display = "block";
-    document.getElementById("gameControls").style.display = "grid";
+    document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "grid";
     document.getElementById("pageInfo").style.display = "grid";
     document.getElementById("title").style.color = "#EDD9A3"
@@ -206,6 +205,7 @@ function fuzzySearch(testInput){
 let lastUserInputTime;
 function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
+        clearPreviousHighlight()
         checkUserInput(element);
         lastUserInputTime = Date.now()
         
@@ -266,6 +266,7 @@ function checkUserInput(element) {
             }
         }
         else {
+            document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
             score -= 30;
             document.getElementById("score").innerText = "score: \n" + score;
@@ -274,6 +275,8 @@ function checkUserInput(element) {
             comboStreak = 0;
         }
     }
+    setTimeout(() => { document.getElementById("inputTextBox").classList.remove("error"); }, 500);
+    document.getElementById("inputTextBox").innerText = "";
 }
 
 let comboStreak = 0;
@@ -329,7 +332,6 @@ function generateCorrectIndicies() {
 function replaceWord(correctWord, correctedIndex) {
     document.getElementById("gameText").children[correctedIndex].innerText = correctWord;
     document.getElementById("gameText").children[correctedIndex].style.color = "#EDD9A3";
-    //document.getElementById("inputTextBox").value = "";
     document.getElementById("inputTextBox").innerText = "";
 }
 
@@ -361,7 +363,6 @@ function provideHint() {
     }
 }
 
-
 function refresh() {
     window.location.reload();
 }
@@ -377,13 +378,15 @@ window.onload = function () {
     // fuzzySearch();
 };
 
-let totalSeconds = 0;
+let gameStartTime;
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
+    gameStartTime = Date.now();
     showGame();
     correctIndicies = {};
     correctedWordsIndicies = new Array();
+    document.getElementById("inputTextBox").innerText = ""
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
     document.getElementById("inputTextBox").focus();
     document.getElementById("timer").innerHTML = "";
@@ -408,7 +411,7 @@ function startTimer() {
 function stopTimer() {
     stopComboTimer();
     clearPreviousHighlight();
-    document.getElementById("inputTextBox").innerText = "";
+    document.getElementById("inputTextBox").innerText = "\u2009"
     document.getElementById("inputTextBox").setAttribute("contenteditable", false);
     clearInterval(timerVar);
     clearInterval(hintVar);
@@ -574,15 +577,10 @@ window.onclick = function (event) {
 
 
 function countTimer() {
-    ++totalSeconds;
-    let hour = Math.floor(totalSeconds / 3600);
-    let minute = Math.floor((totalSeconds - hour * 3600) / 60);
-    let seconds = totalSeconds - (hour * 3600 + minute * 60);
-    if (hour < 10) hour = "0" + hour;
-    if (minute < 10) minute = "0" + minute;
-    if (seconds < 10) seconds = "0" + seconds;
-    document.getElementById("timer").innerHTML =
-        minute + ":" + seconds;
+    const timeElapsed = Date.now() - gameStartTime;
+    const seconds = Math.floor(timeElapsed / 1000) % 60;
+    const minutes = Math.floor((timeElapsed / 1000) / 60);
+    document.getElementById("timer").innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
 let difficulty;
@@ -717,19 +715,12 @@ function setWiki() {
 
 let genre;
 
-/**
-function setGenre() {
-    let x = document.getElementById("genre");
-    genre = x.value;
-}
-*/
-
 let JSONString = JSON.stringify(
     {
         "Easy": {
             "Sci-Fi": {
-                "suppliedText": "There was once an alien that lived on a plannet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other differente planets. One day he wanted to go look for friends, and so he travalled to a planet neaby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked him to join him on his planet.",
-                "correctText": "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he traveled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked him to join him on his planet.",
+                "suppliedText": "There was once an alien that lived on a plannet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other differente planets. One day he wanted to go look for friends, and so he travalled to a planet neaby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
+                "correctText": "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he traveled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
                 "errorCount": "4"
             },
             "Slice of Life": {
