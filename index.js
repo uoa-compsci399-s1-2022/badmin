@@ -139,7 +139,6 @@ function fuzzyHighlight(){
 }
 
 function resetHighlights(){
-
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
     for (let i = 0; i < gameTextArr.length; i++) {
@@ -147,16 +146,13 @@ function resetHighlights(){
         const word = gameTextArr[i];
         if (gameTextElement.innerHTML.indexOf("<mark>") !== -1 ){
             //strip all words clean of marks
-            // console.log(gameTextElement.innerHTML)
             const gameTextElement = gameTextElements[i];
             const beforePrefix = gameTextElement.innerHTML.split("<mark>")[0];
             const prefix = gameTextElement.innerHTML.split("<mark>")[1];
 
             gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
         }
-
     }
-
 }
 
 
@@ -262,7 +258,9 @@ function checkUserInput(element) {
                 countCorrect++;
 
                 //testing resetting the highlighting
-                resetHighlights()
+                resetHighlights();
+                previousSearchIndicies = new Array();
+                currentSearchIndex = 0;
                 
 
             }
