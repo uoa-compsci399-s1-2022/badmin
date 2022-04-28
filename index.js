@@ -116,7 +116,7 @@ function fuzzyHighlight(){
         extractedWords.push(WordPlusIndicesArr[j][0])
     }
     
-    alert(extractedWords)
+    // alert("words that should be highlighted based on fuzzy search:" +extractedWords)
     clearPreviousHighlight();
     if (inputSearch.length >= 1){
         for (let i = 0; i < gameTextArr.length; i++) {
