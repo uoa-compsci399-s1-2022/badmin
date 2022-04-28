@@ -114,6 +114,9 @@ function fuzzyHighlight(){
     for (let j = 0; j < WordPlusIndicesArr.length; j++) {
         extractedWords.push(WordPlusIndicesArr[j][0])
     }
+
+
+
     
     // alert("words that should be highlighted based on fuzzy search:" +extractedWords)
     clearPreviousHighlight();
@@ -125,15 +128,9 @@ function fuzzyHighlight(){
             if (extractedWords.includes(word) &&!correctedWordsIndicies.includes(i.toString())){
                 startingIndex = extractedWords.indexOf(word)
                 highlightStart = WordPlusIndicesArr[startingIndex][1];
-                
                 gameTextElement.innerHTML =  gameTextElement.innerHTML.slice(0, highlightStart) + "<mark>" + gameTextElement.innerHTML.slice(highlightStart, highlightStart +inputSearch.length)  + "</mark>" + gameTextElement.innerHTML.slice(highlightStart +inputSearch.length) ;
-                
                 previousSearchIndicies.push(i);
-                
             }
-
-
-
         }
     }
     if (previousSearchIndicies.length >= 1) {
@@ -141,7 +138,26 @@ function fuzzyHighlight(){
     }
 }
 
+function resetHighlights(){
 
+    const gameTextArr = suppliedText.split(" ");
+    const gameTextElements = document.getElementById("gameText").children;
+    for (let i = 0; i < gameTextArr.length; i++) {
+        const gameTextElement = gameTextElements[i];
+        const word = gameTextArr[i];
+        if (gameTextElement.innerHTML.indexOf("<mark>") !== -1 ){
+            //strip all words clean of marks
+            // console.log(gameTextElement.innerHTML)
+            const gameTextElement = gameTextElements[i];
+            const beforePrefix = gameTextElement.innerHTML.split("<mark>")[0];
+            const prefix = gameTextElement.innerHTML.split("<mark>")[1];
+
+            gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+        }
+
+    }
+
+}
 
 
 /**
@@ -171,6 +187,13 @@ function fuzzySearch(testInput){
 } 
 
 
+// function explosivelyChangeHighlighted(){
+//     let inputSearch = document.getElementById("inputTextBox").innerText
+//     const gameTextArr = suppliedText.split(" ");
+//     const gameTextElements = document.getElementById("gameText").children;
+
+
+// }
 
 
 
@@ -237,6 +260,11 @@ function checkUserInput(element) {
                 document.getElementById("score").innerText = "score: \n" + score;
                 document.getElementById("combo").innerText = "combo: \n" + comboCounter;
                 countCorrect++;
+
+                //testing resetting the highlighting
+                resetHighlights()
+                
+
             }
         }
         else {
