@@ -969,6 +969,8 @@ function loadText() {
     const passageSurr = separateWords();
     document.getElementById("gameText").innerHTML = passageSurr;
     document.getElementById("gameHidden").innerHTML = passageSurr;
+    //to work for any supplied text
+    currentSuppliedTextDuplicate = suppliedText
 }
 
 // to add divs between each word
