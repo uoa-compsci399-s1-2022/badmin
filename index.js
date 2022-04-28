@@ -86,7 +86,6 @@ function clearPreviousHighlight() {
     const gameTextElements = document.getElementById("gameText").children;
     if (previousSearchIndicies.length >= 1) {
         const searchElement = gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild;
-        console.log(searchElement);
         searchElement.outerHTML = `<mark>${searchElement.innerHTML}</mark>`; //clearing the attributes (including style) of the current selected search result
     }
     for (let index of previousSearchIndicies) {
@@ -126,13 +125,8 @@ function fuzzyHighlight(){
             if (extractedWords.includes(word) &&!correctedWordsIndicies.includes(i.toString())){
                 startingIndex = extractedWords.indexOf(word)
                 highlightStart = WordPlusIndicesArr[startingIndex][1];
-                console.log(startingIndex, highlightStart)
                 
                 gameTextElement.innerHTML =  gameTextElement.innerHTML.slice(0, highlightStart) + "<mark>" + gameTextElement.innerHTML.slice(highlightStart, highlightStart +inputSearch.length)  + "</mark>" + gameTextElement.innerHTML.slice(highlightStart +inputSearch.length) ;
-                
-
-                //old replace
-                // gameTextElement.innerHTML = "<mark>" + gameTextElement.innerHTML.slice(0, searchText.length) + "</mark>" + gameTextElement.innerHTML.slice(searchText.length);
                 
                 previousSearchIndicies.push(i);
                 
