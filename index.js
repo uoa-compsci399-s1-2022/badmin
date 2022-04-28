@@ -86,7 +86,7 @@ function clearPreviousHighlight() {
     const gameTextElements = document.getElementById("gameText").children;
     if (previousSearchIndicies.length >= 1) {
         const searchElement = gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild;
-        console.log(searchElement)
+        // console.log(searchElement)
         searchElement.outerHTML = `<mark>${searchElement.innerHTML}</mark>`; //clearing the attributes (including style) of the current selected search result
     }
     for (let index of previousSearchIndicies) {
@@ -227,15 +227,27 @@ function resetHighlights() {
         // const word = gameTextArr[i];
         if (gameTextElement.innerHTML.indexOf("<mark>") !== -1) {
             //strip all words clean of marks
-            const gameTextElement = gameTextElements[i];
+
             const beforePrefix = gameTextElement.innerHTML.split("<mark>")[0];
             const prefix = gameTextElement.innerHTML.split("<mark>")[1];
 
             gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
         }
+        //to remove blue
+        if (gameTextElement.innerHTML.indexOf("style") !== -1) {
+            // console.log("entered")
+            console.log(gameTextElement.innerHTML)
+            const beforePrefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[0];
+            console.log(beforePrefix)
+            const prefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[1];
+
+            gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+
+
+        }
+        previousSearchIndicies = new Array();
+        currentSearchIndex = 0;
     }
-    previousSearchIndicies = new Array();
-    currentSearchIndex = 0;
 }
 
 
@@ -310,10 +322,10 @@ function checkUserInput(element) {
                 }
             }
         }
+        // added end condition to ensure the user is correcting the proper word they choose based on where the blue highlight is
         if (index != -1 && indexOfBlueHighlight == index) {
             console.log(index)
             console.log(indexOfBlueHighlight)
-            // added end condition to ensure the user is correcting the proper word they choose based on where the blue highlight is
             if (correctedWordsIndicies.includes(index) == false) {
                 console.log("entered")
                 replaceWord(correctIndicies[index], index);
@@ -350,7 +362,10 @@ function checkUserInput(element) {
         }
         else {
             console.log("wrong and broke combo")
+            // reset highlights if wrong also??
+            resetHighlights();
             revertDynamicHighlightChanges();
+
             document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
             score -= 30;
