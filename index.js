@@ -107,6 +107,12 @@ function fuzzyHighlight() {
     const gameTextElements = document.getElementById("gameText").children;
 
     const WordPlusIndicesArr = fuzzySearch(inputSearch);
+
+
+    // testing
+    const duplicateGameTextArr = currentSuppliedTextDuplicate.split(" ");
+
+
     let extractedWords = []
     let startingIndex;
     let highlightStart;
@@ -116,27 +122,76 @@ function fuzzyHighlight() {
 
 
 
-
+    // console.log(currentSuppliedTextDuplicate)
     // alert("words that should be highlighted based on fuzzy search:" +extractedWords)
     clearPreviousHighlight();
+    // call function here to revert changes back to normal
+    revertDynamicHighlightChanges();
+
+
     if (inputSearch.length >= 1) {
         for (let i = 0; i < gameTextArr.length; i++) {
             const gameTextElement = gameTextElements[i];
             const word = gameTextArr[i];
 
+
+            // testing
+            const duplicateWord = duplicateGameTextArr[i];
+
             if (extractedWords.includes(word) && !correctedWordsIndicies.includes(i.toString())) {
+                if (inputSearch.length >= 3) {
+                    startingIndex = extractedWords.indexOf(word)
+                    highlightStart = WordPlusIndicesArr[startingIndex][1];
+                    gameTextElement.innerHTML = gameTextElement.innerHTML.slice(0, highlightStart) + "<mark>" + inputSearch + "</mark>" + gameTextElement.innerHTML.slice(highlightStart + inputSearch.length);
+                    previousSearchIndicies.push(i);
+
+                    // testing
+                    if (gameTextElement.innerText !== duplicateWord) {
+                        console.log(gameTextElement.innerText, duplicateWord)
+                    }
 
 
-                startingIndex = extractedWords.indexOf(word)
-                highlightStart = WordPlusIndicesArr[startingIndex][1];
-                gameTextElement.innerHTML = gameTextElement.innerHTML.slice(0, highlightStart) + "<mark>" + gameTextElement.innerHTML.slice(highlightStart, highlightStart + inputSearch.length) + "</mark>" + gameTextElement.innerHTML.slice(highlightStart + inputSearch.length);
-                previousSearchIndicies.push(i);
+                } else {
+                    startingIndex = extractedWords.indexOf(word)
+                    highlightStart = WordPlusIndicesArr[startingIndex][1];
+                    gameTextElement.innerHTML = gameTextElement.innerHTML.slice(0, highlightStart) + "<mark>" + gameTextElement.innerHTML.slice(highlightStart, highlightStart + inputSearch.length) + "</mark>" + gameTextElement.innerHTML.slice(highlightStart + inputSearch.length);
+                    previousSearchIndicies.push(i);
+                }
             }
         }
     }
     if (previousSearchIndicies.length >= 1) {
         gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "lightblue";
     }
+}
+
+// let currentSuppliedTextDuplicate;
+function revertDynamicHighlightChanges() {
+    // compares suppliedText currently during highlighting and the current unchanged suppliedText
+    let inputSearch = document.getElementById("inputTextBox").innerText
+    const gameTextArr = suppliedText.split(" ");
+    const gameTextElements = document.getElementById("gameText").children;
+
+    const duplicateGameTextArr = currentSuppliedTextDuplicate.split(" ");
+    // const duplicateGameTextElements = document.getElementById("gameText").children;
+
+
+
+    //loop through each word and change back to its original spelling
+    for (let i = 0; i < gameTextArr.length; i++) {
+        const gameTextElement = gameTextElements[i];
+
+        const duplicateWord = duplicateGameTextArr[i];
+
+        if (gameTextElement.innerText !== duplicateWord && !correctedWordsIndicies.includes(i.toString())) {
+            // console.log(gameTextElement.innerText, duplicateWord)
+            //change the supplied inner text back to what it was usually
+            gameTextElement.innerHTML = duplicateWord
+        }
+    }
+
+
+
 }
 
 function resetHighlights() {
@@ -246,8 +301,8 @@ function checkUserInput(element) {
 
                 //testing resetting the highlighting
                 resetHighlights();
-
-
+                // to update the comparator passage
+                currentSuppliedTextDuplicate = suppliedText;
 
             }
         }
@@ -855,10 +910,14 @@ function loadDaily() {
     const key = keys[((daysPassed % length) + length) % length];
     suppliedText = textBank[key]["suppliedText"];
     correctText = textBank[key]["correctText"];
+    // testing only for daily for a comparator
+    currentSuppliedTextDuplicate = suppliedText
+    // console.log(currentSuppliedTextDuplicate);
 }
 
 let correctText;
 let suppliedText;
+let currentSuppliedTextDuplicate;
 function loadText() {
     // if genre not selected, show daily
     if (typeof genre == "undefined") {
