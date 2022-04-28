@@ -173,18 +173,14 @@ function revertDynamicHighlightChanges() {
     const gameTextElements = document.getElementById("gameText").children;
 
     const duplicateGameTextArr = currentSuppliedTextDuplicate.split(" ");
-    // const duplicateGameTextElements = document.getElementById("gameText").children;
 
-
-
-    //loop through each word and change back to its original spelling
     for (let i = 0; i < gameTextArr.length; i++) {
         const gameTextElement = gameTextElements[i];
 
         const duplicateWord = duplicateGameTextArr[i];
 
         if (gameTextElement.innerText !== duplicateWord && !correctedWordsIndicies.includes(i.toString())) {
-            // console.log(gameTextElement.innerText, duplicateWord)
+
             //change the supplied inner text back to what it was usually
             gameTextElement.innerHTML = duplicateWord
         }
