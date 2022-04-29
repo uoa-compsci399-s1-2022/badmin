@@ -237,8 +237,6 @@ function fuzzySearch(testInput) {
 let lastUserInputTime;
 function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
-        console.log("inputHandler " + element.innerHTML)
-
         confirmChangeOnBlueHighlight();
         resetHighlights();
 
@@ -260,6 +258,7 @@ let previousCorrectedTime = null;
 
 
 function checkUserInput(element) {
+    let possibleCorrectableIndices = []
     if (element.innerText.length >= 1) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
@@ -267,17 +266,32 @@ function checkUserInput(element) {
                 //index was being overriden to the last index, by default, we start from correcting the first instance
                 if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText && !correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
                     index = Object.keys(correctIndicies)[i];
-
-
+                    possibleCorrectableIndices.push((index).toString());
                 }
             }
         }
+        console.log(index)
+        console.log(typeof index)
         // added end condition to ensure the user is correcting the proper word they choose based on where the blue highlight is
-        if (index != -1 && indexOfBlueHighlight == index) {
-            if (correctedWordsIndicies.includes(index) == false) {
-                console.log("entered")
+        if (index != "-1" && possibleCorrectableIndices.includes(indexOfBlueHighlight.toString())) {
+            // if (correctedWordsIndicies.includes(index) == false) {
+            //     console.log("entered")
+            //     replaceWord(correctIndicies[index], index);
+            //     correctedWordsIndicies.push(index);
+            index = indexOfBlueHighlight.toString()
+
+
+            //testing indexOfBlueHighlight instead of index(above corrects from start to back)
+            if (correctedWordsIndicies.includes(indexOfBlueHighlight.toString()) == false) {
+                console.log("index value= " + correctIndicies[index])
+                console.log("index =" + index)
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
+                console.log("correctedWordsIndicies: " + correctedWordsIndicies)
+                console.log(correctedWordsIndicies)
+                // test ends here
+
+
                 const currentTime = Date.now();
                 if (previousCorrectedTime == null) {
                     comboCounter = 1;
@@ -357,9 +371,11 @@ function navigateSearchResults(key) {
         const length = previousSearchIndicies.length;
         if (key == "ArrowUp" || key == "ArrowLeft") {
             currentSearchIndex = (((currentSearchIndex - 1) % length) + length) % length // modulus formula [ ((a % n ) + n ) % n ] to account for negative values
+            indexOfBlueHighlight = currentSearchIndex
         }
         if (key == "ArrowDown" || key == "ArrowRight") {
             currentSearchIndex = (currentSearchIndex + 1) % length // currentSearchIndex can't be negative, so currentSearchIndex + 1 can't be negative => use positive only modulus
+            indexOfBlueHighlight = currentSearchIndex
         }
         gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "lightblue";
     }
