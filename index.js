@@ -11,6 +11,7 @@ function showGame() {
     document.getElementById("score").style.display = "grid";
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
+    document.getElementById("infoIcon").style.color = "#60525F"
 }
 /**
  * Blur text function
@@ -293,10 +294,22 @@ function closeGameModal() {
     endGameModal.style.display = "none";
 }
 
+function showInfoModal() {
+    document.getElementById("infoModal").style.display = "block"
+
+}
+function closeInfoModal() {
+    infoModal.style.display = "none";
+}
+
+
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
+    }
+    if (event.target == infoModal) {
+        infoModal.style.display = "none";
     }
 }
 
