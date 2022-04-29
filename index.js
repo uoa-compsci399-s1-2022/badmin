@@ -112,6 +112,7 @@ let score = 0;
 let comboCounter = 0;
 let previousCorrectedTime = null;
 function checkUserInput(element) {
+    let prevScore;
     if (element.innerText.length >= 1) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
@@ -137,18 +138,28 @@ function checkUserInput(element) {
                 else {
                     comboCounter = 1;
                 }
+
                 restartComboTimer();
                 previousCorrectedTime = currentTime;
+                prevScore = score;
                 score += 100 * comboCounter;
-                document.getElementById("score").innerText = "score: \n" + score;
+
+                // to animate the score
+                animateScore(prevScore, score, 700)
+
+
                 document.getElementById("combo").innerText = "combo: \n" + comboCounter;
             }
         }
         else {
             document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
+            prevScore = score;
             score -= 30;
-            document.getElementById("score").innerText = "score: \n" + score;
+            // decrease the score when wrong
+            animateScore(prevScore, score, 600)
+
+
             document.getElementById("combo").innerText = "combo: \n" + comboCounter;
         }
     }
@@ -298,6 +309,24 @@ window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
     }
+}
+
+
+// to animate the score when it increases/decreases
+function animateScore(start, end, duration) {
+    const score = document.getElementById("score");
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) {
+            startTimestamp = timestamp;
+        }
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        score.innerHTML = "score:" + "<br>" + Math.floor(progress * (end - start) + start) + "</br>";
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        }
+    };
+    window.requestAnimationFrame(step);
 }
 
 
