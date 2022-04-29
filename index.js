@@ -313,7 +313,7 @@ function showModal() {
 
 function displayStats() {
     document.getElementById("modalScore").innerText = "Score: " + score;
-    document.getElementById("modalaccuracy").innerText = "Accuracy: " + Math.max(0, Math.round(((countCorrect - countWrong) / Object.keys(correctIndicies).length) * 100)) + "%"
+    document.getElementById("modalaccuracy").innerText = "Accuracy: " + Math.max(0, Math.round((countCorrect) / (Object.keys(correctIndicies).length + countWrong) * 100)) + "%"
     calculateComboStreak()
     formatTimeTaken();
     getEveryWord();
@@ -359,6 +359,9 @@ function formatTimeTaken() {
 function getEveryWord() {
     if (Object.keys(correctIndicies).length === correctedWordsIndicies.length) {
         document.getElementById("modalGotEverything").innerText = "You got every word!"
+    }
+    else if(Object.keys(correctIndicies).length - correctedWordsIndicies.length ==1 ){
+        document.getElementById("modalGotEverything").innerText = "You did not find " + (Object.keys(correctIndicies).length - correctedWordsIndicies.length) + " word in the text!";
     }
     else {
         document.getElementById("modalGotEverything").innerText = "You did not find " + (Object.keys(correctIndicies).length - correctedWordsIndicies.length) + " words in the text!";
