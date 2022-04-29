@@ -312,7 +312,12 @@ window.onclick = function (event) {
 }
 
 
-// to animate the score when it increases/decreases
+/**
+* @function animateScore() called only by checkUserInput, animates score by repeatedly asking for animation for 600ms
+* @param start - the score currently
+* @param end - the score after correction/incorrect word
+* @param duration - how long animation goes for, currently hardcoded at code for 600ms
+*/
 function animateScore(start, end, duration) {
     const score = document.getElementById("score");
     let startTimestamp = null;
