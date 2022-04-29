@@ -11,6 +11,7 @@ function showGame() {
     document.getElementById("score").style.display = "grid";
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
+    document.getElementById("readyMessage").style.display = "none";
 }
 /**
  * Blur text function
