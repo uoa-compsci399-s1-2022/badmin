@@ -247,7 +247,7 @@ window.onload = function () {
 };
 
 function showReadyMessage() {
-    document.getElementById("readyMessage")
+    document.getElementById("readyMessage").style.display = "block";
 }
 
 let gameStartTime;
