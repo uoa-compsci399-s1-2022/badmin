@@ -326,7 +326,7 @@ body {
 
 #comboContainer {
     grid-area: combo;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -347,16 +347,6 @@ body {
     height: 100%;
     background: #EDD9A3;
 }
-
-
-/* #comboBar {
-    width: 0%;
-    height: 2%;
-    background: #EDD9A3;
-    align-self: flex-start;
-    margin-left: 20%;
-    margin-right: 20%;
-} */
 
 /* modal */
 .modal {
