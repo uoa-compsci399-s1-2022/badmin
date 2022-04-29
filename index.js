@@ -245,6 +245,10 @@ window.onload = function () {
     document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
 };
 
+function showReadyMessage() {
+    document.getElementById("readyMessage")
+}
+
 let gameStartTime;
 let timerVar = 0;
 let hintVar = 0;
