@@ -270,28 +270,12 @@ function checkUserInput(element) {
                 }
             }
         }
-        console.log(index)
-        console.log(typeof index)
         // added end condition to ensure the user is correcting the proper word they choose based on where the blue highlight is
         if (index != "-1" && possibleCorrectableIndices.includes(indexOfBlueHighlight.toString())) {
-            // if (correctedWordsIndicies.includes(index) == false) {
-            //     console.log("entered")
-            //     replaceWord(correctIndicies[index], index);
-            //     correctedWordsIndicies.push(index);
             index = indexOfBlueHighlight.toString()
-
-
-            //testing indexOfBlueHighlight instead of index(above corrects from start to back)
             if (correctedWordsIndicies.includes(indexOfBlueHighlight.toString()) == false) {
-                console.log("index value= " + correctIndicies[index])
-                console.log("index =" + index)
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
-                console.log("correctedWordsIndicies: " + correctedWordsIndicies)
-                console.log(correctedWordsIndicies)
-                // test ends here
-
-
                 const currentTime = Date.now();
                 if (previousCorrectedTime == null) {
                     comboCounter = 1;
@@ -313,9 +297,6 @@ function checkUserInput(element) {
                 document.getElementById("score").innerText = "score: \n" + score;
                 document.getElementById("combo").innerText = "combo: \n" + comboCounter;
                 countCorrect++;
-
-                //testing resetting the highlighting
-                resetHighlights();
                 // to update the comparator passage
                 currentSuppliedTextDuplicate = suppliedText;
                 // to try reset the changed texts after correction
@@ -324,7 +305,6 @@ function checkUserInput(element) {
         }
         else {
             //when wrong, also reset highlights, and change back all dynamically change text from highlighting
-            resetHighlights();
             revertDynamicHighlightChanges();
 
             document.getElementById("inputTextBox").classList.add("error");
@@ -371,11 +351,11 @@ function navigateSearchResults(key) {
         const length = previousSearchIndicies.length;
         if (key == "ArrowUp" || key == "ArrowLeft") {
             currentSearchIndex = (((currentSearchIndex - 1) % length) + length) % length // modulus formula [ ((a % n ) + n ) % n ] to account for negative values
-            indexOfBlueHighlight = currentSearchIndex
+            // indexOfBlueHighlight = currentSearchIndex
         }
         if (key == "ArrowDown" || key == "ArrowRight") {
             currentSearchIndex = (currentSearchIndex + 1) % length // currentSearchIndex can't be negative, so currentSearchIndex + 1 can't be negative => use positive only modulus
-            indexOfBlueHighlight = currentSearchIndex
+            // indexOfBlueHighlight = currentSearchIndex
         }
         gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "lightblue";
     }
