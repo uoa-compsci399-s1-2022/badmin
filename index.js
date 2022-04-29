@@ -215,7 +215,7 @@ function resetHighlights() {
 
 
 /**
-* @function fuzzySearch() will identify the matched fuzzy words in the text
+* @function fuzzySearch() will identify the matched fuzzy words in the text, calls the function from diff_patch_match
 * @param testInput - the text from the inputBox game control
 * @return - returns an array of arrays, first index is the fuzzy matched word along at the index, where the matching starts, for subsequent corrections and highlights begin at
 */
@@ -227,17 +227,11 @@ function fuzzySearch(testInput) {
     for (let i = 0; i < gameTextArr.length; i++) {
         let match = dmp.match_main(gameTextArr[i], testInput, testLoc)
         if (match !== -1) {
-            // matchingWordsArr.push(gameTextArr[i])
-            // matchingIndexArr.push(match)
             matchingWordPlusIndex.push([gameTextArr[i], match])
         }
     }
-
     return matchingWordPlusIndex;
 }
-
-
-
 
 
 let lastUserInputTime;
@@ -245,18 +239,11 @@ function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
         console.log("inputHandler " + element.innerHTML)
 
-        // testing
-        confirmChangeOnBlueHighlight()
+        confirmChangeOnBlueHighlight();
+        resetHighlights();
 
-        // tried to take out due to clearPreviousHighlight() not working
-        // clearPreviousHighlight()
-        resetHighlights()
-
-        //to refresh where the blue indicator is
-        indexOfBlueHighlight = null
-
+        indexOfBlueHighlight = null; //to refresh where the blue indicator is
         lastUserInputTime = Date.now()
-
     }
     else if (event.code == "ArrowUp" || event.code == "ArrowDown" || event.code == "ArrowLeft" || event.code == "ArrowRight") {
         navigateSearchResults(event.code);
@@ -277,19 +264,16 @@ function checkUserInput(element) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(i) == false) {
+                //index was being overriden to the last index, by default, we start from correcting the first instance
                 if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText && !correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
                     index = Object.keys(correctIndicies)[i];
-                    //index was being overriden to the last index, by default, we start from correcting the first instance
-                    // if (index !== -1) {
-                    //     break;
-                    // }
+
+
                 }
             }
         }
         // added end condition to ensure the user is correcting the proper word they choose based on where the blue highlight is
         if (index != -1 && indexOfBlueHighlight == index) {
-            console.log(index)
-            console.log(indexOfBlueHighlight)
             if (correctedWordsIndicies.includes(index) == false) {
                 console.log("entered")
                 replaceWord(correctIndicies[index], index);
@@ -325,10 +309,7 @@ function checkUserInput(element) {
             }
         }
         else {
-            console.log(index)
-            console.log(indexOfBlueHighlight)
-            console.log("wrong and broke combo")
-            // reset highlights if wrong also??
+            //when wrong, also reset highlights, and change back all dynamically change text from highlighting
             resetHighlights();
             revertDynamicHighlightChanges();
 
