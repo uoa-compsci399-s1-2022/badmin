@@ -86,7 +86,6 @@ function clearPreviousHighlight() {
     const gameTextElements = document.getElementById("gameText").children;
     if (previousSearchIndicies.length >= 1) {
         const searchElement = gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild;
-        // console.log(searchElement)
         searchElement.outerHTML = `<mark>${searchElement.innerHTML}</mark>`; //clearing the attributes (including style) of the current selected search result
     }
     for (let index of previousSearchIndicies) {
@@ -103,18 +102,15 @@ function clearPreviousHighlight() {
 
 // so far will just be called when enter is pressed, ideally, this will be called each time they make a change to inputbox 
 //so that it will update the highlighing 
+
+/**
+* @function fuzzyHighlight() highlights fuzzy matches of words in the gameText element, the function is only run when the inputText bar is updated
+*/
 function fuzzyHighlight() {
     let inputSearch = document.getElementById("inputTextBox").innerText
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
-
     const WordPlusIndicesArr = fuzzySearch(inputSearch);
-
-
-    // testing
-    const duplicateGameTextArr = currentSuppliedTextDuplicate.split(" ");
-
-
     let extractedWords = []
     let startingIndex;
     let highlightStart;
@@ -122,37 +118,19 @@ function fuzzyHighlight() {
         extractedWords.push(WordPlusIndicesArr[j][0])
     }
 
-
-
-    // console.log(currentSuppliedTextDuplicate)
-    // alert("words that should be highlighted based on fuzzy search:" +extractedWords)
     clearPreviousHighlight();
-    // call function here to revert changes back to normal
+    // call function here to revert changes back to normal text pre-highlighting
     revertDynamicHighlightChanges();
-
-
     if (inputSearch.length >= 1) {
         for (let i = 0; i < gameTextArr.length; i++) {
             const gameTextElement = gameTextElements[i];
             const word = gameTextArr[i];
-
-
-            // testing
-            const duplicateWord = duplicateGameTextArr[i];
-
             if (extractedWords.includes(word) && !correctedWordsIndicies.includes(i.toString())) {
                 if (inputSearch.length >= 3) {
                     startingIndex = extractedWords.indexOf(word)
                     highlightStart = WordPlusIndicesArr[startingIndex][1];
                     gameTextElement.innerHTML = gameTextElement.innerHTML.slice(0, highlightStart) + "<mark>" + inputSearch + "</mark>" + gameTextElement.innerHTML.slice(highlightStart + inputSearch.length);
                     previousSearchIndicies.push(i);
-
-                    // testing
-                    // if (gameTextElement.innerText !== duplicateWord) {
-                    //     console.log(gameTextElement.innerText, duplicateWord)
-                    // }
-
-
                 } else {
                     startingIndex = extractedWords.indexOf(word)
                     highlightStart = WordPlusIndicesArr[startingIndex][1];
@@ -167,67 +145,58 @@ function fuzzyHighlight() {
     }
 }
 
-// let currentSuppliedTextDuplicate;
-function revertDynamicHighlightChanges() {
-    // compares suppliedText currently during highlighting and the current unchanged suppliedText
 
+
+
+/**
+* @function revertDynamicHighlightChanges() - compares suppliedText currently during highlighting and the current unchanged suppliedText
+* changes back changes from inputText search back into prehighlighting state if not confirmed to changed
+*/
+function revertDynamicHighlightChanges() {
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
-
     const duplicateGameTextArr = currentSuppliedTextDuplicate.split(" ");
-
     for (let i = 0; i < gameTextArr.length; i++) {
         const gameTextElement = gameTextElements[i];
-
         const duplicateWord = duplicateGameTextArr[i];
-
         if (gameTextElement.innerText !== duplicateWord && !correctedWordsIndicies.includes(i.toString())) {
-
-            //change the supplied inner text back to what it was usually
-            gameTextElement.innerHTML = duplicateWord
+            gameTextElement.innerHTML = duplicateWord //change the supplied inner text back to what it was usually
         }
     }
 
 
 
 }
+
+/**
+* @function confirmChangeOnBlueHighlight() - called on when user presses enter/space to confirm a change. sets the global variable indexOfBlueHighlight to check for where they are correcting the word,
+* this same global variable is used as a further check in CheckUserInput()
+*/
 let indexOfBlueHighlight;
-// this should be called when they press enter or space
 function confirmChangeOnBlueHighlight() {
     let inputSearch = document.getElementById("inputTextBox")
-
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
     for (let i = 0; i < gameTextArr.length; i++) {
         const gameTextElement = gameTextElements[i];
-
-        // console.log(gameTextElement.innerHTML.indexOf("lightblue"))
         if (gameTextElement.innerHTML.indexOf("style") !== -1) {
-            console.log("found highlighting")
             indexOfBlueHighlight = i
-            //check the user input at highlighted blue's index
-            // console.log(inputSearch)
-            checkUserInput(inputSearch)
+            checkUserInput(inputSearch) //check the user input at highlighted blue's index too
         }
-
     }
 }
 
-
-
-
-
-
-
+/**
+* @function resetHighlights() - removes all marks from the passage to cleanse for next searchTerm to prevent dirtying the divs.
+* It is called when enter is pressed, on entering a correct word, and also when an incorrect word is entered
+*/
 function resetHighlights() {
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
     for (let i = 0; i < gameTextArr.length; i++) {
         const gameTextElement = gameTextElements[i];
-        // const word = gameTextArr[i];
+        //strip all yellow
         if (gameTextElement.innerHTML.indexOf("<mark>") !== -1) {
-            //strip all words clean of marks
-
             const beforePrefix = gameTextElement.innerHTML.split("<mark>")[0];
             const prefix = gameTextElement.innerHTML.split("<mark>")[1];
 
@@ -235,15 +204,9 @@ function resetHighlights() {
         }
         //to remove blue
         if (gameTextElement.innerHTML.indexOf("style") !== -1) {
-            // console.log("entered")
-            console.log(gameTextElement.innerHTML)
             const beforePrefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[0];
-            console.log(beforePrefix)
             const prefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[1];
-
             gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
-
-
         }
         previousSearchIndicies = new Array();
         currentSearchIndex = 0;
@@ -253,18 +216,14 @@ function resetHighlights() {
 
 /**
 * @function fuzzySearch() will identify the matched fuzzy words in the text
-* @param testInput - "the text from the inputBox game control"
-* @return - so far will indicate 2 arrays, the words, and second array is where in the word it fuzzy matches
+* @param testInput - the text from the inputBox game control
+* @return - returns an array of arrays, first index is the fuzzy matched word along at the index, where the matching starts, for subsequent corrections and highlights begin at
 */
-let testLoc = 0;
-
+let testLoc = 0; //to take the first instance of a match in each word
 function fuzzySearch(testInput) {
     let dmp = new diff_match_patch();
-    // let matchingWordsArr = []
-    // let matchingIndexArr = []
     let matchingWordPlusIndex = []
     const gameTextArr = suppliedText.split(" ");
-
     for (let i = 0; i < gameTextArr.length; i++) {
         let match = dmp.match_main(gameTextArr[i], testInput, testLoc)
         if (match !== -1) {
@@ -296,7 +255,6 @@ function inputHandler(element, event) {
         //to refresh where the blue indicator is
         indexOfBlueHighlight = null
 
-        // checkUserInput(element);
         lastUserInputTime = Date.now()
 
     }
@@ -319,6 +277,10 @@ function checkUserInput(element) {
             if (correctedWordsIndicies.includes(i) == false) {
                 if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText) {
                     index = Object.keys(correctIndicies)[i];
+                    //index was being overriden to the last index, by default, we start from correcting the first instance
+                    if (index !== -1) {
+                        break;
+                    }
                 }
             }
         }
@@ -361,6 +323,8 @@ function checkUserInput(element) {
             }
         }
         else {
+            console.log(index)
+            console.log(indexOfBlueHighlight)
             console.log("wrong and broke combo")
             // reset highlights if wrong also??
             resetHighlights();
@@ -818,7 +782,7 @@ let JSONString = JSON.stringify(
         "Easy": {
             "Sci-Fi": {
                 "suppliedText": "There was once an alien that lived on a plannet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other differente planets. One day he wanted to go look for friends, and so he travalled to a planet neaby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
-                "correctText": "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he traveled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
+                "correctText": "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he travelled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
                 "errorCount": "4"
             },
             "Slice of Life": {
@@ -859,8 +823,8 @@ let JSONString = JSON.stringify(
         },
         "Medium": {
             "Sci-Fi": {
-                "suppliedText": "A self-proclamied exorxist and fraud named Arataka Reigen attempts to exorcize an evil spirit, despite having only stumbled onto it by accident. Much to Reigen's shock, the spirit seems to only be annoyed by his inefecitive attacks, which consist of throwing a handful of table salt at the spirit (actually meant to be purified salt). Reigen then unleashes his secret weapon: calling in an actual pyschic (also referred to as an esper), Shigeo Kageyama (a.k.a. \"Mob\") to banish the spirit for him with his psychokinetic powers. Mob is an extremelly powerful psychic, despite only being in middle school. Some time later, Reigen is contracted to get rid of evil spirits inhabiting a tuneel. Once again, Reigen manages to trick Mob into doing most of the work for him. One of the ghosts, the decreased leader of a biker gang, warns of an even more powerful monster located deeper in the tunnel, and begs Reigen and Mob to not fight it. However, Mob manages to take it down anyway. The spirits of the leader and his gang are finally at peace and move on to the afterlife.",
-                "correctText": "A self-proclaimed exorcist and fraud named Arataka Reigen attempts to exorcise an evil spirit, despite having only stumbled onto it by accident. Much to Reigen's shock, the spirit seems to only be annoyed by his ineffective attacks, which consist of throwing a handful of table salt at the spirit (actually meant to be purified salt). Reigen then unleashes his secret weapon: calling in an actual psychic (also referred to as an esper), Shigeo Kageyama (a.k.a. \"Mob\") to banish the spirit for him with his psychokinetic powers. Mob is an extremely powerful psychic, despite only being in middle school. Some time later, Reigen is contracted to get rid of evil spirits inhabiting a tunnel. Once again, Reigen manages to trick Mob into doing most of the work for him. One of the ghosts, the deceased leader of a biker gang, warns of an even more powerful monster located deeper in the tunnel, and begs Reigen and Mob to not fight it. However, Mob manages to take it down anyway. The spirits of the leader and his gang are finally at peace and move on to the afterlife.",
+                "suppliedText": "A self proclamied exorxist and fraud named Arataka Reigen attempts to exorcize an evil spirit, despite having only stumbled onto it by accident. Much to Reigen's shock, the spirit seems to only be annoyed by his inefecitive attacks, which consist of throwing a handful of table salt at the spirit (actually meant to be purified salt). Reigen then unleashes his secret weapon: calling in an actual pyschic (also referred to as an esper), Shigeo Kageyama (a.k.a. \"Mob\") to banish the spirit for him with his psychokinetic powers. Mob is an extremelly powerful psychic, despite only being in middle school. Some time later, Reigen is contracted to get rid of evil spirits inhabiting a tuneel. Once again, Reigen manages to trick Mob into doing most of the work for him. One of the ghosts, the decreased leader of a biker gang, warns of an even more powerful monster located deeper in the tunnel, and begs Reigen and Mob to not fight it. However, Mob manages to take it down anyway. The spirits of the leader and his gang are finally at peace and move on to the afterlife.",
+                "correctText": "A self proclaimed exorcist and fraud named Arataka Reigen attempts to exorcise an evil spirit, despite having only stumbled onto it by accident. Much to Reigen's shock, the spirit seems to only be annoyed by his ineffective attacks, which consist of throwing a handful of table salt at the spirit (actually meant to be purified salt). Reigen then unleashes his secret weapon: calling in an actual psychic (also referred to as an esper), Shigeo Kageyama (a.k.a. \"Mob\") to banish the spirit for him with his psychokinetic powers. Mob is an extremely powerful psychic, despite only being in middle school. Some time later, Reigen is contracted to get rid of evil spirits inhabiting a tunnel. Once again, Reigen manages to trick Mob into doing most of the work for him. One of the ghosts, the deceased leader of a biker gang, warns of an even more powerful monster located deeper in the tunnel, and begs Reigen and Mob to not fight it. However, Mob manages to take it down anyway. The spirits of the leader and his gang are finally at peace and move on to the afterlife.",
                 "errorCount": "7"
             },
             "Slice of Life": {
