@@ -270,17 +270,19 @@ let countWrong = 0;
 let score = 0;
 let comboCounter = 0;
 let previousCorrectedTime = null;
+
+
 function checkUserInput(element) {
     if (element.innerText.length >= 1) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(i) == false) {
-                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText) {
+                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText && !correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
                     index = Object.keys(correctIndicies)[i];
                     //index was being overriden to the last index, by default, we start from correcting the first instance
-                    if (index !== -1) {
-                        break;
-                    }
+                    // if (index !== -1) {
+                    //     break;
+                    // }
                 }
             }
         }
