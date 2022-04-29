@@ -310,7 +310,9 @@ function showModal() {
 
 
 }
-
+/**
+ * Everything that will appear on modal 
+ */
 function displayStats() {
     document.getElementById("modalScore").innerText = "Score: " + score;
     document.getElementById("modalaccuracy").innerText = "Accuracy: " + Math.max(0, Math.round((countCorrect) / (Object.keys(correctIndicies).length + countWrong) * 100)) + "%"
@@ -320,7 +322,9 @@ function displayStats() {
     calculateModalGraph();
 
 }
-
+/**
+ * See how long the combo was held for in seconds 
+ */
 function calculateComboStreak() {
     const maxComboStreak = Math.max(...comboStreakArr)
     const minTimeCombo = Math.min(maxComboStreak, totalSeconds)
@@ -338,7 +342,9 @@ function calculateComboStreak() {
     }
 
 }
-
+/**
+ * See how long the game was in play until stop button was clicked
+ */
 function formatTimeTaken() {
     let hour = Math.floor(totalSeconds / 3600);
     let minute = Math.floor((totalSeconds - hour * 3600) / 60);
@@ -354,7 +360,9 @@ function formatTimeTaken() {
     }
 }
 
-
+/**
+ * On the stats page display how many words the user got and how much words they did not get
+ */
 
 function getEveryWord() {
     if (Object.keys(correctIndicies).length === correctedWordsIndicies.length) {
@@ -367,6 +375,10 @@ function getEveryWord() {
         document.getElementById("modalGotEverything").innerText = "You did not find " + (Object.keys(correctIndicies).length - correctedWordsIndicies.length) + " words in the text!";
     }
 }
+
+/**
+ * Graph function which is displayed in modal
+ */
 
 // Our labels along the x-axis
 let xValues = [0];
@@ -467,6 +479,9 @@ function countTimer() {
     document.getElementById("timer").innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
+/**
+ * Displays text on screen on the basis of genre and difficulty specified
+ */
 let difficulty;
 
 function setEasy() {
@@ -598,13 +613,16 @@ function setWiki() {
 }
 
 let genre;
+/**
+ * JSON text containing all text which will be displayed
+ */
 
 let JSONString = JSON.stringify(
     {
         "Easy": {
             "Sci-Fi": {
                 "suppliedText": "There was once an alien that lived on a plannet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other differente planets. One day he wanted to go look for friends, and so he travalled to a planet neaby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
-                "correctText": "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he traveled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
+                "correctText": "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he travelled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
                 "errorCount": "4"
             },
             "Slice of Life": {
@@ -651,7 +669,7 @@ let JSONString = JSON.stringify(
             },
             "Slice of Life": {
                 "suppliedText": "In 1991, Takaki Tono quickly befriends Akari Shinohara after she transfers to his elementary school in Tokyo. They grow very close to each other due to similiar interests and atitudes such as both prefering to stay inside during recess due to their seasonal allergies. As a result, they form a strong bond which is shown when they speak to each other using their given names without any form of honorifics as that is a sign of deep friendship and familiarity in Japan. Right after graduating from elementary school in 1994, Akari moves to the nearby prefecture of Tochigi due to her parents' jobs. The two keep in contact by writing letters but eventually begin to drift apart. When Takaki learns that his family will be moving to Kagoshima on the other side of the country the following year in 1995, he decides to personalley go see Akari one last time since they will be too far apart to see and visit each other once he moves. He also writes a letter for Akari to confess his feelings for her. However, Takaki loses the letter during the journey and a severve snowstorm delays his train for several hours. When the two finally meet late that night and share their first kiss, Takaki realizes they will never be together.",
-                "correctText": "In 1991, Takaki Tono quickly befriends Akari Shinohara after she transfers to his elementary school in Tokyo. They grow very close to each other due to similar interests and attitudes such as both preferring to stay inside during recess due to their seasonal allergies. As a result, they form a strong bond which is shown when they speak to each other using their given names without any form of honorifics as that is a sign of deep friendship and familiarity in Japan. Right after graduating from elementary school in 1994, Akari moves to the nearby prefecture of Tochigi due to her parents' jobs. The two keep in contact by writing letters but eventually begin to drift apart. When Takaki learns that his family will be moving to Kagoshima on the other side of the country the following year in 1995, he decides to personally go see Akari one last time since they will be too far apart to see and visit each other once he moves. He also writes a letter for Akari to confess his feelings for her. However, Takaki loses the letter during the journey and a severe snowstorm delays his train for several hours. When the two finally meet late that night and share their first kiss, Takaki realizes they will never be together.",
+                "correctText": "In 1991, Takaki Tono quickly befriends Akari Shinohara after she transfers to his elementary school in Tokyo. They grow very close to each other due to similar interests and attitudes such as both preferring to stay inside during recess due to their seasonal allergies. As a result, they form a strong bond which is shown when they speak to each other using their given names without any form of honorifics as that is a sign of deep friendship and familiarity in Japan. Right after graduating from elementary school in 1994, Akari moves to the nearby prefecture of Tochigi due to her parents' jobs. The two keep in contact by writing letters but eventually begin to drift apart. When Takaki learns that his family will be moving to Kagoshima on the other side of the country the following year in 1995, he decides to personally go see Akari one last time since they will be too far apart to see and visit each other once he moves. He also writes a letter for Akari to confess his feelings for her. However, Takaki loses the letter during the journey and a severe snowstorm delays his train for several hours. When the two finally meet late that night and share their first kiss, Takaki realises they will never be together.",
                 "errorCount": "5"
             },
             "Non-Fiction": {
@@ -688,7 +706,7 @@ let JSONString = JSON.stringify(
         "Hard": {
             "Sci-Fi": {
                 "suppliedText": "The naraator, a pilot, crash-lands his plane in the Sahara desert. While he tries to repair his engine and monitor his dweedling supply of water and food, a little boy appears out of nowhere and simply asks him to draw a sheep. The author then learns that this \"little prince\" comes from the far away Asteroid B-612, where he left a rose and three volcaneos. The prince's most prized poseeshon was the rose, but her tempesteous mien and fickleness tired him and he decided to leave his tiny planet. To his surprise, the flower was visibly sad to see him go, but she urged him on nonetheless. Before arriving on Earth, the prince visited other planets and met with strange individuals: a king, a vain man, a drunyard, a lamplighter, and a geographer. At the geographer's sugesstion, he visited Earth but dropped down into the Sahara Desert. He found no friends there, but a snake told him that if he ever needed to return to his home planet, he could take advantage of the snake's bite. He met a fox that taught him to realize that to know others we must \"tame\" them; this is what makes things and people unique. \"The esenntial is invisible to the eye,\" says the fox.",
-                "correctText": "The narrator, a pilot, crash-lands his plane in the Sahara desert. While he tries to repair his engine and monitor his dwindling supply of water and food, a little boy appears out of nowhere and simply asks him to draw a sheep. The author then learns that this \"little prince\" comes from the far away Asteroid B-612, where he left a rose and three volcanoes. The prince's most prized possession was the rose, but her tempestuous mien and fickleness tired him and he decided to leave his tiny planet. To his surprise, the flower was visibly sad to see him go, but she urged him on nonetheless. Before arriving on Earth, the prince visited other planets and met with strange individuals: a king, a vain man, a drunkard, a lamplighter, and a geographer. At the geographer's suggestion, he visited Earth but dropped down into the Sahara Desert. He found no friends there, but a snake told him that if he ever needed to return to his home planet, he could take advantage of the snake's bite. He met a fox that taught him to realize that to know others we must \"tame\" them; this is what makes things and people unique. \"The essential is invisible to the eye,\" says the fox.",
+                "correctText": "The narrator, a pilot, crash-lands his plane in the Sahara desert. While he tries to repair his engine and monitor his dwindling supply of water and food, a little boy appears out of nowhere and simply asks him to draw a sheep. The author then learns that this \"little prince\" comes from the far away Asteroid B-612, where he left a rose and three volcanoes. The prince's most prized possession was the rose, but her tempestuous mien and fickleness tired him and he decided to leave his tiny planet. To his surprise, the flower was visibly sad to see him go, but she urged him on nonetheless. Before arriving on Earth, the prince visited other planets and met with strange individuals: a king, a vain man, a drunkard, a lamplighter, and a geographer. At the geographer's suggestion, he visited Earth but dropped down into the Sahara Desert. He found no friends there, but a snake told him that if he ever needed to return to his home planet, he could take advantage of the snake's bite. He met a fox that taught him to realise that to know others we must \"tame\" them; this is what makes things and people unique. \"The essential is invisible to the eye,\" says the fox.",
                 "errorCount": "7"
             },
             "Slice of Life": {
