@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="spellz.css" />
     <link rel="icon" href="Images/logo.png" type="image/png" />
     <script src="index.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -14,7 +15,6 @@
 
         <div id="title" onclick="refresh()">
             Spellz
-            <div><i class="ionicons ion-ios-information-outline"></i></div>
         </div>
 
         <div class="title-op">
@@ -22,7 +22,6 @@
         </div>
 
         <div id="text-sel">
-
             <div id="blank"></div>
             <div id="easy" onclick="setEasy()">easy</div>
             <div id="medium" onclick="setMedium()">medium</div>
@@ -42,11 +41,26 @@
 
     <div class="mid">
         <div id="gameText"></div>
-        <div id="endGameModal" class="modal">
+        <div style="position: relative; height:30vh; width:28vw">
+            <div id="endGameModal" class="modal">
 
-            <div class="endModalContent">
-                <span class="close" onclick="closeGameModal()">&times;</span>
-                <p id="modalText">STATISTICS</p>
+                <div class="endModalContent">
+                    <span class="close" onclick="closeGameModal()">&times;</span>
+                    <div id="modalText">STATISTICS</div>
+                    <div id="modalScore"></div>
+                    <div id="modalaccuracy"></div>
+                    <div id="modalTimeTaken"></div>
+                    <div id="modalComboStreak"></div>
+                    <div id="modalGotEverything"></div>
+
+                    <div>
+                        <canvas id="myChart"></canvas>
+
+                        <!-- <canvas id="myChart" width="1600" height="900"></canvas> -->
+                    </div>
+
+                </div>
+
             </div>
         </div>
 
