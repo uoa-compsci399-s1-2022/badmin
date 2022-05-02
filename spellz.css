@@ -333,7 +333,7 @@ body {
 
 #comboContainer {
     grid-area: combo;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -341,15 +341,19 @@ body {
     width: 100%;
 }
 
-#comboBar {
-    width: 0%;
-    height: 2%;
-    background: #EDD9A3;
-    align-self: flex-start;
+#comboBarContainer {
+    width: 60%;
+    height: 0.5vh;
+    background-color: #60525F;
     margin-left: 20%;
     margin-right: 20%;
 }
 
+#comboBar {
+    width: 0%;
+    height: 100%;
+    background: #EDD9A3;
+}
 
 /* modal */
 
