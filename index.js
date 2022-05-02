@@ -11,6 +11,7 @@ function showGame() {
     document.getElementById("score").style.display = "grid";
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
+    document.getElementById("readyMessage").style.display = "none";
 }
 /**
  * Blur text function
@@ -257,6 +258,10 @@ window.onload = function () {
     document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
     document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
 };
+
+function showReadyMessage() {
+    document.getElementById("readyMessage").style.display = "block";
+}
 
 let gameStartTime;
 let totalSeconds;
