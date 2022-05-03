@@ -110,12 +110,20 @@ function fuzzyHighlight() {
     let inputSearch = document.getElementById("inputTextBox").innerText
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
-    const WordPlusIndicesArr = fuzzySearch(inputSearch);
+    let wordPlusIndicesArr = [];
+    if (inputSearch.length >= 3) {
+        wordPlusIndicesArr = fuzzySearch(inputSearch);
+    } else {
+        //dont activate fuzzy, just highlight exact 2 char matches only starting at corresponding index
+        wordPlusIndicesArr = normalSearchOnly(inputSearch);
+    }
+
     let extractedWords = []
     let startingIndex;
     let highlightStart;
-    for (let j = 0; j < WordPlusIndicesArr.length; j++) {
-        extractedWords.push(WordPlusIndicesArr[j][0])
+
+    for (let j = 0; j < wordPlusIndicesArr.length; j++) {
+        extractedWords.push(wordPlusIndicesArr[j][0])
     }
 
     clearPreviousHighlight();
@@ -128,12 +136,12 @@ function fuzzyHighlight() {
             if (extractedWords.includes(word) && !correctedWordsIndicies.includes(i.toString())) {
                 if (inputSearch.length >= 3) {
                     startingIndex = extractedWords.indexOf(word)
-                    highlightStart = WordPlusIndicesArr[startingIndex][1];
+                    highlightStart = wordPlusIndicesArr[startingIndex][1];
                     gameTextElement.innerHTML = gameTextElement.innerHTML.slice(0, highlightStart) + "<mark>" + inputSearch + "</mark>" + gameTextElement.innerHTML.slice(highlightStart + inputSearch.length);
                     previousSearchIndicies.push(i);
                 } else {
                     startingIndex = extractedWords.indexOf(word)
-                    highlightStart = WordPlusIndicesArr[startingIndex][1];
+                    highlightStart = wordPlusIndicesArr[startingIndex][1];
                     gameTextElement.innerHTML = gameTextElement.innerHTML.slice(0, highlightStart) + "<mark>" + gameTextElement.innerHTML.slice(highlightStart, highlightStart + inputSearch.length) + "</mark>" + gameTextElement.innerHTML.slice(highlightStart + inputSearch.length);
                     previousSearchIndicies.push(i);
                 }
@@ -231,6 +239,25 @@ function fuzzySearch(testInput) {
         }
     }
     return matchingWordPlusIndex;
+}
+
+function normalSearchOnly(inputSearch) {
+    const gameTextArr = suppliedText.split(" ");
+    const gameTextElements = document.getElementById("gameText").children;
+    const searchText = inputSearch;
+    let matchingWordPlusIndex = []
+    if (searchText.length >= 1) {
+        for (let i = 0; i < gameTextArr.length; i++) {
+            const word = gameTextArr[i];
+            if (word.indexOf(searchText) !== -1 && !correctedWordsIndicies.includes(i.toString())) {
+                matchingWordPlusIndex.push([word, word.indexOf(searchText)])
+            }
+        }
+
+
+
+    }
+    return matchingWordPlusIndex
 }
 
 
