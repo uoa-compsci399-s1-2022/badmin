@@ -56,14 +56,14 @@ body {
 
 /* Difficulty */
 
-#infoBtn{
-    color:#B2A3B5 ;
+#infoBtn {
+    color: #B2A3B5;
     cursor: pointer;
     font-size: 20px;
 
 }
 
-#infoText{
+#infoText {
     grid-area: m;
     display: none;
     position: absolute;
@@ -77,16 +77,18 @@ body {
     padding-right: 200px;
 
 }
-h1,h2,h3 {
-    color: #EDD9A3
 
+h1,
+h2,
+h3 {
+    color: #EDD9A3
 }
 
 #easy {
     grid-area: 1 / 2 / 2 / 3;
     font-size: 22px;
     cursor: pointer;
-    
+
 }
 
 #medium {
@@ -413,6 +415,13 @@ h1,h2,h3 {
     top: 0;
     font-size: 28px;
     font-weight: bold;
+}
+
+#infoClose {
+    position: absolute;
+    left: 100px;
+    font-size: 50px;
+
 }
 
 .close:hover,

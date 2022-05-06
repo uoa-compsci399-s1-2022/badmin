@@ -13,7 +13,7 @@ function showGame() {
     document.getElementById("timer").style.display = "inline";
     document.getElementById("readyMessage").style.display = "none";
     document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 /**
  * Blur text function
@@ -26,7 +26,7 @@ function hideGame() {
     document.getElementById("comboContainer").style.display = "none";
     document.getElementById("timer").style.display = "none";
     document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function pause() {
@@ -37,7 +37,7 @@ function pause() {
     document.getElementById("pageInfo").style.display = "grid";
     document.getElementById("title").style.color = "#EDD9A3";
     document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function getVersion() {
@@ -495,6 +495,12 @@ window.onclick = function (event) {
     }
 }
 
+
+function closeInfoPage() {
+    document.getElementById("infoText").style.display = "none";
+
+}
+
 function countTimer() {
     const timeElapsed = Date.now() - gameStartTime;
     const seconds = Math.floor(timeElapsed / 1000) % 60;
@@ -515,7 +521,7 @@ function setEasy() {
     document.getElementById("medium").style.color = "#B2A3B5";
     document.getElementById("hard").style.color = "#B2A3B5";
     document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function setMedium() {
@@ -525,7 +531,7 @@ function setMedium() {
     document.getElementById("medium").style.color = "#EDD9A3";
     document.getElementById("hard").style.color = "#B2A3B5";
     document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function setHard() {
@@ -535,7 +541,7 @@ function setHard() {
     document.getElementById("medium").style.color = "#B2A3B5";
     document.getElementById("hard").style.color = "#EDD9A3";
     document.getElementById("infoText").style.display = "none";
-     document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function setSF() {
@@ -550,7 +556,7 @@ function setSF() {
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
     document.getElementById("infoText").style.display = "none";
-     document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function setSoL() {
@@ -565,7 +571,7 @@ function setSoL() {
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
     document.getElementById("infoText").style.display = "none";
-     document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function setNF() {
@@ -580,7 +586,7 @@ function setNF() {
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
     document.getElementById("infoText").style.display = "none";
-     document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function setRom() {
@@ -595,7 +601,7 @@ function setRom() {
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
     document.getElementById("infoText").style.display = "none";
-     document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function setArt() {
@@ -610,7 +616,7 @@ function setArt() {
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
     document.getElementById("infoText").style.display = "none";
-     document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function setMy() {
@@ -625,7 +631,7 @@ function setMy() {
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#EDD9A3";
     document.getElementById("infoText").style.display = "none";
-     document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function setCom() {
@@ -640,7 +646,7 @@ function setCom() {
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
     document.getElementById("infoText").style.display = "none";
-     document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 function setWiki() {
@@ -655,7 +661,7 @@ function setWiki() {
     document.getElementById("wikipedia").style.color = "#EDD9A3";
     document.getElementById("mystery").style.color = "#B2A3B5";
     document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoBtn').style.color= "#B2A3B5";
+    document.getElementById('infoBtn').style.color = "#B2A3B5";
 }
 
 let genre;
@@ -855,19 +861,19 @@ const infoText = document.getElementById('infoText');
 const infoBtn = document.getElementById('infoBtn');
 
 infoBtn.addEventListener('click', function getInfo() {
-  if (infoText.style.display === 'none') {
-    infoText.style.display = 'block';
-  } else {
-    infoBtn.style.color= "#B2A3B5";
-    infoText.style.display = 'none';
-    document.getElementById("title").style.color = "#EDD9A3"
-    
-  }
+    if (infoText.style.display === 'none') {
+        infoText.style.display = 'block';
+    } else {
+        infoBtn.style.color = "#B2A3B5";
+        infoText.style.display = 'none';
+        document.getElementById("title").style.color = "#EDD9A3"
+
+    }
 });
 
 
-function getInfo(){
-    document.getElementById('infoBtn').style.color= "#EDD9A3";
+function getInfo() {
+    document.getElementById('infoBtn').style.color = "#EDD9A3";
     document.getElementById("sci-fi").style.color = "#B2A3B5";
     document.getElementById("slice_of_life").style.color = "#B2A3B5";
     document.getElementById("non-fiction").style.color = "#B2A3B5";
