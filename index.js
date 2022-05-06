@@ -12,6 +12,8 @@ function showGame() {
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
     document.getElementById("readyMessage").style.display = "none";
+    document.getElementById("infoText").style.display = "none";
+    document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 /**
  * Blur text function
@@ -23,6 +25,8 @@ function hideGame() {
     document.getElementById("score").style.display = "none";
     document.getElementById("comboContainer").style.display = "none";
     document.getElementById("timer").style.display = "none";
+    document.getElementById("infoText").style.display = "none";
+    document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function pause() {
@@ -31,7 +35,9 @@ function pause() {
     document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "grid";
     document.getElementById("pageInfo").style.display = "grid";
-    document.getElementById("title").style.color = "#EDD9A3"
+    document.getElementById("title").style.color = "#EDD9A3";
+    document.getElementById("infoText").style.display = "none";
+    document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function getVersion() {
@@ -508,6 +514,8 @@ function setEasy() {
     document.getElementById("easy").style.color = "#EDD9A3";
     document.getElementById("medium").style.color = "#B2A3B5";
     document.getElementById("hard").style.color = "#B2A3B5";
+    document.getElementById("infoText").style.display = "none";
+    document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function setMedium() {
@@ -516,6 +524,8 @@ function setMedium() {
     document.getElementById("easy").style.color = "#B2A3B5";
     document.getElementById("medium").style.color = "#EDD9A3";
     document.getElementById("hard").style.color = "#B2A3B5";
+    document.getElementById("infoText").style.display = "none";
+    document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function setHard() {
@@ -524,6 +534,8 @@ function setHard() {
     document.getElementById("easy").style.color = "#B2A3B5";
     document.getElementById("medium").style.color = "#B2A3B5";
     document.getElementById("hard").style.color = "#EDD9A3";
+    document.getElementById("infoText").style.display = "none";
+     document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function setSF() {
@@ -537,6 +549,8 @@ function setSF() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("infoText").style.display = "none";
+     document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function setSoL() {
@@ -550,6 +564,8 @@ function setSoL() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("infoText").style.display = "none";
+     document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function setNF() {
@@ -563,6 +579,8 @@ function setNF() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("infoText").style.display = "none";
+     document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function setRom() {
@@ -576,6 +594,8 @@ function setRom() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("infoText").style.display = "none";
+     document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function setArt() {
@@ -589,6 +609,8 @@ function setArt() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("infoText").style.display = "none";
+     document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function setMy() {
@@ -602,6 +624,8 @@ function setMy() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#EDD9A3";
+    document.getElementById("infoText").style.display = "none";
+     document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function setCom() {
@@ -615,6 +639,8 @@ function setCom() {
     document.getElementById("comedy").style.color = "#EDD9A3";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("infoText").style.display = "none";
+     document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 function setWiki() {
@@ -628,6 +654,8 @@ function setWiki() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#EDD9A3";
     document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("infoText").style.display = "none";
+    document.getElementById('infoBtn').style.color= "#B2A3B5";
 }
 
 let genre;
@@ -791,6 +819,7 @@ function loadDaily() {
     const key = keys[((daysPassed % length) + length) % length];
     suppliedText = textBank[key]["suppliedText"];
     correctText = textBank[key]["correctText"];
+    document.getElementById("infoText").style.display = "none";
 }
 
 let correctText;
@@ -807,7 +836,9 @@ function loadText() {
     const passageSurr = separateWords();
     document.getElementById("gameText").innerHTML = passageSurr;
     document.getElementById("gameHidden").innerHTML = passageSurr;
+    document.getElementById("infoText").style.display = "none";
 }
+
 
 // to add divs between each word
 function separateWords() {
@@ -818,4 +849,34 @@ function separateWords() {
         wordArr.push(wordElement);
     }
     return wordArr.join(" ");
+}
+const infoText = document.getElementById('infoText');
+
+const infoBtn = document.getElementById('infoBtn');
+
+infoBtn.addEventListener('click', function getInfo() {
+  if (infoText.style.display === 'none') {
+    infoText.style.display = 'block';
+  } else {
+    infoBtn.style.color= "#B2A3B5";
+    infoText.style.display = 'none';
+    
+  }
+});
+
+
+function getInfo(){
+    document.getElementById('infoBtn').style.color= "#EDD9A3";
+    document.getElementById("sci-fi").style.color = "#B2A3B5";
+    document.getElementById("slice_of_life").style.color = "#B2A3B5";
+    document.getElementById("non-fiction").style.color = "#B2A3B5";
+    document.getElementById("article").style.color = "#B2A3B5";
+    document.getElementById("romance").style.color = "#B2A3B5";
+    document.getElementById("comedy").style.color = "#B2A3B5";
+    document.getElementById("wikipedia").style.color = "#B2A3B5";
+    document.getElementById("mystery").style.color = "#B2A3B5";
+    document.getElementById("easy").style.color = "#B2A3B5";
+    document.getElementById("medium").style.color = "#B2A3B5";
+    document.getElementById("hard").style.color = "#B2A3B5";
+    document.getElementById("title").style.color = "#60525F"
 }
