@@ -34,6 +34,21 @@ body {
     user-select: none;
 }
 
+
+#infoIcon {
+    color: #EDD9A3;
+
+    grid-area: 2 / 2 / 2 / 3;
+    cursor: pointer;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .title-op {
     grid-area: title-op;
 

@@ -14,6 +14,7 @@ function showGame() {
     document.getElementById("readyMessage").style.display = "none";
     document.getElementById("infoText").style.display = "none";
     document.getElementById('infoBtn').style.color = "#B2A3B5";
+    document.getElementById("infoIcon").style.color = "#60525F"
 }
 /**
  * Blur text function
@@ -487,11 +488,23 @@ function closeGameModal() {
     resetDataSet();
 }
 
+function showInfoModal() {
+    document.getElementById("infoModal").style.display = "block"
+
+}
+function closeInfoModal() {
+    infoModal.style.display = "none";
+}
+
+
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
         resetDataSet();
+    }
+    if (event.target == infoModal) {
+        infoModal.style.display = "none";
     }
 }
 
