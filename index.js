@@ -488,14 +488,6 @@ function closeGameModal() {
     resetDataSet();
 }
 
-function showInfoModal() {
-    document.getElementById("infoModal").style.display = "block"
-
-}
-function closeInfoModal() {
-    infoModal.style.display = "none";
-}
-
 
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
@@ -503,9 +495,7 @@ window.onclick = function (event) {
         endGameModal.style.display = "none";
         resetDataSet();
     }
-    if (event.target == infoModal) {
-        infoModal.style.display = "none";
-    }
+
 }
 
 
