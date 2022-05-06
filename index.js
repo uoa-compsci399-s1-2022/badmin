@@ -860,6 +860,7 @@ infoBtn.addEventListener('click', function getInfo() {
   } else {
     infoBtn.style.color= "#B2A3B5";
     infoText.style.display = 'none';
+    document.getElementById("title").style.color = "#EDD9A3"
     
   }
 });
