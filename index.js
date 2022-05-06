@@ -501,6 +501,10 @@ window.onclick = function (event) {
 
 function closeInfoPage() {
     document.getElementById("infoText").style.display = "none";
+    document.getElementById("infoIcon").style.color = "#EDD9A3";
+    document.getElementById("title").style.color = "#EDD9A3"
+
+
 
 }
 
@@ -876,6 +880,7 @@ infoBtn.addEventListener('click', function getInfo() {
 
 
 function getInfo() {
+    document.getElementById("infoIcon").style.color = "#B2A3B5";
     document.getElementById('infoBtn').style.color = "#EDD9A3";
     document.getElementById("sci-fi").style.color = "#B2A3B5";
     document.getElementById("slice_of_life").style.color = "#B2A3B5";
