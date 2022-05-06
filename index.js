@@ -810,9 +810,9 @@ let JSONString = JSON.stringify(
 let DailyString = JSON.stringify({
     "Daily Challenge": {
         suppliedText:
-            '"The boy with fair hair lowerred himself down the last few feet of rock and began to pick his way toward the lagoun. Though he had taken off his school sweater and trailled it now from one hand, his grey shirt stuk to him and his hair was plasterred to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clamberring heavily among the crepers and broken trunks when a bird, a vision of red and yellow, flashed upards with a witch-like cry; and this cry was echod by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitute of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
+            '"The boy with fair hair lowerred himself down the last few feet of rock and began to pick his way toward the lagoun. Though he had taken off his school sweater and trailled it now from one hand, his grey shirt stuk to him and his hair was plasterred to his forehead. All around him the long scar smashed into the jungle was a bath of heat. He was clamberring heavily among the crepers and broken trunks when a bird, a vision of red and yellow, flashed upards with a witch-like cry; and this cry was echod by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitute of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
         correctText:
-            '"The boy with fair hair lowered himself down the last few feet of rock and began to pick his way toward the lagoon. Though he had taken off his school sweater and trailed it now from one hand, his grey shirt stuck to him and his hair was plastered to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clambering heavily among the creepers and broken trunks when a bird, a vision of red and yellow, flashed upwards with a witch-like cry; and this cry was echoed by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitude of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
+            '"The boy with fair hair lowered himself down the last few feet of rock and began to pick his way toward the lagoon. Though he had taken off his school sweater and trailed it now from one hand, his grey shirt stuck to him and his hair was plastered to his forehead. All around him the long scar smashed into the jungle was a bath of heat. He was clambering heavily among the creepers and broken trunks when a bird, a vision of red and yellow, flashed upwards with a witch-like cry; and this cry was echoed by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitude of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
         errorCount: "11",
     }
 });
@@ -864,24 +864,22 @@ function separateWords() {
     return wordArr.join(" ");
 }
 const infoText = document.getElementById('infoText');
-
-const infoBtn = document.getElementById('infoBtn');
+// const infoBtn = document.getElementById('infoBtn');
+const infoIcon = document.getElementById('infoIcon');
 
 infoBtn.addEventListener('click', function getInfo() {
     if (infoText.style.display === 'none') {
         infoText.style.display = 'block';
+        infoIcon.style.color = "#EDD9A3";
     } else {
-        infoBtn.style.color = "#B2A3B5";
+        infoIcon.style.color = "#B2A3B5";
         infoText.style.display = 'none';
-        document.getElementById("title").style.color = "#EDD9A3"
 
     }
 });
 
 
 function getInfo() {
-    document.getElementById("infoIcon").style.color = "#B2A3B5";
-    document.getElementById('infoBtn').style.color = "#EDD9A3";
     document.getElementById("sci-fi").style.color = "#B2A3B5";
     document.getElementById("slice_of_life").style.color = "#B2A3B5";
     document.getElementById("non-fiction").style.color = "#B2A3B5";
@@ -893,5 +891,4 @@ function getInfo() {
     document.getElementById("easy").style.color = "#B2A3B5";
     document.getElementById("medium").style.color = "#B2A3B5";
     document.getElementById("hard").style.color = "#B2A3B5";
-    document.getElementById("title").style.color = "#60525F"
 }
