@@ -378,11 +378,10 @@ function navigateSearchResults(key) {
         const length = previousSearchIndicies.length;
         if (key == "ArrowUp" || key == "ArrowLeft") {
             currentSearchIndex = (((currentSearchIndex - 1) % length) + length) % length // modulus formula [ ((a % n ) + n ) % n ] to account for negative values
-            // indexOfBlueHighlight = currentSearchIndex
         }
         if (key == "ArrowDown" || key == "ArrowRight") {
             currentSearchIndex = (currentSearchIndex + 1) % length // currentSearchIndex can't be negative, so currentSearchIndex + 1 can't be negative => use positive only modulus
-            // indexOfBlueHighlight = currentSearchIndex
+
         }
         gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "lightblue";
     }
