@@ -1,7 +1,7 @@
 /**
  * Show text function
  */
-function showGame() {
+ function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
     document.getElementById("gameControls").style.display = "flex";
@@ -11,6 +11,7 @@ function showGame() {
     document.getElementById("score").style.display = "grid";
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
+    document.getElementById("readyMessage").style.display = "none";
 }
 /**
  * Blur text function
@@ -107,15 +108,17 @@ function inputHandler(element, event) {
         event.preventDefault();
     }
 }
-
+let countCorrect = 0;
+let countWrong = 0;
 let score = 0;
 let comboCounter = 0;
 let previousCorrectedTime = null;
+let previousComboTime = null;
 function checkUserInput(element) {
     if (element.innerText.length >= 1) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
-            if (correctedWordsIndicies.includes(i) == false) {
+            if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i]) == false) {
                 if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText) {
                     index = Object.keys(correctIndicies)[i];
                 }
@@ -126,10 +129,10 @@ function checkUserInput(element) {
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
                 const currentTime = Date.now();
-                if (previousCorrectedTime == null) {
+                if (previousCorrectedTime == null || previousComboTime == null) {
                     comboCounter = 1;
                 }
-                else if (currentTime - previousCorrectedTime <= TIME_LIMIT * 1000) {
+                else if (currentTime - previousCorrectedTime <= TIME_LIMIT * 1000 || currentTime - previousComboTime <= TIME_LIMIT * 1000) {
                     if (comboCounter < 3) {
                         comboCounter++;
                     }
@@ -138,39 +141,65 @@ function checkUserInput(element) {
                     comboCounter = 1;
                 }
                 restartComboTimer();
+                comboStreak = comboStreak + TIME_LIMIT
+                comboStreakArr.push(comboStreak)
                 previousCorrectedTime = currentTime;
                 score += 100 * comboCounter;
                 document.getElementById("score").innerText = "score: \n" + score;
                 document.getElementById("combo").innerText = "combo: \n" + comboCounter;
+                countCorrect++;
             }
         }
         else {
+            stopComboTimer();
             document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
             score -= 30;
             document.getElementById("score").innerText = "score: \n" + score;
             document.getElementById("combo").innerText = "combo: \n" + comboCounter;
+            countWrong++;
+            comboStreak = 0;
         }
     }
     setTimeout(() => { document.getElementById("inputTextBox").classList.remove("error"); }, 500);
     document.getElementById("inputTextBox").innerText = "";
 }
-const WIDTH = 60 //make sure it's the same as in the CSS under #comboBar
-const TIME_LIMIT = 5 //make sure it's the same as in the CSS under #comboBar
+
+let comboStreak = 0;
+let comboStreakArr = [0]
+const WIDTH = 100
+const TIME_LIMIT = 5
+let comboTimeOut;
 function restartComboTimer() {
+    previousComboTime = Date.now();
+    clearTimeout(comboTimeOut); //passing invalid ID to clearTimeout() throws no exceptions
+    comboTimeOut = setTimeout(decrementCombo, TIME_LIMIT * 1000);
     const comboBar = document.getElementById("comboBar");
     comboBar.style.transition = `none`;
     comboBar.style.width = `${WIDTH}%`;
     comboBar.offsetHeight; // Refresh the user's cache
     comboBar.style.transition = `width ${TIME_LIMIT}s linear 0s`;
     comboBar.style.width = `0px`;
+
+
+}
+
+function decrementCombo() {
+    comboCounter = Math.max(0, comboCounter - 1);
+    document.getElementById("combo").innerText = `combo: \n ${comboCounter}`;
+    if (comboCounter > 0) {
+        restartComboTimer();
+    }
 }
 
 function stopComboTimer() {
     const comboBar = document.getElementById("comboBar");
     comboBar.style.transition = `none`;
     comboBar.style.width = `0%`;
+    clearTimeout(comboTimeOut) //so it stops ticking down after StopTimer is called
 }
+
+
 
 function navigateSearchResults(key) {
     if (previousSearchIndicies.length >= 1) {
@@ -245,7 +274,12 @@ window.onload = function () {
     document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
 };
 
+function showReadyMessage() {
+    document.getElementById("readyMessage").style.display = "block";
+}
+
 let gameStartTime;
+let totalSeconds;
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
@@ -259,11 +293,15 @@ function startTimer() {
     document.getElementById("timer").innerHTML = "";
     loadText();
     totalSeconds = 0;
-    timerVar = setInterval(countTimer, 100);
-    hintVar = setInterval(showHint, 100);
+    timerVar = setInterval(countTimer, 1000);
+    hintVar = setInterval(showHint, 1000);
+    setInterval(function () { scoreOverTime.push(score) }, 10000);
+    setInterval(function () { xValues.push(totalSeconds) }, 10000);
     lastUserInputTime = Date.now()
     showGame();
     generateCorrectIndicies();
+    countCorrect = 0;
+    countWrong = 0;
     score = 0;
     comboCounter = 0;
     document.getElementById("score").innerText = `score: \n ${score}`;
@@ -272,7 +310,6 @@ function startTimer() {
 }
 
 function stopTimer() {
-    showModal();
     stopComboTimer();
     clearPreviousHighlight();
     document.getElementById("inputTextBox").innerText = "\u2009"
@@ -281,16 +318,161 @@ function stopTimer() {
     clearInterval(hintVar);
     resetHint();
     pause();
+    scoreOverTime.push(score);
+    xValues.push(totalSeconds);
+    showModal();
+
 }
 
 function showModal() {
-    let endModal = document.getElementById("endGameModal");
-    endModal.style.display = "block"
+    document.getElementById("endGameModal").style.display = "block";
+    displayStats();
+
 
 }
+/**
+ * Everything that will appear on modal 
+ */
+function displayStats() {
+    document.getElementById("modalScore").innerText = "Score: " + score;
+    document.getElementById("modalaccuracy").innerText = "Accuracy: " + Math.max(0, Math.round((countCorrect) / (Object.keys(correctIndicies).length + countWrong) * 100)) + "%"
+    calculateComboStreak()
+    formatTimeTaken();
+    getEveryWord();
+    calculateModalGraph();
 
-function closeGameModal() {
-    endGameModal.style.display = "none";
+}
+/**
+ * See how long the combo was held for in seconds 
+ */
+function calculateComboStreak() {
+    const maxComboStreak = Math.max(...comboStreakArr)
+    const minTimeCombo = Math.min(maxComboStreak, totalSeconds)
+    let hour = Math.floor(minTimeCombo / 3600);
+    let minute = Math.floor((minTimeCombo - hour * 3600) / 60);
+    let seconds = minTimeCombo - (hour * 3600 + minute * 60);
+    if (minute === 0) {
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + seconds + " seconds";
+    } else if (minute !== 0 && hour !== 0) {
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + hour + " hrs " + minute + " mins " + seconds + " seconds";
+
+    }
+    else {
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + minute + " mins " + seconds + " seconds";
+    }
+
+}
+/**
+ * See how long the game was in play until stop button was clicked
+ */
+function formatTimeTaken() {
+    let hour = Math.floor(totalSeconds / 3600);
+    let minute = Math.floor((totalSeconds - hour * 3600) / 60);
+    let seconds = totalSeconds - (hour * 3600 + minute * 60);
+    if (minute === 0) {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + seconds + " seconds";
+    } else if (minute !== 0 && hour !== 0) {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + hour + " hrs " + minute + " mins " + seconds + " seconds";
+
+    }
+    else {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + minute + " mins " + seconds + " seconds";
+    }
+}
+
+/**
+ * On the stats page display how many words the user got and how much words they did not get
+ */
+
+function getEveryWord() {
+    if (Object.keys(correctIndicies).length === correctedWordsIndicies.length) {
+        document.getElementById("modalGotEverything").innerText = "You got every word!"
+    }
+    else if (Object.keys(correctIndicies).length - correctedWordsIndicies.length == 1) {
+        document.getElementById("modalGotEverything").innerText = "You did not find " + (Object.keys(correctIndicies).length - correctedWordsIndicies.length) + " word in the text!";
+    }
+    else {
+        document.getElementById("modalGotEverything").innerText = "You did not find " + (Object.keys(correctIndicies).length - correctedWordsIndicies.length) + " words in the text!";
+    }
+}
+
+/**
+ * Graph function which is displayed in modal
+ */
+
+// Our labels along the x-axis
+let xValues = [0];
+// For drawing the lines
+let scoreOverTime = [0];
+
+
+
+let myChart;
+let ctx;
+function calculateModalGraph() {
+    ctx = document.getElementById("myChart");
+    myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: xValues,
+            datasets: [
+                {
+                    data: scoreOverTime,
+                    borderColor: "#3e95cd",
+                    fill: false,
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                yAxis: {
+                    ticks: {
+                        color: "#B2A3B5",
+                        beginAtZero: true,
+                    },
+                    grid: {
+                        color: "#B2A3B5",
+                    },
+                    title: {
+                        display: true,
+                        text: "Score",
+                        padding: { top: 0, left: 0, right: 0, bottom: 0 },
+                        color: "#B2A3B5",
+                    },
+                },
+                xAxis: {
+                    ticks: {
+                        color: "#B2A3B5",
+                        beginAtZero: true,
+                    },
+                    grid: {
+                        color: "#B2A3B5",
+                    },
+                    title: {
+                        display: true,
+                        text: "Time",
+                        padding: { top: 0, left: 0, right: 0, bottom: 0 },
+                        color: "#B2A3B5",
+                    },
+                },
+            }
+        }
+    });
+}
+
+// resets global variables added in endGameModal
+function resetDataSet() {
+    scoreOverTime = [0];
+    xValues = [0];
+    myChart.destroy();
+    comboStreak = 0;
+    scoreOverTime = [0];
+
 }
 
 function shareGame() {
@@ -304,25 +486,44 @@ function shareGame() {
         }
     }
     navigator.clipboard.writeText(shareString);
-    alert("Copied results to clipboard!")
+    myFunction();
+  }
+
+function myFunction() {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+function closeGameModal() {
+    endGameModal.style.display = "none";
+    resetDataSet();
 }
 
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
+        resetDataSet();
     }
 }
-
-
 
 function countTimer() {
     const timeElapsed = Date.now() - gameStartTime;
     const seconds = Math.floor(timeElapsed / 1000) % 60;
+    totalSeconds = seconds
     const minutes = Math.floor((timeElapsed / 1000) / 60);
     document.getElementById("timer").innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
+/**
+ * Displays text on screen on the basis of genre and difficulty specified
+ */
 let difficulty;
 
 function setEasy() {
@@ -454,13 +655,16 @@ function setWiki() {
 }
 
 let genre;
+/**
+ * JSON text containing all text which will be displayed
+ */
 
 let JSONString = JSON.stringify(
     {
         "Easy": {
             "Sci-Fi": {
                 "suppliedText": "There was once an alien that lived on a plannet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other differente planets. One day he wanted to go look for friends, and so he travalled to a planet neaby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
-                "correctText": "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he traveled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
+                "correctText": "There was once an alien that lived on a planet called planet-1. He lived by himself and had no one else to talk to. He had his own spaceship and could go to many other different planets. One day he wanted to go look for friends, and so he travelled to a planet nearby called planet-2. He landed his spaceship and went for a walk to look for people. There he found 3 friends and he asked them to join him on his planet.",
                 "errorCount": "4"
             },
             "Slice of Life": {
@@ -507,7 +711,7 @@ let JSONString = JSON.stringify(
             },
             "Slice of Life": {
                 "suppliedText": "In 1991, Takaki Tono quickly befriends Akari Shinohara after she transfers to his elementary school in Tokyo. They grow very close to each other due to similiar interests and atitudes such as both prefering to stay inside during recess due to their seasonal allergies. As a result, they form a strong bond which is shown when they speak to each other using their given names without any form of honorifics as that is a sign of deep friendship and familiarity in Japan. Right after graduating from elementary school in 1994, Akari moves to the nearby prefecture of Tochigi due to her parents' jobs. The two keep in contact by writing letters but eventually begin to drift apart. When Takaki learns that his family will be moving to Kagoshima on the other side of the country the following year in 1995, he decides to personalley go see Akari one last time since they will be too far apart to see and visit each other once he moves. He also writes a letter for Akari to confess his feelings for her. However, Takaki loses the letter during the journey and a severve snowstorm delays his train for several hours. When the two finally meet late that night and share their first kiss, Takaki realizes they will never be together.",
-                "correctText": "In 1991, Takaki Tono quickly befriends Akari Shinohara after she transfers to his elementary school in Tokyo. They grow very close to each other due to similar interests and attitudes such as both preferring to stay inside during recess due to their seasonal allergies. As a result, they form a strong bond which is shown when they speak to each other using their given names without any form of honorifics as that is a sign of deep friendship and familiarity in Japan. Right after graduating from elementary school in 1994, Akari moves to the nearby prefecture of Tochigi due to her parents' jobs. The two keep in contact by writing letters but eventually begin to drift apart. When Takaki learns that his family will be moving to Kagoshima on the other side of the country the following year in 1995, he decides to personally go see Akari one last time since they will be too far apart to see and visit each other once he moves. He also writes a letter for Akari to confess his feelings for her. However, Takaki loses the letter during the journey and a severe snowstorm delays his train for several hours. When the two finally meet late that night and share their first kiss, Takaki realizes they will never be together.",
+                "correctText": "In 1991, Takaki Tono quickly befriends Akari Shinohara after she transfers to his elementary school in Tokyo. They grow very close to each other due to similar interests and attitudes such as both preferring to stay inside during recess due to their seasonal allergies. As a result, they form a strong bond which is shown when they speak to each other using their given names without any form of honorifics as that is a sign of deep friendship and familiarity in Japan. Right after graduating from elementary school in 1994, Akari moves to the nearby prefecture of Tochigi due to her parents' jobs. The two keep in contact by writing letters but eventually begin to drift apart. When Takaki learns that his family will be moving to Kagoshima on the other side of the country the following year in 1995, he decides to personally go see Akari one last time since they will be too far apart to see and visit each other once he moves. He also writes a letter for Akari to confess his feelings for her. However, Takaki loses the letter during the journey and a severe snowstorm delays his train for several hours. When the two finally meet late that night and share their first kiss, Takaki realises they will never be together.",
                 "errorCount": "5"
             },
             "Non-Fiction": {
@@ -544,7 +748,7 @@ let JSONString = JSON.stringify(
         "Hard": {
             "Sci-Fi": {
                 "suppliedText": "The naraator, a pilot, crash-lands his plane in the Sahara desert. While he tries to repair his engine and monitor his dweedling supply of water and food, a little boy appears out of nowhere and simply asks him to draw a sheep. The author then learns that this \"little prince\" comes from the far away Asteroid B-612, where he left a rose and three volcaneos. The prince's most prized poseeshon was the rose, but her tempesteous mien and fickleness tired him and he decided to leave his tiny planet. To his surprise, the flower was visibly sad to see him go, but she urged him on nonetheless. Before arriving on Earth, the prince visited other planets and met with strange individuals: a king, a vain man, a drunyard, a lamplighter, and a geographer. At the geographer's sugesstion, he visited Earth but dropped down into the Sahara Desert. He found no friends there, but a snake told him that if he ever needed to return to his home planet, he could take advantage of the snake's bite. He met a fox that taught him to realize that to know others we must \"tame\" them; this is what makes things and people unique. \"The esenntial is invisible to the eye,\" says the fox.",
-                "correctText": "The narrator, a pilot, crash-lands his plane in the Sahara desert. While he tries to repair his engine and monitor his dwindling supply of water and food, a little boy appears out of nowhere and simply asks him to draw a sheep. The author then learns that this \"little prince\" comes from the far away Asteroid B-612, where he left a rose and three volcanoes. The prince's most prized possession was the rose, but her tempestuous mien and fickleness tired him and he decided to leave his tiny planet. To his surprise, the flower was visibly sad to see him go, but she urged him on nonetheless. Before arriving on Earth, the prince visited other planets and met with strange individuals: a king, a vain man, a drunkard, a lamplighter, and a geographer. At the geographer's suggestion, he visited Earth but dropped down into the Sahara Desert. He found no friends there, but a snake told him that if he ever needed to return to his home planet, he could take advantage of the snake's bite. He met a fox that taught him to realize that to know others we must \"tame\" them; this is what makes things and people unique. \"The essential is invisible to the eye,\" says the fox.",
+                "correctText": "The narrator, a pilot, crash-lands his plane in the Sahara desert. While he tries to repair his engine and monitor his dwindling supply of water and food, a little boy appears out of nowhere and simply asks him to draw a sheep. The author then learns that this \"little prince\" comes from the far away Asteroid B-612, where he left a rose and three volcanoes. The prince's most prized possession was the rose, but her tempestuous mien and fickleness tired him and he decided to leave his tiny planet. To his surprise, the flower was visibly sad to see him go, but she urged him on nonetheless. Before arriving on Earth, the prince visited other planets and met with strange individuals: a king, a vain man, a drunkard, a lamplighter, and a geographer. At the geographer's suggestion, he visited Earth but dropped down into the Sahara Desert. He found no friends there, but a snake told him that if he ever needed to return to his home planet, he could take advantage of the snake's bite. He met a fox that taught him to realise that to know others we must \"tame\" them; this is what makes things and people unique. \"The essential is invisible to the eye,\" says the fox.",
                 "errorCount": "7"
             },
             "Slice of Life": {

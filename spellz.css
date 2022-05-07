@@ -145,10 +145,6 @@ body {
         "lf input input rf";
 }
 
-#score {
-    grid-area: ls;
-}
-
 
 
 #gameText {
@@ -166,6 +162,17 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+#readyMessage {
+    grid-area: m;
+    display: block;
+    text-align: justify;
+    text-align-last: center;
+
+    font-size: 19px;
+    color: #EDD9A3;
+    margin: 86px;
 }
 
 #gameHidden {
@@ -326,7 +333,7 @@ body {
 
 #comboContainer {
     grid-area: combo;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -334,17 +341,23 @@ body {
     width: 100%;
 }
 
-#comboBar {
-    width: 0%;
-    height: 2%;
-    background: #EDD9A3;
-    align-self: flex-start;
+#comboBarContainer {
+    width: 60%;
+    height: 0.5vh;
+    background-color: #60525F;
     margin-left: 20%;
     margin-right: 20%;
 }
 
+#comboBar {
+    width: 0%;
+    height: 100%;
+    background: #EDD9A3;
+}
 
 /* modal */
+
+
 .modal {
     display: none;
     position: fixed;
@@ -358,20 +371,25 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
+
+
 /* Modal Content */
 .endModalContent {
-    background-color: #EDD9A3;
+    color: #B2A3B5;
+    background-color: #60525F;
     margin: auto;
     padding: 10px;
-    border: 10px solid #EDD9A3;
+    border: 10px solid #60525F;
     width: 30%;
-    height: 30%;
+    height: 40%;
+    overflow: auto;
 }
-
 
 .close {
     color: #aaaaaa;
-    float: left;
+    position: relative;
+    left: 0;
+    top: 0;
     font-size: 28px;
     font-weight: bold;
 }
@@ -409,4 +427,55 @@ body {
     100% {
         margin-left: 0rem;
     }
+
 }
+
+#modalScore {
+    padding-top: 5px;
+}
+
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #60525F; /* Black background color */
+    color: #EDD9A3; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+  }
+  
+  /* Show the snackbar when clicking on a button (class added with JavaScript) */
+  #snackbar.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+  
+  /* Animations to fade the snackbar in and out */
+  @-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+  
+  @keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
