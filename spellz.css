@@ -344,7 +344,7 @@ body {
 #comboBarContainer {
     width: 60%;
     height: 0.5vh;
-    background-color: #60525F;
+    background-color: #222222;
     margin-left: 20%;
     margin-right: 20%;
 }
@@ -361,7 +361,8 @@ body {
 .modal {
     display: none;
     position: fixed;
-    padding-top: 300px;
+    flex-direction: column;
+    padding-top: 100px;
     left: 0;
     top: 0;
     width: 100%;
@@ -380,9 +381,17 @@ body {
     margin: auto;
     padding: 10px;
     border: 10px solid #60525F;
-    width: 30%;
-    height: 40%;
+    width: 470px;
+    height: 490px;
     overflow: auto;
+}
+
+#modalStats {
+    padding-left: 20px;
+}
+
+#modalScore {
+    padding-top: 5px;
 }
 
 .close {
@@ -428,10 +437,6 @@ body {
         margin-left: 0rem;
     }
 
-}
-
-#modalScore {
-    padding-top: 5px;
 }
 
 /* The snackbar - position it at the bottom and in the middle of the screen */

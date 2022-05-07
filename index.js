@@ -325,7 +325,7 @@ function stopTimer() {
 }
 
 function showModal() {
-    document.getElementById("endGameModal").style.display = "block";
+    document.getElementById("endGameModal").style.display = "flex";
     displayStats();
 
 
