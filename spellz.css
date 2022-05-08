@@ -68,9 +68,7 @@ body {
     align-items: end;
     justify-items: end;
 }
-
-/* Difficulty */
-
+/* information related css */
 #infoBtn {
     color: #B2A3B5;
     cursor: pointer;
@@ -98,6 +96,10 @@ h2,
 h3 {
     color: #EDD9A3
 }
+
+
+/* Difficulty */
+
 
 #easy {
     grid-area: 1 / 2 / 2 / 3;
