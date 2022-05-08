@@ -83,6 +83,7 @@ function highlightText(element) {
 }
 
 function clearPreviousHighlight() {
+
     const gameTextElements = document.getElementById("gameText").children;
     if (previousSearchIndicies.length >= 1) {
         const searchElement = gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild;
@@ -90,17 +91,184 @@ function clearPreviousHighlight() {
     }
     for (let index of previousSearchIndicies) {
         const gameTextElement = gameTextElements[index];
+        const beforePrefix = gameTextElement.innerHTML.split("<mark>")[0];
         const prefix = gameTextElement.innerHTML.split("<mark>")[1];
-        gameTextElement.innerHTML = prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+
+        gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
     }
     previousSearchIndicies = new Array();
     currentSearchIndex = 0;
 }
+
+
+// so far will just be called when enter is pressed, ideally, this will be called each time they make a change to inputbox 
+//so that it will update the highlighing 
+
+/**
+* @function fuzzyHighlight() highlights fuzzy matches of words in the gameText element, the function is only run when the inputText bar is updated
+*/
+function fuzzyHighlight() {
+    let inputSearch = document.getElementById("inputTextBox").innerText
+    const gameTextArr = suppliedText.split(" ");
+    const gameTextElements = document.getElementById("gameText").children;
+    let wordPlusIndicesArr = [];
+    if (inputSearch.length >= 3) {
+        wordPlusIndicesArr = fuzzySearch(inputSearch);
+    } else {
+        //dont activate fuzzy, just highlight exact 2 char matches only starting at corresponding index
+        wordPlusIndicesArr = normalSearchOnly(inputSearch);
+    }
+
+    let extractedWords = []
+    let startingIndex;
+    let highlightStart;
+
+    for (let j = 0; j < wordPlusIndicesArr.length; j++) {
+        extractedWords.push(wordPlusIndicesArr[j][0])
+    }
+
+    clearPreviousHighlight();
+    // call function here to revert changes back to normal text pre-highlighting
+    revertDynamicHighlightChanges();
+    if (inputSearch.length >= 1) {
+        for (let i = 0; i < gameTextArr.length; i++) {
+            const gameTextElement = gameTextElements[i];
+            const word = gameTextArr[i];
+            if (extractedWords.includes(word) && !correctedWordsIndicies.includes(i.toString())) {
+                if (inputSearch.length >= 3) {
+                    startingIndex = extractedWords.indexOf(word)
+                    highlightStart = wordPlusIndicesArr[startingIndex][1];
+                    gameTextElement.innerHTML = gameTextElement.innerHTML.slice(0, highlightStart) + "<mark>" + inputSearch + "</mark>" + gameTextElement.innerHTML.slice(highlightStart + inputSearch.length);
+                    previousSearchIndicies.push(i);
+                } else {
+                    startingIndex = extractedWords.indexOf(word)
+                    highlightStart = wordPlusIndicesArr[startingIndex][1];
+                    gameTextElement.innerHTML = gameTextElement.innerHTML.slice(0, highlightStart) + "<mark>" + gameTextElement.innerHTML.slice(highlightStart, highlightStart + inputSearch.length) + "</mark>" + gameTextElement.innerHTML.slice(highlightStart + inputSearch.length);
+                    previousSearchIndicies.push(i);
+                }
+            }
+        }
+    }
+    if (previousSearchIndicies.length >= 1) {
+        gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "lightblue";
+    }
+}
+
+
+
+
+/**
+* @function revertDynamicHighlightChanges() - compares suppliedText currently during highlighting and the current unchanged suppliedText
+* changes back changes from inputText search back into prehighlighting state if not confirmed to changed
+*/
+function revertDynamicHighlightChanges() {
+    const gameTextArr = suppliedText.split(" ");
+    const gameTextElements = document.getElementById("gameText").children;
+    const duplicateGameTextArr = currentSuppliedTextDuplicate.split(" ");
+    for (let i = 0; i < gameTextArr.length; i++) {
+        const gameTextElement = gameTextElements[i];
+        const duplicateWord = duplicateGameTextArr[i];
+        if (gameTextElement.innerText !== duplicateWord && !correctedWordsIndicies.includes(i.toString())) {
+            gameTextElement.innerHTML = duplicateWord //change the supplied inner text back to what it was usually
+        }
+    }
+
+
+
+}
+
+/**
+* @function confirmChangeOnBlueHighlight() - called on when user presses enter/space to confirm a change. sets the global variable indexOfBlueHighlight to check for where they are correcting the word,
+* this same global variable is used as a further check in CheckUserInput()
+*/
+let indexOfBlueHighlight;
+function confirmChangeOnBlueHighlight() {
+    let inputSearch = document.getElementById("inputTextBox")
+    const gameTextArr = suppliedText.split(" ");
+    const gameTextElements = document.getElementById("gameText").children;
+    for (let i = 0; i < gameTextArr.length; i++) {
+        const gameTextElement = gameTextElements[i];
+        if (gameTextElement.innerHTML.indexOf("style") !== -1) {
+            indexOfBlueHighlight = i
+            checkUserInput(inputSearch) //check the user input at highlighted blue's index too
+        }
+    }
+}
+
+/**
+* @function resetHighlights() - removes all marks from the passage to cleanse for next searchTerm to prevent dirtying the divs.
+* It is called when enter is pressed, on entering a correct word, and also when an incorrect word is entered
+*/
+function resetHighlights() {
+    const gameTextArr = suppliedText.split(" ");
+    const gameTextElements = document.getElementById("gameText").children;
+    for (let i = 0; i < gameTextArr.length; i++) {
+        const gameTextElement = gameTextElements[i];
+        //strip all yellow
+        if (gameTextElement.innerHTML.indexOf("<mark>") !== -1) {
+            const beforePrefix = gameTextElement.innerHTML.split("<mark>")[0];
+            const prefix = gameTextElement.innerHTML.split("<mark>")[1];
+
+            gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+        }
+        //to remove blue
+        if (gameTextElement.innerHTML.indexOf("style") !== -1) {
+            const beforePrefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[0];
+            const prefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[1];
+            gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+        }
+        previousSearchIndicies = new Array();
+        currentSearchIndex = 0;
+    }
+}
+
+
+/**
+* @function fuzzySearch() will identify the matched fuzzy words in the text, calls the function from diff_patch_match
+* @param testInput - the text from the inputBox game control
+* @return - returns an array of arrays, first index is the fuzzy matched word along at the index, where the matching starts, for subsequent corrections and highlights begin at
+*/
+let testLoc = 0; //to take the first instance of a match in each word
+function fuzzySearch(testInput) {
+    let dmp = new diff_match_patch();
+    let matchingWordPlusIndex = []
+    const gameTextArr = suppliedText.split(" ");
+    for (let i = 0; i < gameTextArr.length; i++) {
+        let match = dmp.match_main(gameTextArr[i], testInput, testLoc)
+        if (match !== -1) {
+            matchingWordPlusIndex.push([gameTextArr[i], match])
+        }
+    }
+    return matchingWordPlusIndex;
+}
+
+function normalSearchOnly(inputSearch) {
+    const gameTextArr = suppliedText.split(" ");
+    const gameTextElements = document.getElementById("gameText").children;
+    const searchText = inputSearch;
+    let matchingWordPlusIndex = []
+    if (searchText.length >= 1) {
+        for (let i = 0; i < gameTextArr.length; i++) {
+            const word = gameTextArr[i];
+            if (word.indexOf(searchText) !== -1 && !correctedWordsIndicies.includes(i.toString())) {
+                matchingWordPlusIndex.push([word, word.indexOf(searchText)])
+            }
+        }
+
+
+
+    }
+    return matchingWordPlusIndex
+}
+
+
 let lastUserInputTime;
 function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
-        clearPreviousHighlight()
-        checkUserInput(element);
+        confirmChangeOnBlueHighlight();
+        resetHighlights();
+
+        indexOfBlueHighlight = null; //to refresh where the blue indicator is
         lastUserInputTime = Date.now()
     }
     else if (event.code == "ArrowUp" || event.code == "ArrowDown" || event.code == "ArrowLeft" || event.code == "ArrowRight") {
@@ -108,24 +276,33 @@ function inputHandler(element, event) {
         event.preventDefault();
     }
 }
+
+
 let countCorrect = 0;
 let countWrong = 0;
 let score = 0;
 let comboCounter = 0;
 let previousCorrectedTime = null;
 let previousComboTime = null;
+
+
 function checkUserInput(element) {
+    let possibleCorrectableIndices = []
     if (element.innerText.length >= 1) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(i) == false) {
-                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText) {
+                //index was being overriden to the last index, by default, we start from correcting the first instance
+                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText && !correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
                     index = Object.keys(correctIndicies)[i];
+                    possibleCorrectableIndices.push((index).toString());
                 }
             }
         }
-        if (index != -1) {
-            if (correctedWordsIndicies.includes(index) == false) {
+        // added end condition to ensure the user is correcting the proper word they choose based on where the blue highlight is
+        if (index != "-1" && possibleCorrectableIndices.includes(indexOfBlueHighlight.toString())) {
+            index = indexOfBlueHighlight.toString()
+            if (correctedWordsIndicies.includes(indexOfBlueHighlight.toString()) == false) {
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
                 const currentTime = Date.now();
@@ -140,6 +317,7 @@ function checkUserInput(element) {
                 else {
                     comboCounter = 1;
                 }
+
                 restartComboTimer();
                 comboStreak = comboStreak + TIME_LIMIT
                 comboStreakArr.push(comboStreak)
@@ -148,10 +326,17 @@ function checkUserInput(element) {
                 document.getElementById("score").innerText = "score: \n" + score;
                 document.getElementById("combo").innerText = "combo: \n" + comboCounter;
                 countCorrect++;
+                // to update the comparator passage
+                currentSuppliedTextDuplicate = suppliedText;
+                // to try reset the changed texts after correction
+                revertDynamicHighlightChanges();
             }
         }
         else {
             stopComboTimer();
+            //when wrong, also reset highlights, and change back all dynamically change text from highlighting
+            revertDynamicHighlightChanges();
+
             document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
             score -= 30;
@@ -212,6 +397,7 @@ function navigateSearchResults(key) {
         }
         if (key == "ArrowDown" || key == "ArrowRight") {
             currentSearchIndex = (currentSearchIndex + 1) % length // currentSearchIndex can't be negative, so currentSearchIndex + 1 can't be negative => use positive only modulus
+
         }
         gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "lightblue";
     }
@@ -270,8 +456,9 @@ window.onload = function () {
     getVersion();
     loadText();
     document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
-    document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
+    document.getElementById("inputTextBox").addEventListener("input", function () { fuzzyHighlight(this); });
     document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
+
 };
 
 function showReadyMessage() {
@@ -681,8 +868,8 @@ let JSONString = JSON.stringify(
         },
         "Medium": {
             "Sci-Fi": {
-                "suppliedText": "A self-proclamied exorxist and fraud named Arataka Reigen attempts to exorcize an evil spirit, despite having only stumbled onto it by accident. Much to Reigen's shock, the spirit seems to only be annoyed by his inefecitive attacks, which consist of throwing a handful of table salt at the spirit (actually meant to be purified salt). Reigen then unleashes his secret weapon: calling in an actual pyschic (also referred to as an esper), Shigeo Kageyama (a.k.a. \"Mob\") to banish the spirit for him with his psychokinetic powers. Mob is an extremelly powerful psychic, despite only being in middle school. Some time later, Reigen is contracted to get rid of evil spirits inhabiting a tuneel. Once again, Reigen manages to trick Mob into doing most of the work for him. One of the ghosts, the decreased leader of a biker gang, warns of an even more powerful monster located deeper in the tunnel, and begs Reigen and Mob to not fight it. However, Mob manages to take it down anyway. The spirits of the leader and his gang are finally at peace and move on to the afterlife.",
-                "correctText": "A self-proclaimed exorcist and fraud named Arataka Reigen attempts to exorcise an evil spirit, despite having only stumbled onto it by accident. Much to Reigen's shock, the spirit seems to only be annoyed by his ineffective attacks, which consist of throwing a handful of table salt at the spirit (actually meant to be purified salt). Reigen then unleashes his secret weapon: calling in an actual psychic (also referred to as an esper), Shigeo Kageyama (a.k.a. \"Mob\") to banish the spirit for him with his psychokinetic powers. Mob is an extremely powerful psychic, despite only being in middle school. Some time later, Reigen is contracted to get rid of evil spirits inhabiting a tunnel. Once again, Reigen manages to trick Mob into doing most of the work for him. One of the ghosts, the deceased leader of a biker gang, warns of an even more powerful monster located deeper in the tunnel, and begs Reigen and Mob to not fight it. However, Mob manages to take it down anyway. The spirits of the leader and his gang are finally at peace and move on to the afterlife.",
+                "suppliedText": "A self proclamied exorxist and fraud named Arataka Reigen attempts to exorcize an evil spirit, despite having only stumbled onto it by accident. Much to Reigen's shock, the spirit seems to only be annoyed by his inefecitive attacks, which consist of throwing a handful of table salt at the spirit (actually meant to be purified salt). Reigen then unleashes his secret weapon: calling in an actual pyschic (also referred to as an esper), Shigeo Kageyama (a.k.a. \"Mob\") to banish the spirit for him with his psychokinetic powers. Mob is an extremelly powerful psychic, despite only being in middle school. Some time later, Reigen is contracted to get rid of evil spirits inhabiting a tuneel. Once again, Reigen manages to trick Mob into doing most of the work for him. One of the ghosts, the decreased leader of a biker gang, warns of an even more powerful monster located deeper in the tunnel, and begs Reigen and Mob to not fight it. However, Mob manages to take it down anyway. The spirits of the leader and his gang are finally at peace and move on to the afterlife.",
+                "correctText": "A self proclaimed exorcist and fraud named Arataka Reigen attempts to exorcise an evil spirit, despite having only stumbled onto it by accident. Much to Reigen's shock, the spirit seems to only be annoyed by his ineffective attacks, which consist of throwing a handful of table salt at the spirit (actually meant to be purified salt). Reigen then unleashes his secret weapon: calling in an actual psychic (also referred to as an esper), Shigeo Kageyama (a.k.a. \"Mob\") to banish the spirit for him with his psychokinetic powers. Mob is an extremely powerful psychic, despite only being in middle school. Some time later, Reigen is contracted to get rid of evil spirits inhabiting a tunnel. Once again, Reigen manages to trick Mob into doing most of the work for him. One of the ghosts, the deceased leader of a biker gang, warns of an even more powerful monster located deeper in the tunnel, and begs Reigen and Mob to not fight it. However, Mob manages to take it down anyway. The spirits of the leader and his gang are finally at peace and move on to the afterlife.",
                 "errorCount": "7"
             },
             "Slice of Life": {
@@ -791,10 +978,14 @@ function loadDaily() {
     const key = keys[((daysPassed % length) + length) % length];
     suppliedText = textBank[key]["suppliedText"];
     correctText = textBank[key]["correctText"];
+    // testing only for daily for a comparator
+    currentSuppliedTextDuplicate = suppliedText
+    // console.log(currentSuppliedTextDuplicate);
 }
 
 let correctText;
 let suppliedText;
+let currentSuppliedTextDuplicate;
 function loadText() {
     // if genre not selected, show daily
     if (typeof genre == "undefined") {
@@ -807,6 +998,8 @@ function loadText() {
     const passageSurr = separateWords();
     document.getElementById("gameText").innerHTML = passageSurr;
     document.getElementById("gameHidden").innerHTML = passageSurr;
+    //to work for any supplied text
+    currentSuppliedTextDuplicate = suppliedText
 }
 
 // to add divs between each word
@@ -819,3 +1012,7 @@ function separateWords() {
     }
     return wordArr.join(" ");
 }
+
+
+
+
