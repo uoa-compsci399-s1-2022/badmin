@@ -181,46 +181,49 @@ function revertDynamicHighlightChanges() {
 */
 
 //NEED TO TAKE OUT
-// let indexOfBlueHighlight;
-// function confirmChangeOnBlueHighlight() {
-//     let inputSearch = document.getElementById("inputTextBox")
-//     const gameTextArr = suppliedText.split(" ");
-//     const gameTextElements = document.getElementById("gameText").children;
-//     for (let i = 0; i < gameTextArr.length; i++) {
-//         const gameTextElement = gameTextElements[i];
-//         if (gameTextElement.innerHTML.indexOf("style") !== -1) {
-//             indexOfBlueHighlight = i
-//             checkUserInput(inputSearch) //check the user input at highlighted blue's index too
-//         }
-//     }
-// }
-
-/**
-* @function resetHighlights() - removes all marks from the passage to cleanse for next searchTerm to prevent dirtying the divs.
-* It is called when enter is pressed, on entering a correct word, and also when an incorrect word is entered
-*/
-function resetHighlights() {
+let indexOfBlueHighlight;
+function confirmChangeOnBlueHighlight() {
+    let inputSearch = document.getElementById("inputTextBox")
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
     for (let i = 0; i < gameTextArr.length; i++) {
         const gameTextElement = gameTextElements[i];
-        //strip all yellow
-        if (gameTextElement.innerHTML.indexOf("<mark>") !== -1) {
-            const beforePrefix = gameTextElement.innerHTML.split("<mark>")[0];
-            const prefix = gameTextElement.innerHTML.split("<mark>")[1];
-
-            gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
-        }
-        //to remove blue
         if (gameTextElement.innerHTML.indexOf("style") !== -1) {
-            const beforePrefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[0];
-            const prefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[1];
-            gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+            indexOfBlueHighlight = i
+            // checkUserInput(inputSearch) //check the user input at highlighted blue's index too
         }
-        previousSearchIndicies = new Array();
-        currentSearchIndex = 0;
     }
 }
+
+
+
+// MAYBE NOT NEED THIS!!
+/**
+* @function resetHighlights() - removes all marks from the passage to cleanse for next searchTerm to prevent dirtying the divs.
+* It is called when enter is pressed, on entering a correct word, and also when an incorrect word is entered
+*/
+// function resetHighlights() {
+//     const gameTextArr = suppliedText.split(" ");
+//     const gameTextElements = document.getElementById("gameText").children;
+//     for (let i = 0; i < gameTextArr.length; i++) {
+//         const gameTextElement = gameTextElements[i];
+//         //strip all yellow
+//         if (gameTextElement.innerHTML.indexOf("<mark>") !== -1) {
+//             const beforePrefix = gameTextElement.innerHTML.split("<mark>")[0];
+//             const prefix = gameTextElement.innerHTML.split("<mark>")[1];
+
+//             gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+//         }
+//         //to remove blue
+//         if (gameTextElement.innerHTML.indexOf("style") !== -1) {
+//             const beforePrefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[0];
+//             const prefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[1];
+//             gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
+//         }
+//         previousSearchIndicies = new Array();
+//         currentSearchIndex = 0;
+//     }
+// }
 
 
 /**
@@ -264,7 +267,7 @@ function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
 
         // current
-        // confirmChangeOnBlueHighlight();
+        confirmChangeOnBlueHighlight();
         // resetHighlights();
         // indexOfBlueHighlight = null; //to refresh where the blue indicator is
 
@@ -291,22 +294,61 @@ let previousComboTime = null;
 
 
 function checkUserInput(element) {
-    // let possibleCorrectableIndices = []
+    //fuzzybranch's temporary fix
+    let possibleCorrectableIndices = [];
+    // a dictionary of the indices and the words
+    console.log(correctIndicies)
     if (element.innerText.length >= 1) {
         let index = -1;
-        for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
-            if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i]) == false) {
-                //index was being overriden to the last index, by default, we start from correcting the first instance
-                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText) { //&& !correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
-                    index = Object.keys(correctIndicies)[i];
-                    // possibleCorrectableIndices.push((index).toString());
-                }
-            }
-        }
-        // added end condition to ensure the user is correcting the proper word they choose based on where the blue highlight is
-        if (index != -1) { //&& possibleCorrectableIndices.includes(indexOfBlueHighlight.toString())) {
-            // index = indexOfBlueHighlight.toString()
-            // if (correctedWordsIndicies.includes(indexOfBlueHighlight.toString()) == false) {
+
+        //JOJIS implementation
+        // for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
+        //     if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i]) == false) {
+        //         //index was being overriden to the last index, by default, we start from correcting the first instance
+        //         if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText && !correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
+        //             index = Object.keys(correctIndicies)[i];
+
+        //             // temp fix
+        //             // possibleCorrectableIndices.push((index).toString());
+
+        //             possibleCorrectableIndices.push(parseInt(index));
+        //         }
+        //     }
+        // }
+
+        console.log("correctIndicies (ignore just need to know its not -1): " + Object.values(correctIndicies).indexOf(element.innerText))
+        console.log("possible Correctable: " + possibleCorrectableIndices)
+
+
+        // rens suggestion- use indexOf
+        index = Object.values(correctIndicies).indexOf(element.innerText)
+
+        // console.log(currentSearchIndex)
+        // confirmChangeOnBlueHighlight()
+        // console.log("" +indexOfBlueHighlight)
+        console.log("index of blue index: " + indexOfBlueHighlight)
+        console.log("list of keys that are good to correct: " + Object.keys(correctIndicies))
+        console.log(Object.keys(correctIndicies).includes(indexOfBlueHighlight))
+        if (index != -1 && Object.keys(correctIndicies).includes(indexOfBlueHighlight.toString())) {
+            index = indexOfBlueHighlight.toString()
+
+
+
+            // added end condition to ensure the user is correcting the proper word they choose based on where the blue highlight is
+
+            //CURRENT
+            // if (index != -1 && possibleCorrectableIndices.includes(currentSearchIndex)) {
+            //     index = currentSearchIndex
+
+            //     if (correctedWordsIndicies.includes(currentSearchIndex) == false) {
+
+            console.log("entered correct")
+
+            // joji's currentMain
+            // if (index != -1) { 
+
+
+
             if (correctedWordsIndicies.includes(index) == false) {
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
@@ -354,6 +396,7 @@ function checkUserInput(element) {
     setTimeout(() => { document.getElementById("inputTextBox").classList.remove("error"); }, 500);
     document.getElementById("inputTextBox").innerText = "";
 }
+// }
 
 let comboStreak = 0;
 let comboStreakArr = [0]
