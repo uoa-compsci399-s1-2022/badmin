@@ -118,7 +118,7 @@ function checkUserInput(element) {
     if (element.innerText.length >= 1) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
-            if (correctedWordsIndicies.includes(i) == false) {
+            if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i]) == false) {
                 if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText) {
                     index = Object.keys(correctIndicies)[i];
                 }
