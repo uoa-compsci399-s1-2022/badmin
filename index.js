@@ -83,7 +83,6 @@ function highlightText(element) {
 }
 
 function clearPreviousHighlight() {
-
     const gameTextElements = document.getElementById("gameText").children;
     if (previousSearchIndicies.length >= 1) {
         const searchElement = gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild;
@@ -172,28 +171,29 @@ function revertDynamicHighlightChanges() {
             gameTextElement.innerHTML = duplicateWord //change the supplied inner text back to what it was usually
         }
     }
-
-
-
 }
+
+
 
 /**
 * @function confirmChangeOnBlueHighlight() - called on when user presses enter/space to confirm a change. sets the global variable indexOfBlueHighlight to check for where they are correcting the word,
 * this same global variable is used as a further check in CheckUserInput()
 */
-let indexOfBlueHighlight;
-function confirmChangeOnBlueHighlight() {
-    let inputSearch = document.getElementById("inputTextBox")
-    const gameTextArr = suppliedText.split(" ");
-    const gameTextElements = document.getElementById("gameText").children;
-    for (let i = 0; i < gameTextArr.length; i++) {
-        const gameTextElement = gameTextElements[i];
-        if (gameTextElement.innerHTML.indexOf("style") !== -1) {
-            indexOfBlueHighlight = i
-            checkUserInput(inputSearch) //check the user input at highlighted blue's index too
-        }
-    }
-}
+
+//NEED TO TAKE OUT
+// let indexOfBlueHighlight;
+// function confirmChangeOnBlueHighlight() {
+//     let inputSearch = document.getElementById("inputTextBox")
+//     const gameTextArr = suppliedText.split(" ");
+//     const gameTextElements = document.getElementById("gameText").children;
+//     for (let i = 0; i < gameTextArr.length; i++) {
+//         const gameTextElement = gameTextElements[i];
+//         if (gameTextElement.innerHTML.indexOf("style") !== -1) {
+//             indexOfBlueHighlight = i
+//             checkUserInput(inputSearch) //check the user input at highlighted blue's index too
+//         }
+//     }
+// }
 
 /**
 * @function resetHighlights() - removes all marks from the passage to cleanse for next searchTerm to prevent dirtying the divs.
@@ -231,6 +231,7 @@ function resetHighlights() {
 let testLoc = 0; //to take the first instance of a match in each word
 function fuzzySearch(testInput) {
     let dmp = new diff_match_patch();
+    dmp.Match_Threshold = 0.3
     let matchingWordPlusIndex = []
     const gameTextArr = suppliedText.split(" ");
     for (let i = 0; i < gameTextArr.length; i++) {
@@ -244,7 +245,6 @@ function fuzzySearch(testInput) {
 
 function normalSearchOnly(inputSearch) {
     const gameTextArr = suppliedText.split(" ");
-    const gameTextElements = document.getElementById("gameText").children;
     const searchText = inputSearch;
     let matchingWordPlusIndex = []
     if (searchText.length >= 1) {
@@ -254,9 +254,6 @@ function normalSearchOnly(inputSearch) {
                 matchingWordPlusIndex.push([word, word.indexOf(searchText)])
             }
         }
-
-
-
     }
     return matchingWordPlusIndex
 }
@@ -265,10 +262,17 @@ function normalSearchOnly(inputSearch) {
 let lastUserInputTime;
 function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
-        confirmChangeOnBlueHighlight();
-        resetHighlights();
 
-        indexOfBlueHighlight = null; //to refresh where the blue indicator is
+        // current
+        // confirmChangeOnBlueHighlight();
+        // resetHighlights();
+        // indexOfBlueHighlight = null; //to refresh where the blue indicator is
+
+        //currMain
+        clearPreviousHighlight();
+        checkUserInput(element);
+
+
         lastUserInputTime = Date.now()
     }
     else if (event.code == "ArrowUp" || event.code == "ArrowDown" || event.code == "ArrowLeft" || event.code == "ArrowRight") {
@@ -287,22 +291,23 @@ let previousComboTime = null;
 
 
 function checkUserInput(element) {
-    let possibleCorrectableIndices = []
+    // let possibleCorrectableIndices = []
     if (element.innerText.length >= 1) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
-            if (correctedWordsIndicies.includes(i) == false) {
+            if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i]) == false) {
                 //index was being overriden to the last index, by default, we start from correcting the first instance
-                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText && !correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
+                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText) { //&& !correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
                     index = Object.keys(correctIndicies)[i];
-                    possibleCorrectableIndices.push((index).toString());
+                    // possibleCorrectableIndices.push((index).toString());
                 }
             }
         }
         // added end condition to ensure the user is correcting the proper word they choose based on where the blue highlight is
-        if (index != "-1" && possibleCorrectableIndices.includes(indexOfBlueHighlight.toString())) {
-            index = indexOfBlueHighlight.toString()
-            if (correctedWordsIndicies.includes(indexOfBlueHighlight.toString()) == false) {
+        if (index != -1) { //&& possibleCorrectableIndices.includes(indexOfBlueHighlight.toString())) {
+            // index = indexOfBlueHighlight.toString()
+            // if (correctedWordsIndicies.includes(indexOfBlueHighlight.toString()) == false) {
+            if (correctedWordsIndicies.includes(index) == false) {
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
                 const currentTime = Date.now();
