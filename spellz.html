@@ -43,26 +43,28 @@
     <div class="mid">
         <div id="gameText"></div>
         <div id="readyMessage">Ready? Click here to start</div>
-        <div style="position: relative; height:30vh; width:28vw">
+            <div>
             <div id="endGameModal" class="modal">
-
                 <div class="endModalContent">
-                    <span class="close" onclick="closeGameModal()">&times;</span>
+                    <span class="close" onclick="closeGameModal()">&times;</span>                
                     <div id="modalText">STATISTICS</div>
-                    <div id="modalScore"></div>
-                    <div id="modalaccuracy"></div>
-                    <div id="modalTimeTaken"></div>
-                    <div id="modalComboStreak"></div>
-                    <div id="modalGotEverything"></div>
-
-                    <div>
-                        <canvas id="myChart"></canvas>
-
-                        <!-- <canvas id="myChart" width="1600" height="900"></canvas> -->
+                    <div id="modalStats">
+                        <div id="modalScore"></div>
+                        <div id="modalaccuracy"></div>
+                        <div id="modalTimeTaken"></div>
+                        <div id="modalComboStreak"></div>
+                        <div id="modalGotEverything"></div>
+                        <div>&nbsp;</div>
                     </div>
-
+                    <div class="chart-container">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    <div id="shareContainer">
+                    <button id="shareButton" onclick="shareGame()">
+                    Share
+                    </button>
                 </div>
-
+                </div>
             </div>
         </div>
 
@@ -88,7 +90,7 @@
     </div>
 
     <div class="bot">
-
+        <div id="toast">Copied to Clipboard!</div>
         <div class="footSel">
 
         </div>
