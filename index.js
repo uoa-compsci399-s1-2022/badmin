@@ -176,32 +176,7 @@ function revertDynamicHighlightChanges() {
 
 
 
-/**
-* @function resetHighlights() - removes all marks from the passage to cleanse for next searchTerm to prevent dirtying the divs.
-* It is called when enter is pressed, on entering a correct word, and also when an incorrect word is entered
-*/
-// function resetHighlights() {
-//     const gameTextArr = suppliedText.split(" ");
-//     const gameTextElements = document.getElementById("gameText").children;
-//     for (let i = 0; i < gameTextArr.length; i++) {
-//         const gameTextElement = gameTextElements[i];
-//         //strip all yellow
-//         if (gameTextElement.innerHTML.indexOf("<mark>") !== -1) {
-//             const beforePrefix = gameTextElement.innerHTML.split("<mark>")[0];
-//             const prefix = gameTextElement.innerHTML.split("<mark>")[1];
 
-//             gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
-//         }
-//         //to remove blue
-//         if (gameTextElement.innerHTML.indexOf("style") !== -1) {
-//             const beforePrefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[0];
-//             const prefix = gameTextElement.innerHTML.split('<mark style="background-color: lightblue;">')[1];
-//             gameTextElement.innerHTML = beforePrefix + prefix.split("</mark>")[0] + prefix.split("</mark>")[1];
-//         }
-//         previousSearchIndicies = new Array();
-//         currentSearchIndex = 0;
-//     }
-// }
 
 
 /**
@@ -244,12 +219,8 @@ let lastUserInputTime;
 function inputHandler(element, event) {
     if (event.code == "Enter" || event.code == "Space") {
 
-        // current
         confirmChangeOnBlueHighlight();
-        // resetHighlights();
-        // indexOfBlueHighlight = null; //to refresh where the blue indicator is
 
-        //currMain
         clearPreviousHighlight();
         checkUserInput(element);
 
@@ -295,10 +266,7 @@ function checkUserInput(element) {
         let index = -1;
         index = Object.values(correctIndicies).indexOf(element.innerText)
 
-        // confirmChangeOnBlueHighlight()
-        console.log("index of blue index: " + indexOfBlueHighlight)
-        console.log("list of keys that are good to correct: " + Object.keys(correctIndicies))
-        console.log(Object.keys(correctIndicies).includes(indexOfBlueHighlight))
+
         if (index != -1 && Object.keys(correctIndicies).includes(indexOfBlueHighlight.toString())) {
             index = indexOfBlueHighlight.toString()
 
