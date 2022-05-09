@@ -472,8 +472,152 @@ function resetDataSet() {
     myChart.destroy();
     comboStreak = 0;
     scoreOverTime = [0];
+}
+/**
+ * Everything that will appear on modal 
+ */
+function displayStats() {
+    document.getElementById("modalScore").innerText = "Score: " + score;
+    document.getElementById("modalaccuracy").innerText = "Accuracy: " + Math.max(0, Math.round((countCorrect) / (Object.keys(correctIndicies).length + countWrong) * 100)) + "%"
+    calculateComboStreak()
+    formatTimeTaken();
+    getEveryWord();
+    calculateModalGraph();
 
 }
+/**
+ * See how long the combo was held for in seconds 
+ */
+function calculateComboStreak() {
+    const maxComboStreak = Math.max(...comboStreakArr)
+    const minTimeCombo = Math.min(maxComboStreak, totalSeconds)
+    let hour = Math.floor(minTimeCombo / 3600);
+    let minute = Math.floor((minTimeCombo - hour * 3600) / 60);
+    let seconds = minTimeCombo - (hour * 3600 + minute * 60);
+    if (minute === 0) {
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + seconds + " seconds";
+    } else if (minute !== 0 && hour !== 0) {
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + hour + " hrs " + minute + " mins " + seconds + " seconds";
+
+    }
+    else {
+        document.getElementById("modalComboStreak").innerText = "Longest Combo Streak: " + minute + " mins " + seconds + " seconds";
+    }
+
+}
+/**
+ * See how long the game was in play until stop button was clicked
+ */
+function formatTimeTaken() {
+    let hour = Math.floor(totalSeconds / 3600);
+    let minute = Math.floor((totalSeconds - hour * 3600) / 60);
+    let seconds = totalSeconds - (hour * 3600 + minute * 60);
+    if (minute === 0) {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + seconds + " seconds";
+    } else if (minute !== 0 && hour !== 0) {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + hour + " hrs " + minute + " mins " + seconds + " seconds";
+
+    }
+    else {
+        document.getElementById("modalTimeTaken").innerText = "Time Taken: " + minute + " mins " + seconds + " seconds";
+    }
+}
+
+/**
+ * On the stats page display how many words the user got and how much words they did not get
+ */
+
+function getEveryWord() {
+    if (Object.keys(correctIndicies).length === correctedWordsIndicies.length) {
+        document.getElementById("modalGotEverything").innerText = "You got every word!"
+    }
+    else if (Object.keys(correctIndicies).length - correctedWordsIndicies.length == 1) {
+        document.getElementById("modalGotEverything").innerText = "You did not find " + (Object.keys(correctIndicies).length - correctedWordsIndicies.length) + " word in the text!";
+    }
+    else {
+        document.getElementById("modalGotEverything").innerText = "You did not find " + (Object.keys(correctIndicies).length - correctedWordsIndicies.length) + " words in the text!";
+    }
+}
+
+/**
+ * Graph function which is displayed in modal
+ */
+
+// Our labels along the x-axis
+let xValues = [0];
+// For drawing the lines
+let scoreOverTime = [0];
+
+
+
+let myChart;
+let ctx;
+function calculateModalGraph() {
+    ctx = document.getElementById("myChart");
+    myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: xValues,
+            datasets: [
+                {
+                    data: scoreOverTime,
+                    borderColor: "#3e95cd",
+                    fill: false,
+                }
+            ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                yAxis: {
+                    ticks: {
+                        color: "#B2A3B5",
+                        beginAtZero: true,
+                    },
+                    grid: {
+                        color: "#B2A3B5",
+                    },
+                    title: {
+                        display: true,
+                        text: "Score",
+                        padding: { top: 0, left: 0, right: 0, bottom: 0 },
+                        color: "#B2A3B5",
+                    },
+                },
+                xAxis: {
+                    ticks: {
+                        color: "#B2A3B5",
+                        beginAtZero: true,
+                    },
+                    grid: {
+                        color: "#B2A3B5",
+                    },
+                    title: {
+                        display: true,
+                        text: "Time",
+                        padding: { top: 0, left: 0, right: 0, bottom: 0 },
+                        color: "#B2A3B5",
+                    },
+                },
+            }
+        }
+    });
+}
+
+// resets global variables added in endGameModal
+function resetDataSet() {
+    scoreOverTime = [0];
+    xValues = [0];
+    myChart.destroy();
+    comboStreak = 0;
+    scoreOverTime = [0];
+
+}
+
 
 function shareGame() {
     shareString = "\u2328"
