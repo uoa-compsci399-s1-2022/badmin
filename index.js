@@ -175,30 +175,7 @@ function revertDynamicHighlightChanges() {
 
 
 
-/**
-* @function confirmChangeOnBlueHighlight() - called on when user presses enter/space to confirm a change. sets the global variable indexOfBlueHighlight to check for where they are correcting the word,
-* this same global variable is used as a further check in CheckUserInput()
-*/
 
-//NEED TO TAKE OUT
-// let indexOfBlueHighlight;
-
-// function confirmChangeOnBlueHighlight() {
-//     let inputSearch = document.getElementById("inputTextBox")
-//     const gameTextArr = suppliedText.split(" ");
-//     const gameTextElements = document.getElementById("gameText").children;
-//     for (let i = 0; i < gameTextArr.length; i++) {
-//         const gameTextElement = gameTextElements[i];
-//         if (gameTextElement.innerHTML.indexOf("style") !== -1) {
-//             indexOfBlueHighlight = i
-
-//         }
-//     }
-// }
-
-
-
-// MAYBE NOT NEED THIS!!
 /**
 * @function resetHighlights() - removes all marks from the passage to cleanse for next searchTerm to prevent dirtying the divs.
 * It is called when enter is pressed, on entering a correct word, and also when an incorrect word is entered
@@ -295,9 +272,13 @@ let previousComboTime = null;
 
 
 //global function to keep track of the ith word element the blue highlight is on. currentSearchIndex does not do this
+
+/**
+* @function confirmChangeOnBlueHighlight() - called on when user presses enter/space to confirm a change. sets the global variable indexOfBlueHighlight to check for where they are correcting the word,
+* global function to keep track of the ith word element the blue highlight is on. currentSearchIndex does not do this
+*/
 let indexOfBlueHighlight;
 function confirmChangeOnBlueHighlight() {
-    let inputSearch = document.getElementById("inputTextBox")
     const gameTextArr = suppliedText.split(" ");
     const gameTextElements = document.getElementById("gameText").children;
     for (let i = 0; i < gameTextArr.length; i++) {
@@ -308,8 +289,7 @@ function confirmChangeOnBlueHighlight() {
     }
 }
 
-console.log("correctIndicies (ignore just need to know its not -1): " + Object.values(correctIndicies).indexOf(element.innerText))
-console.log("possible Correctable: " + possibleCorrectableIndices)
+
 function checkUserInput(element) {
     if (element.innerText.length >= 1) {
         let index = -1;
