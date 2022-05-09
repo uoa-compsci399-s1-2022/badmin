@@ -344,7 +344,7 @@ body {
 #comboBarContainer {
     width: 60%;
     height: 0.5vh;
-    background-color: #60525F;
+    background-color: #222222;
     margin-left: 20%;
     margin-right: 20%;
 }
@@ -361,7 +361,8 @@ body {
 .modal {
     display: none;
     position: fixed;
-    padding-top: 300px;
+    flex-direction: column;
+    padding-top: 100px;
     left: 0;
     top: 0;
     width: 100%;
@@ -380,11 +381,18 @@ body {
     margin: auto;
     padding: 10px;
     border: 10px solid #60525F;
-    width: 30%;
-    height: 40%;
+    width: 470px;
+    height: 490px;
     overflow: auto;
 }
 
+#modalStats {
+    padding-left: 20px;
+}
+
+#modalScore {
+    padding-top: 5px;
+}
 
 .close {
     color: #aaaaaa;
@@ -431,6 +439,57 @@ body {
 
 }
 
-#modalScore {
-    padding-top: 5px;
+#shareButton {
+    background-color: #60525F;
+    color: #EDD9A3;
 }
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #60525F;
+    color: #EDD9A3;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+  }
+  
+  #toast.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+  
+  @-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+  
+  @keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+
+  #shareContainer {
+      width: 100%;
+  }
+
+  #shareButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }

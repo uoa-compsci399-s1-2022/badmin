@@ -1,7 +1,7 @@
 /**
  * Show text function
  */
-function showGame() {
+ function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
     document.getElementById("gameControls").style.display = "flex";
@@ -325,7 +325,7 @@ function stopTimer() {
 }
 
 function showModal() {
-    document.getElementById("endGameModal").style.display = "block";
+    document.getElementById("endGameModal").style.display = "flex";
     displayStats();
 
 
@@ -475,6 +475,25 @@ function resetDataSet() {
 
 }
 
+function shareGame() {
+    shareString = "\u2328"
+    for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
+        if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
+            shareString += " \u2705"
+        }
+        else {
+            shareString += " \u274E"
+        }
+    }
+    navigator.clipboard.writeText(shareString);
+    showToast();
+  }
+
+function showToast() {
+  var x = document.getElementById("toast");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
 
 function closeGameModal() {
     endGameModal.style.display = "none";
