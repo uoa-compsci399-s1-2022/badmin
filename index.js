@@ -293,21 +293,6 @@ function firstTimeUserCheck() {
     }
 }
 
-function showFirstTimerModal() {
-    document.getElementById("firstTimeModal").style.display = "block";
-}
-
-function closeFirstTimeModal() {
-    document.getElementById("firstTimeModal").style.display = "none";
-}
-
-// closes modal when anywhere is clicked
-window.onclick = function (event) {
-    if (event.target == document.getElementById("firstTimeModal")) {
-        endGameModal.style.display = "none";
-    }
-}
-
 
 function checkDaily() {
     let doneDaily = getCookie("daily");
@@ -341,9 +326,6 @@ function refresh() {
 window.onload = function () { 
     firstTimeUserCheck();
     getVersion();
-    if(getCookie("new") == "true"){
-        showFirstTimerModal();
-    }
     loadText();
     document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
     document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
