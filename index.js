@@ -477,7 +477,6 @@ function resetDataSet() {
 
 function shareGame() {
     if (genre && difficulty){
-        number = 1
         shareString = "Spellz " + genre + " " + difficulty + "\n" + "Score: " + score + "\n"
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
@@ -489,7 +488,8 @@ function shareGame() {
         }
     }
     else {
-        number = 1
+        today = new Date();
+        number = Math.floor(today.getTime() / 86400000);
         shareString = "Spellz #" + number + "\n" + "Score: " + score + "\n"
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
