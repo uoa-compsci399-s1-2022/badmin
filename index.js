@@ -12,6 +12,7 @@ function showGame() {
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
     document.getElementById("readyMessage").style.display = "none";
+    document.getElementById("doneDailyMessage").style.display = "none";
 }
 /**
  * Blur text function
@@ -294,15 +295,26 @@ function firstTimeUserCheck() {
 
 function checkDaily() {
     let doneDaily = getCookie("daily");
+    var currentDate = new Date().setHours(0,0,0,0);
+    let nextDate = new Date(currentDate + (1000*60*60*24));
     if (doneDaily == ""){
-        setCookie("daily", false);
+        document.cookie = "daily" + "=" + false + ";" + "expires=" + nextDate;
     } else {
         //worried that the current implementation of it might have a edge case error where if u spam the daily when the time
         //is changing the user might get locked out of the daily challenge
-        var currentDate = new Date().setHours(0,0,0,0);
-        let nextDate = new Date(currentDate + (1000*60*60*24));
         document.cookie = "daily" + "=" + true + ";" + "expires=" + nextDate;
         //alert("hit");
+    }
+}
+
+function statsCookie() {
+    let scoreCookie = getCookie("bestScore");
+    if (scoreCookie == "") {
+        setCookie("bestScore", score, 365);
+    } else {
+        if (scoreCookie < score) {
+            setCookie("bestScore", score, 365);
+        }
     }
 }
 
@@ -329,13 +341,18 @@ let totalSeconds;
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
+    countCorrect = 0;
+    countWrong = 0;
+    score = 0;
+    comboCounter = 0;
+    totalSeconds = 0;
     loadText();
     if (textType == "dailyText") {
         checkDaily();
         if (getCookie("daily") == "true") {
             document.getElementById("readyMessage").style.display = "none";
             document.getElementById("doneDailyMessage").style.display = "block";
-            return
+            return;
         }
     }
     gameStartTime = Date.now();
@@ -346,18 +363,12 @@ function startTimer() {
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
     document.getElementById("inputTextBox").focus();
     document.getElementById("timer").innerHTML = "";
-    totalSeconds = 0;
     timerVar = setInterval(countTimer, 1000);
     hintVar = setInterval(showHint, 1000);
     setInterval(function () { scoreOverTime.push(score) }, 10000);
     setInterval(function () { xValues.push(totalSeconds) }, 10000);
     lastUserInputTime = Date.now()
-    showGame();
     generateCorrectIndicies();
-    countCorrect = 0;
-    countWrong = 0;
-    score = 0;
-    comboCounter = 0;
     document.getElementById("score").innerText = `score: \n ${score}`;
     document.getElementById("combo").innerText = `combo: \n ${comboCounter}`;
     previousCorrectedTime = null;
@@ -394,7 +405,7 @@ function displayStats() {
     formatTimeTaken();
     getEveryWord();
     calculateModalGraph();
-
+    statsCookie();
 }
 /**
  * See how long the combo was held for in seconds 
