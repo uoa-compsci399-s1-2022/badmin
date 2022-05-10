@@ -167,9 +167,9 @@ function checkUserInput(element) {
 }
 
 let comboStreak = 0;
-let comboStreakArr = [0]
-const WIDTH = 100
-const TIME_LIMIT = 5
+let comboStreakArr = [0];
+const WIDTH = 100;
+const TIME_LIMIT = 5;
 let comboTimeOut;
 function restartComboTimer() {
     previousComboTime = Date.now();
@@ -537,6 +537,8 @@ function resetDataSet() {
     scoreOverTime = [0];
     xValues = [0];
     comboStreak = 0;
+    comboStreakArr = [0];
+    totalSeconds = 0;
 }
 
 function shareGame() {
@@ -575,7 +577,7 @@ window.onclick = function (event) {
 function countTimer() {
     const timeElapsed = Date.now() - gameStartTime;
     const seconds = Math.floor(timeElapsed / 1000) % 60;
-    totalSeconds = seconds
+    totalSeconds = seconds;
     const minutes = Math.floor((timeElapsed / 1000) / 60);
     document.getElementById("timer").innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
