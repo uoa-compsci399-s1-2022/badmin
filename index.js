@@ -112,7 +112,7 @@ function inputHandler(element, event) {
 let countCorrect = 0;
 let countWrong = 0;
 let score = 0;
-let comboCounter = 0;
+let comboCounter;
 let previousCorrectedTime = null;
 let previousComboTime = null;
 function checkUserInput(element) {
@@ -125,7 +125,7 @@ function checkUserInput(element) {
                 }
             }
         }
-        if (index != -1) {
+        if (index !== -1) {
             if (correctedWordsIndicies.includes(index) == false) {
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
@@ -223,7 +223,7 @@ function generateCorrectIndicies() {
     suppliedArray = suppliedText.split(" ");
     correctArray = correctText.split(" ");
     for (let i = 0; i < suppliedArray.length; i++) {
-        if (suppliedArray[i] != correctArray[i]) {
+        if (suppliedArray[i] !== correctArray[i]) {
             correctIndicies[i] = correctArray[i];
         }
     }
@@ -337,15 +337,11 @@ function showReadyMessage() {
 }
 
 let gameStartTime;
-let totalSeconds;
+let totalSeconds = 0;
 let timerVar = 0;
 let hintVar = 0;
+let chartVar = 0;
 function startTimer() {
-    countCorrect = 0;
-    countWrong = 0;
-    score = 0;
-    comboCounter = 0;
-    totalSeconds = 0;
     loadText();
     if (textType == "dailyText") {
         checkDaily();
@@ -355,6 +351,12 @@ function startTimer() {
             return;
         }
     }
+    countCorrect = 0;
+    countWrong = 0;
+    score = 0;
+    comboCounter = 0;
+    resetDataSet();
+
     gameStartTime = Date.now();
     showGame();
     correctIndicies = {};
@@ -365,8 +367,7 @@ function startTimer() {
     document.getElementById("timer").innerHTML = "";
     timerVar = setInterval(countTimer, 1000);
     hintVar = setInterval(showHint, 1000);
-    setInterval(function () { scoreOverTime.push(score) }, 10000);
-    setInterval(function () { xValues.push(totalSeconds) }, 10000);
+    chartVar = setInterval(function () { xValues.push(totalSeconds); scoreOverTime.push(score);}, 10000);
     lastUserInputTime = Date.now()
     generateCorrectIndicies();
     document.getElementById("score").innerText = `score: \n ${score}`;
@@ -381,10 +382,13 @@ function stopTimer() {
     document.getElementById("inputTextBox").setAttribute("contenteditable", false);
     clearInterval(timerVar);
     clearInterval(hintVar);
+    clearInterval(chartVar);
     resetHint();
     pause();
     scoreOverTime.push(score);
-    xValues.push(totalSeconds);
+    if (xValues[(xValues.length - 1)] !== totalSeconds) {
+        xValues.push(totalSeconds);
+    }
     showModal();
 
 }
@@ -392,8 +396,6 @@ function stopTimer() {
 function showModal() {
     document.getElementById("endGameModal").style.display = "flex";
     displayStats();
-
-
 }
 /**
  * Everything that will appear on modal 
@@ -474,7 +476,7 @@ let scoreOverTime = [0];
 
 let myChart;
 let ctx;
-function calculateModalGraph() {
+function calculateModalGraph(p) {
     ctx = document.getElementById("myChart");
     myChart = new Chart(ctx, {
         type: 'line',
@@ -534,10 +536,7 @@ function calculateModalGraph() {
 function resetDataSet() {
     scoreOverTime = [0];
     xValues = [0];
-    myChart.destroy();
     comboStreak = 0;
-    scoreOverTime = [0];
-
 }
 
 function shareGame() {
@@ -562,14 +561,14 @@ function showToast() {
 
 function closeGameModal() {
     endGameModal.style.display = "none";
-    resetDataSet();
+    myChart.destroy();
 }
 
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
-        resetDataSet();
+        closeGameModal();
     }
 }
 

@@ -382,8 +382,6 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-
-
 /* Modal Content */
 .endModalContent {
     color: #B2A3B5;
@@ -403,6 +401,9 @@ body {
 #modalScore {
     padding-top: 5px;
 }
+
+
+
 
 .close {
     color: #aaaaaa;
