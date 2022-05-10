@@ -362,7 +362,6 @@ body {
     display: none;
     position: fixed;
     flex-direction: column;
-    padding-top: 100px;
     left: 0;
     top: 0;
     width: 100%;
@@ -381,8 +380,8 @@ body {
     margin: auto;
     padding: 10px;
     border: 10px solid #60525F;
-    width: 470px;
-    height: 490px;
+    width: 25%;
+    height: 50%;
     overflow: auto;
 }
 
