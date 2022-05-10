@@ -112,7 +112,7 @@ function inputHandler(element, event) {
 let countCorrect = 0;
 let countWrong = 0;
 let score = 0;
-let comboCounter = 0;
+let comboCounter;
 let previousCorrectedTime = null;
 let previousComboTime = null;
 function checkUserInput(element) {
@@ -356,7 +356,7 @@ function showReadyMessage() {
 }
 
 let gameStartTime;
-let totalSeconds;
+let totalSeconds = 0;
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
@@ -364,7 +364,7 @@ function startTimer() {
     countWrong = 0;
     score = 0;
     comboCounter = 0;
-    totalSeconds = 0;
+    resetDataSet();
     loadText();
     if (textType == "dailyText") {
         checkDaily();
@@ -491,7 +491,7 @@ let scoreOverTime = [0];
 
 let myChart;
 let ctx;
-function calculateModalGraph() {
+function calculateModalGraph(p) {
     ctx = document.getElementById("myChart");
     myChart = new Chart(ctx, {
         type: 'line',
@@ -551,23 +551,22 @@ function calculateModalGraph() {
 function resetDataSet() {
     scoreOverTime = [0];
     xValues = [0];
-    myChart.destroy();
+    if (myChart != undefined) {
+        myChart.destroy();
+    }
     comboStreak = 0;
-    scoreOverTime = [0];
-
 }
 
 
 function closeGameModal() {
     endGameModal.style.display = "none";
-    resetDataSet();
 }
 
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
-        resetDataSet();
+        closeGameModal();
     }
 }
 
