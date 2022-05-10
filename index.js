@@ -12,7 +12,7 @@ function showGame() {
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
     document.getElementById("readyMessage").style.display = "none";
-    document.getElementById("infoText").style.display = "none";
+    document.getElementById("doneDailyMessage").style.display = "none";
 }
 /**
  * Blur text function
@@ -24,9 +24,6 @@ function hideGame() {
     document.getElementById("score").style.display = "none";
     document.getElementById("comboContainer").style.display = "none";
     document.getElementById("timer").style.display = "none";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById("infoIcon").style.color = "#60525F"
-    document.getElementById("infoBtn").style.color = "#60525F"
 }
 
 function pause() {
@@ -35,9 +32,7 @@ function pause() {
     document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "grid";
     document.getElementById("pageInfo").style.display = "grid";
-    document.getElementById("title").style.color = "#EDD9A3";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById("infoIcon").style.color = "#60525F";
+    document.getElementById("title").style.color = "#EDD9A3"
 }
 
 function getVersion() {
@@ -268,12 +263,88 @@ function provideHint() {
     }
 }
 
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+  
+  function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+function firstTimeUserCheck() {
+    if (document.cookie == "") {
+        setCookie("new", true, 365);
+    } else {
+        setCookie("new", false, 365);
+    }
+}
+
+function showFirstTimerModal() {
+    
+    document.getElementById("firstTimeModal").style.display = "block";
+}
+
+function closeFirstTimeModal() {
+    document.getElementById("firstTimeModal").style.display = "none";
+}
+
+// closes modal when anywhere is clicked
+window.onclick = function (event) {
+    if (event.target == document.getElementById("firstTimeModal")) {
+        endGameModal.style.display = "none";
+    }
+}
+
+
+function checkDaily() {
+    let doneDaily = getCookie("daily");
+    var currentDate = new Date().setHours(0,0,0,0);
+    let nextDate = new Date(currentDate + (1000*60*60*24));
+    if (doneDaily == ""){
+        document.cookie = "daily" + "=" + false + ";" + "expires=" + nextDate;
+    } else {
+        //worried that the current implementation of it might have a edge case error where if u spam the daily when the time
+        //is changing the user might get locked out of the daily challenge
+        document.cookie = "daily" + "=" + true + ";" + "expires=" + nextDate;
+        //alert("hit");
+    }
+}
+
+function statsCookie() {
+    let scoreCookie = getCookie("bestScore");
+    if (scoreCookie == "") {
+        setCookie("bestScore", score, 365);
+    } else {
+        if (scoreCookie < score) {
+            setCookie("bestScore", score, 365);
+        }
+    }
+}
+
 function refresh() {
     window.location.reload();
 }
 
-window.onload = function () {
+window.onload = function () { 
+    firstTimeUserCheck();
     getVersion();
+    if(getCookie("new") == true){
+        showFirstTimerModal()
+    }
     loadText();
     document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
     document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
@@ -281,6 +352,7 @@ window.onload = function () {
 };
 
 function showReadyMessage() {
+    document.getElementById("doneDailyMessage").style.display = "none";
     document.getElementById("readyMessage").style.display = "block";
 }
 
@@ -289,6 +361,20 @@ let totalSeconds;
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
+    countCorrect = 0;
+    countWrong = 0;
+    score = 0;
+    comboCounter = 0;
+    totalSeconds = 0;
+    loadText();
+    if (textType == "dailyText") {
+        checkDaily();
+        if (getCookie("daily") == "true") {
+            document.getElementById("readyMessage").style.display = "none";
+            document.getElementById("doneDailyMessage").style.display = "block";
+            return;
+        }
+    }
     gameStartTime = Date.now();
     showGame();
     correctIndicies = {};
@@ -297,19 +383,12 @@ function startTimer() {
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
     document.getElementById("inputTextBox").focus();
     document.getElementById("timer").innerHTML = "";
-    loadText();
-    totalSeconds = 0;
     timerVar = setInterval(countTimer, 1000);
     hintVar = setInterval(showHint, 1000);
     setInterval(function () { scoreOverTime.push(score) }, 10000);
     setInterval(function () { xValues.push(totalSeconds) }, 10000);
     lastUserInputTime = Date.now()
-    showGame();
     generateCorrectIndicies();
-    countCorrect = 0;
-    countWrong = 0;
-    score = 0;
-    comboCounter = 0;
     document.getElementById("score").innerText = `score: \n ${score}`;
     document.getElementById("combo").innerText = `combo: \n ${comboCounter}`;
     previousCorrectedTime = null;
@@ -333,8 +412,6 @@ function stopTimer() {
 function showModal() {
     document.getElementById("endGameModal").style.display = "block";
     displayStats();
-
-
 }
 /**
  * Everything that will appear on modal 
@@ -346,7 +423,7 @@ function displayStats() {
     formatTimeTaken();
     getEveryWord();
     calculateModalGraph();
-
+    statsCookie();
 }
 /**
  * See how long the combo was held for in seconds 
@@ -487,22 +564,12 @@ function closeGameModal() {
     resetDataSet();
 }
 
-
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
         resetDataSet();
     }
-
-}
-
-
-function closeInfoPage() {
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById("infoIcon").style.color = "#EDD9A3";
-    document.getElementById("title").style.color = "#EDD9A3";
-
 }
 
 function countTimer() {
@@ -524,8 +591,6 @@ function setEasy() {
     document.getElementById("easy").style.color = "#EDD9A3";
     document.getElementById("medium").style.color = "#B2A3B5";
     document.getElementById("hard").style.color = "#B2A3B5";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 function setMedium() {
@@ -534,8 +599,6 @@ function setMedium() {
     document.getElementById("easy").style.color = "#B2A3B5";
     document.getElementById("medium").style.color = "#EDD9A3";
     document.getElementById("hard").style.color = "#B2A3B5";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 function setHard() {
@@ -544,8 +607,6 @@ function setHard() {
     document.getElementById("easy").style.color = "#B2A3B5";
     document.getElementById("medium").style.color = "#B2A3B5";
     document.getElementById("hard").style.color = "#EDD9A3";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 function setSF() {
@@ -559,8 +620,6 @@ function setSF() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 function setSoL() {
@@ -574,8 +633,6 @@ function setSoL() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 function setNF() {
@@ -589,8 +646,6 @@ function setNF() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 function setRom() {
@@ -604,8 +659,6 @@ function setRom() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 function setArt() {
@@ -619,8 +672,6 @@ function setArt() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 function setMy() {
@@ -634,8 +685,6 @@ function setMy() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#EDD9A3";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 function setCom() {
@@ -649,8 +698,6 @@ function setCom() {
     document.getElementById("comedy").style.color = "#EDD9A3";
     document.getElementById("wikipedia").style.color = "#B2A3B5";
     document.getElementById("mystery").style.color = "#B2A3B5";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 function setWiki() {
@@ -664,8 +711,6 @@ function setWiki() {
     document.getElementById("comedy").style.color = "#B2A3B5";
     document.getElementById("wikipedia").style.color = "#EDD9A3";
     document.getElementById("mystery").style.color = "#B2A3B5";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById('infoIcon').style.color = "#B2A3B5";
 }
 
 let genre;
@@ -807,9 +852,9 @@ let JSONString = JSON.stringify(
 let DailyString = JSON.stringify({
     "Daily Challenge": {
         suppliedText:
-            '"The boy with fair hair lowerred himself down the last few feet of rock and began to pick his way toward the lagoun. Though he had taken off his school sweater and trailled it now from one hand, his grey shirt stuk to him and his hair was plasterred to his forehead. All around him the long scar smashed into the jungle was a bath of heat. He was clamberring heavily among the crepers and broken trunks when a bird, a vision of red and yellow, flashed upards with a witch-like cry; and this cry was echod by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitute of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
+            '"The boy with fair hair lowerred himself down the last few feet of rock and began to pick his way toward the lagoun. Though he had taken off his school sweater and trailled it now from one hand, his grey shirt stuk to him and his hair was plasterred to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clamberring heavily among the crepers and broken trunks when a bird, a vision of red and yellow, flashed upards with a witch-like cry; and this cry was echod by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitute of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerkked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
         correctText:
-            '"The boy with fair hair lowered himself down the last few feet of rock and began to pick his way toward the lagoon. Though he had taken off his school sweater and trailed it now from one hand, his grey shirt stuck to him and his hair was plastered to his forehead. All around him the long scar smashed into the jungle was a bath of heat. He was clambering heavily among the creepers and broken trunks when a bird, a vision of red and yellow, flashed upwards with a witch-like cry; and this cry was echoed by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitude of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
+            '"The boy with fair hair lowered himself down the last few feet of rock and began to pick his way toward the lagoon. Though he had taken off his school sweater and trailed it now from one hand, his grey shirt stuck to him and his hair was plastered to his forehead. All round him the long scar smashed into the jungle was a bath of heat. He was clambering heavily among the creepers and broken trunks when a bird, a vision of red and yellow, flashed upwards with a witch-like cry; and this cry was echoed by another. "Hi!" it said. "Wait a minute!" The undergrowth at the side of the scar was shaken and a multitude of raindrops fell pattering. "Wait a minute," the voice said. "I got caught up." The fair boy stopped and jerked his stockings with an automatic gesture that made the jungle seem for a moment like the Home Counties."',
         errorCount: "11",
     }
 });
@@ -829,16 +874,18 @@ function loadDaily() {
     const key = keys[((daysPassed % length) + length) % length];
     suppliedText = textBank[key]["suppliedText"];
     correctText = textBank[key]["correctText"];
-    document.getElementById("infoText").style.display = "none";
 }
 
 let correctText;
 let suppliedText;
+let textType;
 function loadText() {
     // if genre not selected, show daily
     if (typeof genre == "undefined") {
+        textType = "dailyText";
         loadDaily();
     } else {
+        textType = "notDailyText";
         const textBank = JSON.parse(JSONString);
         suppliedText = textBank[difficulty][genre]["suppliedText"];
         correctText = textBank[difficulty][genre]["correctText"];
@@ -846,9 +893,7 @@ function loadText() {
     const passageSurr = separateWords();
     document.getElementById("gameText").innerHTML = passageSurr;
     document.getElementById("gameHidden").innerHTML = passageSurr;
-    document.getElementById("infoText").style.display = "none";
 }
-
 
 // to add divs between each word
 function separateWords() {
@@ -859,35 +904,4 @@ function separateWords() {
         wordArr.push(wordElement);
     }
     return wordArr.join(" ");
-}
-
-// when icon is clicked the text must show
-const infoText = document.getElementById('infoText');
-const infoIcon = document.getElementById('infoIcon');
-
-infoIcon.addEventListener('click', function getInfo() {
-    if (infoText.style.display === 'none') {
-        infoText.style.display = 'block';
-        infoIcon.style.color = "#EDD9A3";
-    }
-    else {
-        infoIcon.style.color = "#B2A3B5";
-        infoText.style.display = 'none';
-
-    }
-});
-
-// when information icon is clicked these colours must be set in order to avoid confusion
-function getInfo() {
-    document.getElementById("sci-fi").style.color = "#B2A3B5";
-    document.getElementById("slice_of_life").style.color = "#B2A3B5";
-    document.getElementById("non-fiction").style.color = "#B2A3B5";
-    document.getElementById("article").style.color = "#B2A3B5";
-    document.getElementById("romance").style.color = "#B2A3B5";
-    document.getElementById("comedy").style.color = "#B2A3B5";
-    document.getElementById("wikipedia").style.color = "#B2A3B5";
-    document.getElementById("mystery").style.color = "#B2A3B5";
-    document.getElementById("easy").style.color = "#B2A3B5";
-    document.getElementById("medium").style.color = "#B2A3B5";
-    document.getElementById("hard").style.color = "#B2A3B5";
 }

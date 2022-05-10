@@ -16,18 +16,7 @@
         <div id="title" onclick="refresh()">
             Spellz
         </div>
-        <!-- information icon which when clicked shows all details -->
-        <div id="infoBtn" onclick="getInfo()"> <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" width="30"
-                height="30" id="infoIcon" viewBox="0 0 512 512">
-                <title>Information Circle</title>
-                <path d="M248 64C146.39 64 64 146.39 64 248s82.39 184 184 184 184-82.39 184-184S349.61 64 248 64z"
-                    fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
-                    d="M220 220h32v116" />
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32"
-                    d="M208 340h88" />
-                <path fill="currentColor" stroke="#currentColor" d="M248 130a26 26 0 1026 26 26 26 0 00-26-26z" />
-            </svg></div>
+
         <div class="title-op">
 
         </div>
@@ -52,70 +41,11 @@
     </div>
 
     <div class="mid">
-
         <div id="gameText"></div>
-        <!-- All the information on the click of info button -->
-        <div id="infoText">
-            <span class="close" id="infoClose" onclick="closeInfoPage()">&times;</span>
-            <h1>About</h1>
-            <hr>
-            <p>Spellz is an engaging proofreading game, which implements the full ReType functionality. This means that
-                Spellz will include existing game mechanics such as scores, combos and
-                hints, while also implementing an active input box.</p>
-            <h2>Select Game</h2>
-            <hr>
-            <p>The user has the option of choosing between playing the daily challenge or a game within specific category and genre.</p>
-            <p> The daily challenge by default is on the landing page or you can access it by clicking on the logo or
-                just selecting a difficulty option on its own.
-            <p> Once the game is played the user can choose to replay again.</p>
-            <p>To play a game within specific difficulty and genre levels the user may click on the specific buttons
-                on the upper right corner.</p>
-            <p>The buttons are yellow to show what was selected by the user. </p>
-            <h2>Start Game</h2>
-            <hr>
-            <p>In order to start the game the user must click the blurred text.</p>
-            <h2>Active Input Box</h2>
-            <hr>
-            <p>The user should enter the correct spelling of the word deemed to have incorrect spelling by typing it in the active input box
-                below the text.</p>
-            <h2>Fuzzy Highlight</h2>
-            <hr>
-            <p>While in play, the user will notice that while typing the text is highlighted and show changes on screen real-time. </p>
-            <p> The fuzzy highlight is only for words which have a certain degree of similarity between itself and word in input box. </p>
-            <p>The word on blue highlight is where entered input will change. The user must use arrow keys to get the blue highlight to
-            the intended word which should be changed.</p>
-            <h2>Game Mechanics</h2>
-            <hr>
-            <h3>Score:</h3>
-            <p>The score accumulates on the basis of combo, hint used and time. In the case the user enters wrong correction
-                in the input box the score deducts by 30 points. </p>
-            <p>Not taking combos into account, by default one correct input increases score by 100 points</p>
-            <h3>Combos:</h3>
-            <p>To add to the combo the user needs to enter correct inputs within 5 seconds from each other. </p>
-            <p>By default each user is on combo 1 and gets 100 points for each correct input.</p>
-            <p>When reaching a combo 2 from combo 1, by entering next correct input within 5 seconds, a user gets an
-                additional 200 points instead of standard 100 points. </p>
-            <p>The same concept applies from combo 2 to combo 3, as when user enters correct input within 5 seconds of
-                correct answer, the user gets 300 points added on. </p>
-            <p>The maximum additional points one can gain from combos is 300 points, so a user can keep being at combo 3
-                by continuously entering correct inputs 5 seconds apart from each other.</p>
-            <p>Once the combo is in play, the combo countdown is set for 5 seconds, so the user has visibility on what is occuring.</p>
-            <h3>Hint:</h3>
-            <p>The hint appears after 30 seconds of idle game time. The user has the option of choosing it at the cost of
-                deducing points, as it reveals how many incorrect words are remaining in the text.</p>
-            <h2>Game End</h2>
-            <hr>
-            <p>In order to end playing the game the user can press the stop button. Once the stop button is clicked, the user
-                will be presented a modal giving an overview on how they did and also a functionality to share their
-                results.</p>
-            <br>
-            <p>To get out of these instructions, please press the exit or any of the buttons at the top.</p>
-        </div>
-
         <div id="readyMessage">Ready? Click here to start</div>
+        <div id="doneDailyMessage" style="display: none;">You have already completed the daily challenge</div>
         <div style="position: relative; height:30vh; width:28vw">
             <div id="endGameModal" class="modal">
-
                 <div class="endModalContent">
                     <span class="close" onclick="closeGameModal()">&times;</span>
                     <div id="modalText">STATISTICS</div>
@@ -127,15 +57,19 @@
 
                     <div>
                         <canvas id="myChart"></canvas>
+
+                        <!-- <canvas id="myChart" width="1600" height="900"></canvas> -->
                     </div>
 
                 </div>
 
             </div>
+            <div id="firstTimeModal" class="modal"> 
+                <div class="endModalContent">
+                    <span class="close" onclick="closeFirstTimeModal()">&times;</span> hey besties
+                </div>
+            </div>
         </div>
-
-
-
 
         <div id="gameHidden" onclick="startTimer()"></div>
 

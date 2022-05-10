@@ -18,27 +18,13 @@ body {
     margin-right: 15%;
     margin-top: 35px;
     justify-content: space-between;
-    position: relative;
 }
 
 #title {
     grid-area: title;
     font-size: 60px;
     color: #EDD9A3;
-    cursor: pointer;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
 
-
-#infoIcon {
-    color: #EDD9A3;
-
-    grid-area: 2 / 2 / 2 / 3;
     cursor: pointer;
 
     -webkit-touch-callout: none;
@@ -68,44 +54,19 @@ body {
     align-items: end;
     justify-items: end;
 }
-/* information related css */
-#infoBtn {
-    color: #B2A3B5;
-    cursor: pointer;
-    font-size: 20px;
 
-}
-
-#infoText {
-    grid-area: m;
-    display: none;
-    position: absolute;
-    z-index: 1;
-    background-color: #443742;
-    text-align: justify;
-    text-align-last: center;
-    color: #B2A3B5;
-    margin: 10px;
-    padding-left: 200px;
-    padding-right: 200px;
-
-}
-
-h1,
-h2,
-h3 {
-    color: #EDD9A3
-}
+/*
+.text-sel div {
+    border: 1px solid yellow;
+} 
 
 
 /* Difficulty */
-
 
 #easy {
     grid-area: 1 / 2 / 2 / 3;
     font-size: 22px;
     cursor: pointer;
-
 }
 
 #medium {
@@ -204,6 +165,17 @@ h3 {
 }
 
 #readyMessage {
+    grid-area: m;
+    display: block;
+    text-align: justify;
+    text-align-last: center;
+
+    font-size: 19px;
+    color: #EDD9A3;
+    margin: 86px;
+}
+
+#doneDailyMessage {
     grid-area: m;
     display: block;
     text-align: justify;
@@ -410,8 +382,6 @@ h3 {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-
-
 /* Modal Content */
 .endModalContent {
     color: #B2A3B5;
@@ -425,6 +395,9 @@ h3 {
 }
 
 
+
+
+
 .close {
     color: #aaaaaa;
     position: relative;
@@ -432,13 +405,6 @@ h3 {
     top: 0;
     font-size: 28px;
     font-weight: bold;
-}
-
-#infoClose {
-    position: absolute;
-    left: 100px;
-    font-size: 50px;
-
 }
 
 .close:hover,
