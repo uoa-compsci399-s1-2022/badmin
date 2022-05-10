@@ -358,14 +358,14 @@ function startTimer() {
     resetDataSet();
 
     gameStartTime = Date.now();
+    timerVar = setInterval(countTimer, 100);
+
     showGame();
     correctIndicies = {};
     correctedWordsIndicies = new Array();
     document.getElementById("inputTextBox").innerText = ""
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
-    document.getElementById("inputTextBox").focus();
-    document.getElementById("timer").innerHTML = "";
-    timerVar = setInterval(countTimer, 1000);
+    document.getElementById("inputTextBox").focus();    
     hintVar = setInterval(showHint, 1000);
     chartVar = setInterval(function () { xValues.push(totalSeconds); scoreOverTime.push(score);}, 10000);
     lastUserInputTime = Date.now()
