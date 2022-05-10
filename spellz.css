@@ -175,6 +175,17 @@ body {
     margin: 86px;
 }
 
+#doneDailyMessage {
+    grid-area: m;
+    display: block;
+    text-align: justify;
+    text-align-last: center;
+
+    font-size: 19px;
+    color: #EDD9A3;
+    margin: 86px;
+}
+
 #gameHidden {
     display: block;
     grid-area: m;

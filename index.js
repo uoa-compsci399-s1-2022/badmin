@@ -12,6 +12,7 @@
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
     document.getElementById("readyMessage").style.display = "none";
+    document.getElementById("doneDailyMessage").style.display = "none";
 }
 /**
  * Blur text function
@@ -262,11 +263,67 @@ function provideHint() {
     }
 }
 
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+  
+  function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+function firstTimeUserCheck() {
+    if (document.cookie == "") {
+        setCookie("new", true, 365);
+    } else {
+        setCookie("new", false, 365);
+    }
+}
+
+function checkDaily() {
+    let doneDaily = getCookie("daily");
+    var currentDate = new Date().setHours(0,0,0,0);
+    let nextDate = new Date(currentDate + (1000*60*60*24));
+    if (doneDaily == ""){
+        document.cookie = "daily" + "=" + false + ";" + "expires=" + nextDate;
+    } else {
+        //worried that the current implementation of it might have a edge case error where if u spam the daily when the time
+        //is changing the user might get locked out of the daily challenge
+        document.cookie = "daily" + "=" + true + ";" + "expires=" + nextDate;
+        //alert("hit");
+    }
+}
+
+function statsCookie() {
+    let scoreCookie = getCookie("bestScore");
+    if (scoreCookie == "") {
+        setCookie("bestScore", score, 365);
+    } else {
+        if (scoreCookie < score) {
+            setCookie("bestScore", score, 365);
+        }
+    }
+}
+
 function refresh() {
     window.location.reload();
 }
 
-window.onload = function () {
+window.onload = function () { 
+    firstTimeUserCheck();
     getVersion();
     loadText();
     document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
@@ -275,6 +332,7 @@ window.onload = function () {
 };
 
 function showReadyMessage() {
+    document.getElementById("doneDailyMessage").style.display = "none";
     document.getElementById("readyMessage").style.display = "block";
 }
 
@@ -283,6 +341,20 @@ let totalSeconds;
 let timerVar = 0;
 let hintVar = 0;
 function startTimer() {
+    countCorrect = 0;
+    countWrong = 0;
+    score = 0;
+    comboCounter = 0;
+    totalSeconds = 0;
+    loadText();
+    if (textType == "dailyText") {
+        checkDaily();
+        if (getCookie("daily") == "true") {
+            document.getElementById("readyMessage").style.display = "none";
+            document.getElementById("doneDailyMessage").style.display = "block";
+            return;
+        }
+    }
     gameStartTime = Date.now();
     showGame();
     correctIndicies = {};
@@ -291,19 +363,12 @@ function startTimer() {
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
     document.getElementById("inputTextBox").focus();
     document.getElementById("timer").innerHTML = "";
-    loadText();
-    totalSeconds = 0;
     timerVar = setInterval(countTimer, 1000);
     hintVar = setInterval(showHint, 1000);
     setInterval(function () { scoreOverTime.push(score) }, 10000);
     setInterval(function () { xValues.push(totalSeconds) }, 10000);
     lastUserInputTime = Date.now()
-    showGame();
     generateCorrectIndicies();
-    countCorrect = 0;
-    countWrong = 0;
-    score = 0;
-    comboCounter = 0;
     document.getElementById("score").innerText = `score: \n ${score}`;
     document.getElementById("combo").innerText = `combo: \n ${comboCounter}`;
     previousCorrectedTime = null;
@@ -340,7 +405,7 @@ function displayStats() {
     formatTimeTaken();
     getEveryWord();
     calculateModalGraph();
-
+    statsCookie();
 }
 /**
  * See how long the combo was held for in seconds 
@@ -814,11 +879,14 @@ function loadDaily() {
 
 let correctText;
 let suppliedText;
+let textType;
 function loadText() {
     // if genre not selected, show daily
     if (typeof genre == "undefined") {
+        textType = "dailyText";
         loadDaily();
     } else {
+        textType = "notDailyText";
         const textBank = JSON.parse(JSONString);
         suppliedText = textBank[difficulty][genre]["suppliedText"];
         correctText = textBank[difficulty][genre]["correctText"];
