@@ -294,7 +294,6 @@ function firstTimeUserCheck() {
 }
 
 function showFirstTimerModal() {
-    
     document.getElementById("firstTimeModal").style.display = "block";
 }
 
@@ -342,8 +341,8 @@ function refresh() {
 window.onload = function () { 
     firstTimeUserCheck();
     getVersion();
-    if(getCookie("new") == true){
-        showFirstTimerModal()
+    if(getCookie("new") == "true"){
+        showFirstTimerModal();
     }
     loadText();
     document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
