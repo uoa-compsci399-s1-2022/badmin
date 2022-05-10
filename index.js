@@ -476,36 +476,30 @@ function resetDataSet() {
 }
 
 function shareGame() {
-
-
     if (genre && difficulty){
         number = 1
         shareString = "Spellz " + genre + " " + difficulty + "\n" + "Score: " + score + "\n"
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
-                shareString += " \u2705"
+                shareString += " \u{1F7E9}"
             }
             else {
-                shareString += " \u274E"
+                shareString += " \u{1F7E5}"
             }
         }
     }
-
     else {
         number = 1
         shareString = "Spellz #" + number + "\n" + "Score: " + score + "\n"
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
-                shareString += " \u2705"
+                shareString += " \u{1F7E9}"
             }
             else {
-                shareString += " \u274E"
+                shareString += " \u{1F7E5}"
             }
         }
     }
-
-    //
-
     navigator.clipboard.writeText(shareString);
     showToast();
   }
