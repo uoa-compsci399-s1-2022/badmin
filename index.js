@@ -125,7 +125,7 @@ function checkUserInput(element) {
                 }
             }
         }
-        if (index != -1) {
+        if (index !== -1) {
             if (correctedWordsIndicies.includes(index) == false) {
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
@@ -223,7 +223,7 @@ function generateCorrectIndicies() {
     suppliedArray = suppliedText.split(" ");
     correctArray = correctText.split(" ");
     for (let i = 0; i < suppliedArray.length; i++) {
-        if (suppliedArray[i] != correctArray[i]) {
+        if (suppliedArray[i] !== correctArray[i]) {
             correctIndicies[i] = correctArray[i];
         }
     }
@@ -359,12 +359,8 @@ let gameStartTime;
 let totalSeconds = 0;
 let timerVar = 0;
 let hintVar = 0;
+let chartVar = 0;
 function startTimer() {
-    countCorrect = 0;
-    countWrong = 0;
-    score = 0;
-    comboCounter = 0;
-    resetDataSet();
     loadText();
     if (textType == "dailyText") {
         checkDaily();
@@ -374,6 +370,12 @@ function startTimer() {
             return;
         }
     }
+    countCorrect = 0;
+    countWrong = 0;
+    score = 0;
+    comboCounter = 0;
+    resetDataSet();
+
     gameStartTime = Date.now();
     showGame();
     correctIndicies = {};
@@ -384,8 +386,7 @@ function startTimer() {
     document.getElementById("timer").innerHTML = "";
     timerVar = setInterval(countTimer, 1000);
     hintVar = setInterval(showHint, 1000);
-    setInterval(function () { scoreOverTime.push(score) }, 10000);
-    setInterval(function () { xValues.push(totalSeconds) }, 10000);
+    chartVar = setInterval(function () { xValues.push(totalSeconds); scoreOverTime.push(score);}, 10000);
     lastUserInputTime = Date.now()
     generateCorrectIndicies();
     document.getElementById("score").innerText = `score: \n ${score}`;
@@ -400,10 +401,13 @@ function stopTimer() {
     document.getElementById("inputTextBox").setAttribute("contenteditable", false);
     clearInterval(timerVar);
     clearInterval(hintVar);
+    clearInterval(chartVar);
     resetHint();
     pause();
     scoreOverTime.push(score);
-    xValues.push(totalSeconds);
+    if (xValues[(xValues.length - 1)] !== totalSeconds) {
+        xValues.push(totalSeconds);
+    }
     showModal();
 
 }
@@ -551,15 +555,13 @@ function calculateModalGraph(p) {
 function resetDataSet() {
     scoreOverTime = [0];
     xValues = [0];
-    if (myChart != undefined) {
-        myChart.destroy();
-    }
     comboStreak = 0;
 }
 
 
 function closeGameModal() {
     endGameModal.style.display = "none";
+    myChart.destroy();
 }
 
 // closes modal when anywhere is clicked
