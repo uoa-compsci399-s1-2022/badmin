@@ -489,7 +489,7 @@ function shareGame() {
     }
     else {
         today = new Date();
-        number = Math.floor(today.getTime() / 86400000);
+        number = Math.floor(today.getTime() / 86400000) - 19122;
         shareString = "Spellz #" + number + "\n" + "Score: " + score + "\n"
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
