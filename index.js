@@ -542,13 +542,28 @@ function resetDataSet() {
 }
 
 function shareGame() {
-    shareString = "\u2328"
-    for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
-        if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
-            shareString += " \u2705"
+    if (genre && difficulty){
+        shareString = "Spellz " + genre + " " + difficulty + "\n" + "Score: " + score + "\n"
+        for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
+            if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
+                shareString += " \u{1F7E9}"
+            }
+            else {
+                shareString += " \u{1F7E5}"
+            }
         }
-        else {
-            shareString += " \u274E"
+    }
+    else {
+        today = new Date();
+        number = Math.floor(today.getTime() / 86400000) - 19122;
+        shareString = "Spellz #" + number + "\n" + "Score: " + score + "\n"
+        for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
+            if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
+                shareString += " \u{1F7E9}"
+            }
+            else {
+                shareString += " \u{1F7E5}"
+            }
         }
     }
     navigator.clipboard.writeText(shareString);
