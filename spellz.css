@@ -500,6 +500,7 @@ body {
     border: none;
     outline: solid;
     outline-color: #443742;
+    background-color: rgb(11, 106, 165);
   }
 
   .btn-text,
