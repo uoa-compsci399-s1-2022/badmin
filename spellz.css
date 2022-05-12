@@ -18,6 +18,7 @@ body {
     margin-right: 15%;
     margin-top: 35px;
     justify-content: space-between;
+    position: relative;
 }
 
 #title {
@@ -380,10 +381,16 @@ body {
     overflow: auto;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
+
 }
 
 /* Modal Content */
 .endModalContent {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     color: #B2A3B5;
     background-color: #60525F;
     margin: auto;
