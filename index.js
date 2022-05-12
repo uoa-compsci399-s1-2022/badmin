@@ -292,6 +292,22 @@ function firstTimeUserCheck() {
         setCookie("new", false, 365);
     }
 }
+function showFirstTimeModal() {
+    document.getElementById("firstTimeModal").style.display = "block";
+}
+
+function closeFirstTimeModal() {
+    document.getElementById("firstTimeModal").style.display = "none";
+}
+
+// closes modal when anywhere is clicked
+document.addEventListener( "click", function(event) {
+    // If user either clicks outside the modal window, then close modal by calling closeFirstTimeModal function
+    if ( event.target == firstTimeModal) {
+      closeFirstTimeModal()
+    } } )
+
+
 
 function checkDaily() {
     let doneDaily = getCookie("daily");
@@ -303,7 +319,6 @@ function checkDaily() {
         //worried that the current implementation of it might have a edge case error where if u spam the daily when the time
         //is changing the user might get locked out of the daily challenge
         document.cookie = "daily" + "=" + true + ";" + "expires=" + nextDate;
-        //alert("hit");
     }
 }
 
@@ -326,6 +341,9 @@ window.onload = function () {
     firstTimeUserCheck();
     getVersion();
     loadText();
+    if(getCookie("new") == "true"){
+        showFirstTimeModal();
+    }
     document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
     document.getElementById("inputTextBox").addEventListener("input", function () { highlightText(this); });
     document.getElementById("inputTextBox").addEventListener("keydown", function (e) { inputHandler(this, e); });
