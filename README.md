@@ -12,7 +12,7 @@ The source code editor of choice was Visual Studio Code.
 
 In order to install and setup the project, you are required to have a stable internet connection and as it is an HTML page, a web browser to run this page on.
 
-This project is to be used to encourage spelling by correcting errors within text.
+This project is to be used to promote skills by correcting errors within text.
 
 The URL of the website is: 
 
