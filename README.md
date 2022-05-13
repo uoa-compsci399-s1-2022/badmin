@@ -6,7 +6,7 @@ A link to our project management tool: https://compsci399.atlassian.net/jira/sof
 
 The project aim is to promote spelling and making it engaging for users by being versatile whilst being simple. It is also noted ReType functionality is one of most effective methods, so our game incorporates that functionality. Our game also has many other game elements to further raise its appeal. 
 
-Technologies used to build this project was vanilla JS, CSS and HTML. We also imported Chart.js library and Diff-Match-Patch for JS library in order to create our project.
+Programming languages used to build this website was vanilla JavaScript(JS), CSS and HTML. We also imported Chart.js library and Diff-Match-Patch for JS library in order to create our project.
 
 The source code editor of choice was Visual Studio Code.
 
