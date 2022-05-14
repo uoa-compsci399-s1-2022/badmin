@@ -1,21 +1,31 @@
 # Badmin
 
-The name of the project is Spellz.
+Spellz, a proofreading and spelling game.
 
-A link to our project management tool: https://compsci399.atlassian.net/jira/software/projects/SP/boards/2/roadmap
+Here is a screenshot of the group Jira Roadmap: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/blob/main/Images/Jira%20Roadmap%20ReadME.png)
 
-The project aim is to promote spelling and making it engaging for users by being versatile whilst being simple. It is also noted ReType functionality is one of most effective methods, so our game incorporates that functionality. Our game also has many other game elements to further raise its appeal. 
+Description:
+Team Badmin created Spellz to improve upon the ReType tool developed by our clients. Spellz is an engaging proofreading game, which implements the full ReType functionality in the form of a vanilla Javascript web application. This means that Spellz will include existing ReType mechanics such as scores, combos and hints, while also "gamifiying" the entire process.
 
-Programming languages used to build this website was vanilla JavaScript(JS), CSS and HTML. We also imported Chart.js library and Diff-Match-Patch for JS library in order to create our project.
+Technologies:
+The project was completed using vanilla Javascript, HTML and CSS. Libraries such as Diff-Match-Patch and Chart.js were also used. We used Jira as our project management tool and used FireBase to deploy our website. All members used VSCode as their main IDE and used extensions such as LiveShare to allow for peer-programming.
 
-The source code editor of choice was Visual Studio Code.
+Setup:
+There are no prerequitistes for our project. In order to play Spellz, simply go to :LINK:! 
 
-In order to install and setup the project, you are required to have a stable internet connection and as it is an HTML page, a web browser to run this page on.
+Usage:
+Spellz has a simple user interface and provides first time users with a tutorial which explains basic game mechanics. Below are some screenshots that demostrate sample gameplay.
 
-This project is to be used to promote skills by correcting errors within text.
+Usage Example 1: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/blob/main/Images/Usage2.jpg)
 
-The URL of the website is: 
+Usage Example 2: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/blob/main/Images/Usage1.jpg)
 
-Potential ideas for future releases is to incorporate a leader board, have additional themes, a badge system and more animations.
+URL:
+:LINK: of Spellz.
 
-We would like to acknowledge our lecturer, tutor and clients for being really accommodating and helping us along the way.
+Future Plans:
+Potential ideas for future releases is to incorporate a leader board, have additional themes, a badge system and more animations. These will help to increase user engagement with our game!
+
+Acknowledgements:
+Team Badmin would like to acknowledge our lecturer, tutors and clients for the efforts, resources and time spent to help improve Spellz.
+
