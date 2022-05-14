@@ -2,7 +2,7 @@
 
 Spellz, a proofreading and spelling game.
 
-Here is a link to the group Jira Roadmap: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/Images/Jira_Roadmap_ReadME.png)
+Here is a link to the group Jira Roadmap: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/Images/Jira%20Roadmap%20ReadME.png)
 
 Description:
 Team Badmin created Spellz to improve upon the ReType tool developed by our clients. Spellz is an engaging proofreading game, which implements the full ReType functionality in the form of a vanilla Javascript web application. This means that Spellz will include existing ReType mechanics such as scores, combos and hints, while also "gamifiying" the entire process.
@@ -16,9 +16,9 @@ There are no prerequitistes for our project. In order to play Spellz, simply go 
 Usage:
 Spellz has a simple user interface and provides first time users with a tutorial which explains basic game mechanics. Below are some screenshots that demostrate sample gameplay.
 
-Usage Example 1: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/Images/Usage2.jpeg)
+Usage Example 1: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/Images/Usage2.jpg)
 
-Usage Example 2: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/Images/Usage1.jpeg)
+Usage Example 2: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/Images/Usage1.jpg)
 
 URL:
 :LINK: of Spellz.
