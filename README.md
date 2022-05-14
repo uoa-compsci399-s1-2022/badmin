@@ -1,17 +1,32 @@
 # Badmin
 
-Spelling has always been an integral part of any language and literature, since the dawn of civilization, with applications that are ubiquitous.  It has been found that the level of spelling has deteriorated as more and more people rely on technology to autocorrect any words. 
+Spellz, a proofreading and spelling game.
 
-A recent study has found that 84% of people who send messages do not bother to spell check as they rely on technology to do it for them. While this displays the wonders of technology, spelling is not something that can just be replaced by automation. Spelling has deep connections with reading and pattern recognition. Learning to spell helps an individual to learn all the rules of a language, which are complicated and can change situationally, which is why autocorrect is not 100% accurate. Other aspects of reading, such as reading comprehension shares a similar relationship with spelling. Therefore it is clear to see that instead of avoiding the problem of spelling, something must be done to address it, which is what we as a group have set out to do.
+Here is a link to the group Jira Roadmap: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/Images/Jira_Roadmap_ReadME.png)
 
-Learning to spell is tedious due to the repetition involved in mainstream methods. There is no incentive to enjoy the process of learning to spell. Mainstream methods such as rote-learning and weekly tests are outdated and need to be replaced with something that changes the user experience into something more positive and substantive. 
+Description:
+Team Badmin created Spellz to improve upon the ReType tool developed by our clients. Spellz is an engaging proofreading game, which implements the full ReType functionality in the form of a vanilla Javascript web application. This means that Spellz will include existing ReType mechanics such as scores, combos and hints, while also "gamifiying" the entire process.
 
-Methods used to teach spelling are old fashioned and outdated, as previously mentioned. In the modern world, it is strange to see that spelling is still taught in the same way, all across the world. “Gamification” has occurred in other subjects, for example Mathletics for, you guessed it, maths! Therefore this problem is interesting because we hope to “gamify” spelling and proofreading, which are much more effective than standard methods.
+Technologies:
+The project was completed using vanilla Javascript, HTML and CSS. Libraries such as Diff-Match-Patch and Chart.js were also used. We used Jira as our project management tool and used FireBase to deploy our website. All members used VSCode as their main IDE and used extensions such as LiveShare to allow for peer-programming.
 
-We can discuss the initial prototype that this project is based on, ReType. The main flaw is that this solution only exists as a Word plugin, limiting accessibility. This makes it hard for the general population to access.
+Setup:
+There are no prerequitistes for our project. In order to play Spellz, simply go to :LINK:! 
 
-There are many generic spelling applications and online spelling resources. However, they have a notorious history of being boring, as practice and repetition are the key methods used to teach them.  Another issue is that solutions tend to be aimed at a specific target audience, which are primary school children who are in their early stages of learning English, so the words are limited to simple concepts such as colours and animals. This excludes students and adults who are a little bit older from these applications, which once again reduces accessibility to the general public.
+Usage:
+Spellz has a simple user interface and provides first time users with a tutorial which explains basic game mechanics. Below are some screenshots that demostrate sample gameplay.
 
-A common theme for any online spelling resource is a lack of “gamification”. An important part of a solution should be an experience that makes the user feel like they are competing with themselves for better scores and  improvement.
+Usage Example 1: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/Images/Usage2.jpeg)
 
-We, team Badmin have decided to address the presented problem and shortcomings by creating Spellz. Spellz is an engaging proofreading game, which implements the full ReType functionality in the form of a vanilla Javascript web application. This means that Spellz will include existing game mechanics such as scores, combos and hints, while also implementing an active input box. We also intend for Spellz to have a customisable interface,  with features such as having the ability to change website theme.
+Usage Example 2: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/Images/Usage1.jpeg)
+
+URL:
+:LINK: of Spellz.
+
+Future Plans:
+Potential ideas for future releases is to incorporate a leader board, have additional themes, a badge system and more animations. These will help to increase user engagement with our game!
+
+Acknowledgements:
+Team Badmin would like to acknowledge our lecturer, tutors and clients for the efforts, resources and time spent to help improve Spellz.
+
+
