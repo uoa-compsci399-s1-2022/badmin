@@ -1,7 +1,7 @@
 /**
  * Show text function
  */
- function showGame() {
+function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
     document.getElementById("gameControls").style.display = "flex";
@@ -51,6 +51,7 @@ function sanitizeInput(e) {
     ) {
         return false;
     }
+
     e.preventDefault();
     return true;
 }
@@ -98,7 +99,13 @@ function clearPreviousHighlight() {
     currentSearchIndex = 0;
 }
 let lastUserInputTime;
+
+
 function inputHandler(element, event) {
+    if (event.metaKey && event.key === "Backspace" || event.ctrlKey && event.key === "Backspace") {
+        document.getElementById("inputTextBox").innerText = ""
+    }
+
     if (event.code == "Enter" || event.code == "Space") {
         clearPreviousHighlight()
         checkUserInput(element);
@@ -266,24 +273,24 @@ function provideHint() {
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    let expires = "expires="+d.toUTCString();
+    let expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-  }
-  
-  function getCookie(cname) {
+}
+
+function getCookie(cname) {
     let name = cname + "=";
     let ca = document.cookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
     return "";
-  }
+}
 
 function firstTimeUserCheck() {
     if (document.cookie == "") {
@@ -295,9 +302,9 @@ function firstTimeUserCheck() {
 
 function checkDaily() {
     let doneDaily = getCookie("daily");
-    var currentDate = new Date().setHours(0,0,0,0);
-    let nextDate = new Date(currentDate + (1000*60*60*24));
-    if (doneDaily == ""){
+    var currentDate = new Date().setHours(0, 0, 0, 0);
+    let nextDate = new Date(currentDate + (1000 * 60 * 60 * 24));
+    if (doneDaily == "") {
         document.cookie = "daily" + "=" + false + ";" + "expires=" + nextDate;
     } else {
         //worried that the current implementation of it might have a edge case error where if u spam the daily when the time
@@ -322,7 +329,7 @@ function refresh() {
     window.location.reload();
 }
 
-window.onload = function () { 
+window.onload = function () {
     firstTimeUserCheck();
     getVersion();
     loadText();
@@ -365,9 +372,9 @@ function startTimer() {
     correctedWordsIndicies = new Array();
     document.getElementById("inputTextBox").innerText = ""
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
-    document.getElementById("inputTextBox").focus();    
+    document.getElementById("inputTextBox").focus();
     hintVar = setInterval(showHint, 1000);
-    chartVar = setInterval(function () { xValues.push(totalSeconds); scoreOverTime.push(score);}, 10000);
+    chartVar = setInterval(function () { xValues.push(totalSeconds); scoreOverTime.push(score); }, 10000);
     lastUserInputTime = Date.now()
     generateCorrectIndicies();
     document.getElementById("score").innerText = `score: \n ${score}`;
@@ -542,7 +549,7 @@ function resetDataSet() {
 }
 
 function shareGame() {
-    if (genre && difficulty){
+    if (genre && difficulty) {
         shareString = "Spellz " + genre + " " + difficulty + "\n" + "Score: " + score + "\n"
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
             if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
@@ -568,12 +575,12 @@ function shareGame() {
     }
     navigator.clipboard.writeText(shareString);
     showToast();
-  }
+}
 
 function showToast() {
-  var x = document.getElementById("toast");
-  x.className = "show";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    var x = document.getElementById("toast");
+    x.className = "show";
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 3000);
 }
 
 function closeGameModal() {
