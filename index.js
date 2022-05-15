@@ -264,14 +264,16 @@ function confirmChangeOnBlueHighlight() {
 function checkUserInput(element) {
     if (element.innerText.length >= 1) {
         let index = -1;
-        index = Object.values(correctIndicies).indexOf(element.innerText)
-
-
+        for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
+            if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i]) == false) {
+                if (correctIndicies[Object.keys(correctIndicies)[i]].replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ") == element.innerText) {
+                    index = Object.keys(correctIndicies)[i];
+                }
+            }
+        }
+        //added below to take into account where the blueIndex is also
         if (index != -1 && Object.keys(correctIndicies).includes(indexOfBlueHighlight.toString())) {
             index = indexOfBlueHighlight.toString()
-
-
-
 
 
             if (correctedWordsIndicies.includes(index) == false) {
