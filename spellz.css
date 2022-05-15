@@ -85,9 +85,8 @@ body {
     text-align: justify;
     text-align-last: center;
     color: #B2A3B5;
-    margin: 10px;
-    padding-left: 200px;
-    padding-right: 200px;
+    padding: 0 1rem;
+    max-width: 700px;
 
 }
 
@@ -194,6 +193,7 @@ h3 {
     text-align-last: center;
     color: #B2A3B5;
     margin: 10px;
+    line-height: 1.4;
 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
