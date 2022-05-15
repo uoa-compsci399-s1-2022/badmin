@@ -28,4 +28,3 @@ Potential ideas for future releases is to incorporate a leader board, have addit
 
 Acknowledgements:
 Team Badmin would like to acknowledge our lecturer, tutors and clients for the efforts, resources and time spent to help improve Spellz.
-
