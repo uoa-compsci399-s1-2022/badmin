@@ -155,11 +155,7 @@ function checkUserInput(element) {
             stopComboTimer();
             document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
-            if (score === 0 || score - 30 < 0) {
-                score = 0
-            } else {
-                score -= 30;
-            }
+            score - 30 <= 0 ? score = 0 : score -= 30;
             document.getElementById("score").innerText = "score: \n" + score;
             document.getElementById("combo").innerText = "combo: \n" + comboCounter;
             countWrong++;
