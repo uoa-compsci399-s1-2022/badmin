@@ -12,7 +12,7 @@ function showGame() {
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
     document.getElementById("readyMessage").style.display = "none";
-    document.getElementById("infoText").style.display = "none";
+    document.getElementById("infoIcon").style.display = "none";
 }
 /**
  * Blur text function
@@ -24,9 +24,8 @@ function hideGame() {
     document.getElementById("score").style.display = "none";
     document.getElementById("comboContainer").style.display = "none";
     document.getElementById("timer").style.display = "none";
-    document.getElementById("infoText").style.display = "none";
+    document.getElementById("infoIcon").style.display = "block";
     document.getElementById("infoIcon").style.color = "#60525F"
-    document.getElementById("infoBtn").style.color = "#60525F"
 }
 
 function pause() {
@@ -36,8 +35,7 @@ function pause() {
     document.getElementById("text-sel").style.display = "grid";
     document.getElementById("pageInfo").style.display = "grid";
     document.getElementById("title").style.color = "#EDD9A3";
-    document.getElementById("infoText").style.display = "none";
-    document.getElementById("infoIcon").style.color = "#60525F";
+    document.getElementById("infoIcon").style.display = "block";
 }
 
 function getVersion() {

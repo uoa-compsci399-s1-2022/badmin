@@ -85,16 +85,16 @@ body {
     text-align: justify;
     text-align-last: center;
     color: #B2A3B5;
-    padding: 0 1rem;
-    max-width: 700px;
+    padding: 0 15rem;
 
 }
 
 h1,
 h2,
-h3 {
-    color: #EDD9A3
+h3{
+    color: #EDD9A3;
 }
+
 
 
 /* Difficulty */
