@@ -3,6 +3,11 @@
     src: url(fonts/JetBrainsMono-VariableFont_wght.ttf);
 }
 
+html {
+    overflow-x: hidden;
+    margin-right: calc(-1 * (100vw - 100%));
+  }
+
 body {
     background-color: #443742;
     font-family: JetBrains Mono;
