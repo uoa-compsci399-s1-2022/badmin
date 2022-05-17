@@ -51,6 +51,7 @@ function sanitizeInput(e) {
     ) {
         return false;
     }
+
     e.preventDefault();
     return true;
 }
@@ -98,7 +99,13 @@ function clearPreviousHighlight() {
     currentSearchIndex = 0;
 }
 let lastUserInputTime;
+
+
 function inputHandler(element, event) {
+    if (event.metaKey && event.key === "Backspace" || event.ctrlKey && event.key === "Backspace") {
+        document.getElementById("inputTextBox").innerText = ""
+    }
+
     if (event.code == "Enter" || event.code == "Space") {
         clearPreviousHighlight()
         checkUserInput(element);
