@@ -46,55 +46,43 @@
         <div id="gameText"></div>
         <div id="readyMessage">Ready? Click here to start</div>
         <div id="doneDailyMessage" style="display: none;">You have already completed the daily challenge</div>
-        <div style="position: relative; height:30vh; width:28vw"> 
-            <div id="endGameModal" class="modal">
-                <div class="endModalContent">
-                    <span class="close" onclick="closeGameModal()">&times;</span>
-                    <div id="modalText">STATISTICS</div>
-                    <div id="modalScore"></div>
-                    <div id="modalaccuracy"></div>
-                    <div id="modalTimeTaken"></div>
-                    <div id="modalComboStreak"></div>
-                    <div id="modalGotEverything"></div>
-                    <div class="chart-container">
-                        <canvas id="myChart"></canvas>
-                    </div>
-                    <div id="shareContainer">
+        <div id="endGameModal" class="modal">
+            <div class="endModalContent">
+                <span class="close" onclick="closeGameModal()">&times;</span>
+                <div id="modalText">STATISTICS</div>
+                <div id="modalScore"></div>
+                <div id="modalaccuracy"></div>
+                <div id="modalTimeTaken"></div>
+                <div id="modalComboStreak"></div>
+                <div id="modalGotEverything"></div>
+                <div class="chart-container">
+                    <canvas id="myChart"></canvas>
+                </div>
+                <div id="shareContainer">
                     <button id="shareButton" onclick="shareGame()">
-                        <span class="btn-text">SHARE</span
-                            ><span class="btn-icon">
-                              <svg
-                                t="1580465783605"
-                                class="icon"
-                                viewBox="0 0 1024 1024"
-                                version="1.1"
-                                xmlns="http://www.w3.org/2000/svg"
-                                p-id="9773"
-                                width="18"
-                                height="18"
-                              >
+                        <span class="btn-text">SHARE</span><span class="btn-icon">
+                            <svg t="1580465783605" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                xmlns="http://www.w3.org/2000/svg" p-id="9773" width="18" height="18">
                                 <path
-                                  d="M767.99994 585.142857q75.995429 0 129.462857 53.394286t53.394286 129.462857-53.394286 129.462857-129.462857 53.394286-129.462857-53.394286-53.394286-129.462857q0-6.875429 1.170286-19.456l-205.677714-102.838857q-52.589714 49.152-124.562286 49.152-75.995429 0-129.462857-53.394286t-53.394286-129.462857 53.394286-129.462857 129.462857-53.394286q71.972571 0 124.562286 49.152l205.677714-102.838857q-1.170286-12.580571-1.170286-19.456 0-75.995429 53.394286-129.462857t129.462857-53.394286 129.462857 53.394286 53.394286 129.462857-53.394286 129.462857-129.462857 53.394286q-71.972571 0-124.562286-49.152l-205.677714 102.838857q1.170286 12.580571 1.170286 19.456t-1.170286 19.456l205.677714 102.838857q52.589714-49.152 124.562286-49.152z"
-                                  p-id="9774"
-                                  fill="#EDD9A3"
-                                ></path>
-                              </svg>
-                            </span>
+                                    d="M767.99994 585.142857q75.995429 0 129.462857 53.394286t53.394286 129.462857-53.394286 129.462857-129.462857 53.394286-129.462857-53.394286-53.394286-129.462857q0-6.875429 1.170286-19.456l-205.677714-102.838857q-52.589714 49.152-124.562286 49.152-75.995429 0-129.462857-53.394286t-53.394286-129.462857 53.394286-129.462857 129.462857-53.394286q71.972571 0 124.562286 49.152l205.677714-102.838857q-1.170286-12.580571-1.170286-19.456 0-75.995429 53.394286-129.462857t129.462857-53.394286 129.462857 53.394286 53.394286 129.462857-53.394286 129.462857-129.462857 53.394286q-71.972571 0-124.562286-49.152l-205.677714 102.838857q1.170286 12.580571 1.170286 19.456t-1.170286 19.456l205.677714 102.838857q52.589714-49.152 124.562286-49.152z"
+                                    p-id="9774" fill="#EDD9A3"></path>
+                            </svg>
+                        </span>
                     </button>
                 </div>
-                </div>
-
             </div>
+
             <div id="firstTimeModal" class="modal">
                 <div class="endModalContent">
                     <span class="close" onclick="closeFirstTimeModal()">&times;</span>
-                   <br>
+                    <br>
                     Welcome to our game Spellz!
                     <p>
                         The aim of our game is for you to detect any spelling errors within the text.
                     </p>
                     <p>
-                        You have the option of playing either daily challenge or text with particular genre and difficulty.
+                        You have the option of playing either daily challenge or text with particular genre and
+                        difficulty.
                     </p>
                     <p>
                         For help, please click the (i) icon.
@@ -103,11 +91,11 @@
                         Happy Spellzing!
                     </p>
                 </div>
-            
+
             </div>
         </div>
-        
-        
+
+
 
         <div id="gameHidden" onclick="startTimer()"></div>
 
