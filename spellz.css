@@ -3,6 +3,11 @@
     src: url(fonts/JetBrainsMono-VariableFont_wght.ttf);
 }
 
+html {
+    overflow-x: hidden;
+    margin-right: calc(-1 * (100vw - 100%));
+}
+
 body {
     background-color: #443742;
     font-family: JetBrains Mono;
@@ -25,9 +30,19 @@ body {
     grid-area: title;
     font-size: 60px;
     color: #EDD9A3;
-
     cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
+#infoIcon {
+    color: #EDD9A3;
+    grid-area: 2 / 2 / 2 / 3;
+    cursor: pointer;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -51,14 +66,34 @@ body {
     color: #B2A3B5;
     column-gap: 5px;
     row-gap: 0px;
-
     align-items: end;
     justify-items: end;
 }
 
-/*
-.text-sel div {
-    border: 1px solid yellow;
+#infoBtn {
+    color: #B2A3B5;
+    cursor: pointer;
+    font-size: 20px;
+
+}
+
+#infoText {
+    grid-area: m;
+    display: none;
+    position: absolute;
+    z-index: 1;
+    background-color: #443742;
+    text-align: justify;
+    text-align-last: center;
+    color: #B2A3B5;
+    padding: 0 15rem;
+
+}
+
+h1,
+h2,
+h3{
+    color: #EDD9A3;
 } 
 
 
@@ -156,7 +191,7 @@ body {
     text-align-last: center;
     color: #B2A3B5;
     margin: 10px;
-
+    line-height: 1.5;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -258,7 +293,6 @@ body {
     justify-self: end;
     color: #EDD9A3;
     visibility: hidden;
-
     cursor: pointer;
 
 }
@@ -411,7 +445,12 @@ body {
     padding-top: 5px;
 }
 
+#infoClose {
+    position: absolute;
+    left: 100px;
+    font-size: 50px;
 
+}
 
 
 .close {
