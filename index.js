@@ -589,6 +589,13 @@ window.onclick = function (event) {
     }
 }
 
+//prevent Crt+ F
+window.addEventListener("keydown", function (event) {
+    if (event.code === "F3" || event.metaKey && event.key === "f" || event.ctrlKey && event.key === "f") {
+        event.preventDefault()
+    }
+})
+
 function countTimer() {
     const timeElapsed = Date.now() - gameStartTime;
     const seconds = Math.floor(timeElapsed / 1000) % 60;
