@@ -175,6 +175,17 @@ body {
     margin: 86px;
 }
 
+#doneDailyMessage {
+    grid-area: m;
+    display: block;
+    text-align: justify;
+    text-align-last: center;
+
+    font-size: 19px;
+    color: #EDD9A3;
+    margin: 86px;
+}
+
 #gameHidden {
     display: block;
     grid-area: m;
@@ -246,6 +257,8 @@ body {
     justify-self: end;
     color: #EDD9A3;
     visibility: hidden;
+
+    cursor: pointer;
 
 }
 
@@ -362,7 +375,6 @@ body {
     display: none;
     position: fixed;
     flex-direction: column;
-    padding-top: 100px;
     left: 0;
     top: 0;
     width: 100%;
@@ -372,8 +384,6 @@ body {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-
-
 /* Modal Content */
 .endModalContent {
     color: #B2A3B5;
@@ -381,8 +391,8 @@ body {
     margin: auto;
     padding: 10px;
     border: 10px solid #60525F;
-    width: 470px;
-    height: 490px;
+    width: 25%;
+    height: 50%;
     overflow: auto;
 }
 
@@ -393,6 +403,9 @@ body {
 #modalScore {
     padding-top: 5px;
 }
+
+
+
 
 .close {
     color: #aaaaaa;
@@ -441,4 +454,89 @@ body {
     100% {
         margin-left: 0rem;
     }
+
+}
+
+#shareButton {
+    background-color: #60525F;
+    color: #EDD9A3;
+}
+
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #60525F;
+    color: #EDD9A3;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+}
+
+#toast.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+#shareContainer {
+    width: 100%;
+}
+
+#shareButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

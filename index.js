@@ -12,6 +12,7 @@ function showGame() {
     document.getElementById("comboContainer").style.display = "flex";
     document.getElementById("timer").style.display = "inline";
     document.getElementById("readyMessage").style.display = "none";
+    document.getElementById("doneDailyMessage").style.display = "none";
 }
 /**
  * Blur text function
@@ -50,6 +51,7 @@ function sanitizeInput(e) {
     ) {
         return false;
     }
+
     e.preventDefault();
     return true;
 }
@@ -216,7 +218,13 @@ function normalSearchOnly(inputSearch) {
 
 
 let lastUserInputTime;
+
+
 function inputHandler(element, event) {
+    if (event.metaKey && event.key === "Backspace" || event.ctrlKey && event.key === "Backspace") {
+        document.getElementById("inputTextBox").innerText = ""
+    }
+
     if (event.code == "Enter" || event.code == "Space") {
 
         confirmChangeOnBlueHighlight();
@@ -237,7 +245,7 @@ function inputHandler(element, event) {
 let countCorrect = 0;
 let countWrong = 0;
 let score = 0;
-let comboCounter = 0;
+let comboCounter;
 let previousCorrectedTime = null;
 let previousComboTime = null;
 
@@ -275,8 +283,6 @@ function checkUserInput(element) {
         //added below to take into account where the blueIndex is also
         if (index != -1 && Object.keys(correctIndicies).includes(indexOfBlueHighlight.toString())) {
             index = indexOfBlueHighlight.toString()
-
-
             if (correctedWordsIndicies.includes(index) == false) {
                 replaceWord(correctIndicies[index], index);
                 correctedWordsIndicies.push(index);
@@ -315,7 +321,7 @@ function checkUserInput(element) {
 
             document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
-            score -= 30;
+            score - 30 <= 0 ? score = 0 : score -= 30;
             document.getElementById("score").innerText = "score: \n" + score;
             document.getElementById("combo").innerText = "combo: \n" + comboCounter;
             countWrong++;
@@ -328,9 +334,9 @@ function checkUserInput(element) {
 // }
 
 let comboStreak = 0;
-let comboStreakArr = [0]
-const WIDTH = 100
-const TIME_LIMIT = 5
+let comboStreakArr = [0];
+const WIDTH = 100;
+const TIME_LIMIT = 5;
 let comboTimeOut;
 function restartComboTimer() {
     previousComboTime = Date.now();
@@ -385,7 +391,7 @@ function generateCorrectIndicies() {
     suppliedArray = suppliedText.split(" ");
     correctArray = correctText.split(" ");
     for (let i = 0; i < suppliedArray.length; i++) {
-        if (suppliedArray[i] != correctArray[i]) {
+        if (suppliedArray[i] !== correctArray[i]) {
             correctIndicies[i] = correctArray[i];
         }
     }
@@ -425,11 +431,67 @@ function provideHint() {
     }
 }
 
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function firstTimeUserCheck() {
+    if (document.cookie == "") {
+        setCookie("new", true, 365);
+    } else {
+        setCookie("new", false, 365);
+    }
+}
+
+function checkDaily() {
+    let doneDaily = getCookie("daily");
+    var currentDate = new Date().setHours(0, 0, 0, 0);
+    let nextDate = new Date(currentDate + (1000 * 60 * 60 * 24));
+    if (doneDaily == "") {
+        document.cookie = "daily" + "=" + false + ";" + "expires=" + nextDate;
+    } else {
+        //worried that the current implementation of it might have a edge case error where if u spam the daily when the time
+        //is changing the user might get locked out of the daily challenge
+        document.cookie = "daily" + "=" + true + ";" + "expires=" + nextDate;
+        //alert("hit");
+    }
+}
+
+function statsCookie() {
+    let scoreCookie = getCookie("bestScore");
+    if (scoreCookie == "") {
+        setCookie("bestScore", score, 365);
+    } else {
+        if (scoreCookie < score) {
+            setCookie("bestScore", score, 365);
+        }
+    }
+}
+
 function refresh() {
     window.location.reload();
 }
 
 window.onload = function () {
+    firstTimeUserCheck();
     getVersion();
     loadText();
     document.getElementById("inputTextBox").addEventListener("beforeinput", function (e) { sanitizeInput(e); });
@@ -439,35 +501,44 @@ window.onload = function () {
 };
 
 function showReadyMessage() {
+    document.getElementById("doneDailyMessage").style.display = "none";
     document.getElementById("readyMessage").style.display = "block";
 }
 
 let gameStartTime;
-let totalSeconds;
+let totalSeconds = 0;
 let timerVar = 0;
 let hintVar = 0;
+let chartVar = 0;
 function startTimer() {
+    loadText();
+    if (textType == "dailyText") {
+        checkDaily();
+        if (getCookie("daily") == "true") {
+            document.getElementById("readyMessage").style.display = "none";
+            document.getElementById("doneDailyMessage").style.display = "block";
+            return;
+        }
+    }
+    countCorrect = 0;
+    countWrong = 0;
+    score = 0;
+    comboCounter = 0;
+    resetDataSet();
+
     gameStartTime = Date.now();
+    timerVar = setInterval(countTimer, 100);
+
     showGame();
     correctIndicies = {};
     correctedWordsIndicies = new Array();
     document.getElementById("inputTextBox").innerText = ""
     document.getElementById("inputTextBox").setAttribute("contenteditable", true);
     document.getElementById("inputTextBox").focus();
-    document.getElementById("timer").innerHTML = "";
-    loadText();
-    totalSeconds = 0;
-    timerVar = setInterval(countTimer, 1000);
     hintVar = setInterval(showHint, 1000);
-    setInterval(function () { scoreOverTime.push(score) }, 10000);
-    setInterval(function () { xValues.push(totalSeconds) }, 10000);
+    chartVar = setInterval(function () { xValues.push(totalSeconds); scoreOverTime.push(score); }, 10000);
     lastUserInputTime = Date.now()
-    showGame();
     generateCorrectIndicies();
-    countCorrect = 0;
-    countWrong = 0;
-    score = 0;
-    comboCounter = 0;
     document.getElementById("score").innerText = `score: \n ${score}`;
     document.getElementById("combo").innerText = `combo: \n ${comboCounter}`;
     previousCorrectedTime = null;
@@ -480,10 +551,13 @@ function stopTimer() {
     document.getElementById("inputTextBox").setAttribute("contenteditable", false);
     clearInterval(timerVar);
     clearInterval(hintVar);
+    clearInterval(chartVar);
     resetHint();
     pause();
     scoreOverTime.push(score);
-    xValues.push(totalSeconds);
+    if (xValues[(xValues.length - 1)] !== totalSeconds) {
+        xValues.push(totalSeconds);
+    }
     showModal();
 
 }
@@ -491,8 +565,6 @@ function stopTimer() {
 function showModal() {
     document.getElementById("endGameModal").style.display = "flex";
     displayStats();
-
-
 }
 /**
  * Everything that will appear on modal 
@@ -504,7 +576,7 @@ function displayStats() {
     formatTimeTaken();
     getEveryWord();
     calculateModalGraph();
-
+    statsCookie();
 }
 /**
  * See how long the combo was held for in seconds 
@@ -573,7 +645,7 @@ let scoreOverTime = [0];
 
 let myChart;
 let ctx;
-function calculateModalGraph() {
+function calculateModalGraph(p) {
     ctx = document.getElementById("myChart");
     myChart = new Chart(ctx, {
         type: 'line',
@@ -633,20 +705,34 @@ function calculateModalGraph() {
 function resetDataSet() {
     scoreOverTime = [0];
     xValues = [0];
-    myChart.destroy();
     comboStreak = 0;
-    scoreOverTime = [0];
-
+    comboStreakArr = [0];
+    totalSeconds = 0;
 }
 
 function shareGame() {
-    shareString = "\u2328"
-    for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
-        if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
-            shareString += " \u2705"
+    if (genre && difficulty) {
+        shareString = "Spellz " + genre + " " + difficulty + "\n" + "Score: " + score + "\n"
+        for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
+            if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
+                shareString += " \u{1F7E9}"
+            }
+            else {
+                shareString += " \u{1F7E5}"
+            }
         }
-        else {
-            shareString += " \u274E"
+    }
+    else {
+        today = new Date();
+        number = Math.floor(today.getTime() / 86400000) - 19122;
+        shareString = "Spellz #" + number + "\n" + "Score: " + score + "\n"
+        for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
+            if (correctedWordsIndicies.includes(Object.keys(correctIndicies)[i])) {
+                shareString += " \u{1F7E9}"
+            }
+            else {
+                shareString += " \u{1F7E5}"
+            }
         }
     }
     navigator.clipboard.writeText(shareString);
@@ -661,21 +747,28 @@ function showToast() {
 
 function closeGameModal() {
     endGameModal.style.display = "none";
-    resetDataSet();
+    myChart.destroy();
 }
 
 // closes modal when anywhere is clicked
 window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
-        resetDataSet();
+        closeGameModal();
     }
 }
+
+//prevent Crt+ F
+window.addEventListener("keydown", function (event) {
+    if (event.code === "F3" || event.metaKey && event.key === "f" || event.ctrlKey && event.key === "f") {
+        event.preventDefault()
+    }
+})
 
 function countTimer() {
     const timeElapsed = Date.now() - gameStartTime;
     const seconds = Math.floor(timeElapsed / 1000) % 60;
-    totalSeconds = seconds
+    totalSeconds = seconds;
     const minutes = Math.floor((timeElapsed / 1000) / 60);
     document.getElementById("timer").innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
@@ -982,11 +1075,14 @@ function loadDaily() {
 let correctText;
 let suppliedText;
 let currentSuppliedTextDuplicate;
+let textType;
 function loadText() {
     // if genre not selected, show daily
     if (typeof genre == "undefined") {
+        textType = "dailyText";
         loadDaily();
     } else {
+        textType = "notDailyText";
         const textBank = JSON.parse(JSONString);
         suppliedText = textBank[difficulty][genre]["suppliedText"];
         correctText = textBank[difficulty][genre]["correctText"];
