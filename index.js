@@ -284,6 +284,7 @@ function confirmChangeOnBlueHighlight() {
 
 
 function checkUserInput(element) {
+    let prevScore;
     if (element.innerText.length >= 1) {
         let index = -1;
         for (let i = 0; i < Object.keys(correctIndicies).length; i++) {
@@ -324,8 +325,13 @@ function checkUserInput(element) {
                 comboStreak = comboStreak + TIME_LIMIT;
                 comboStreakArr.push(comboStreak);
                 previousCorrectedTime = currentTime;
+                prevScore = score;
                 score += 100 * comboCounter;
-                document.getElementById("score").innerText = "score: \n" + score;
+
+                // to animate the score
+                animateScore(prevScore, score, 700)
+
+
                 document.getElementById("combo").innerText = "combo: \n" + comboCounter;
                 countCorrect++;
                 // to update the comparator passage
@@ -341,8 +347,13 @@ function checkUserInput(element) {
 
             document.getElementById("inputTextBox").classList.add("error");
             comboCounter = 0;
+            prevScore = score;
             score - 30 <= 0 ? score = 0 : score -= 30;
             document.getElementById("score").innerText = "score: \n" + score;
+            // decrease the score when wrong
+            animateScore(prevScore, score, 600)
+
+
             document.getElementById("combo").innerText = "combo: \n" + comboCounter;
             countWrong++;
             comboStreak = 0;
@@ -838,6 +849,29 @@ window.addEventListener("keydown", function (event) {
         event.preventDefault()
     }
 })
+/**
+* @function animateScore() called only by checkUserInput, animates score by repeatedly asking for animation for 600ms
+* @param start - the score currently
+* @param end - the score after correction/incorrect word
+* @param duration - how long animation goes for, currently hardcoded at code for 600ms
+*/
+function animateScore(start, end, duration) {
+    const score = document.getElementById("score");
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) {
+            startTimestamp = timestamp;
+        }
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        score.innerHTML = "score:" + "<br>" + Math.floor(progress * (end - start) + start) + "</br>";
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        }
+    };
+    window.requestAnimationFrame(step);
+}
+
+
 
 function countTimer() {
     const timeElapsed = Date.now() - gameStartTime;
