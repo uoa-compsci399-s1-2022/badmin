@@ -258,6 +258,8 @@ body {
     color: #EDD9A3;
     visibility: hidden;
 
+    cursor: pointer;
+
 }
 
 
@@ -454,6 +456,7 @@ body {
     background-color: #60525F;
     color: #EDD9A3;
 }
+
 #toast {
     visibility: hidden;
     min-width: 250px;
@@ -467,40 +470,68 @@ body {
     z-index: 1;
     left: 50%;
     bottom: 30px;
-  }
-  
-  #toast.show {
+}
+
+#toast.show {
     visibility: visible;
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  }
-  
-  @-webkit-keyframes fadein {
-    from {bottom: 0; opacity: 0;}
-    to {bottom: 30px; opacity: 1;}
-  }
-  
-  @keyframes fadein {
-    from {bottom: 0; opacity: 0;}
-    to {bottom: 30px; opacity: 1;}
-  }
-  
-  @-webkit-keyframes fadeout {
-    from {bottom: 30px; opacity: 1;}
-    to {bottom: 0; opacity: 0;}
-  }
-  
-  @keyframes fadeout {
-    from {bottom: 30px; opacity: 1;}
-    to {bottom: 0; opacity: 0;}
-  }
+}
 
-  #shareContainer {
-      width: 100%;
-  }
+@-webkit-keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
 
-  #shareButton {
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+#shareContainer {
+    width: 100%;
+}
+
+#shareButton {
     display: block;
     margin-left: auto;
     margin-right: auto;
-  }
+}
