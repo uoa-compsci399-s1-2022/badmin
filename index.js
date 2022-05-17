@@ -777,6 +777,7 @@ function countTimer() {
  * Displays text on screen on the basis of genre and difficulty specified
  */
 let difficulty;
+let genre;
 
 function setEasy() {
     difficulty = "Easy";
@@ -906,7 +907,6 @@ function setWiki() {
     document.getElementById("mystery").style.color = "#B2A3B5";
 }
 
-let genre;
 /**
  * JSON text containing all text which will be displayed
  */
@@ -1077,15 +1077,15 @@ let suppliedText;
 let currentSuppliedTextDuplicate;
 let textType;
 function loadText() {
-    // if genre not selected, show daily
-    if (typeof genre == "undefined") {
-        textType = "dailyText";
-        loadDaily();
-    } else {
+    //if genre and difficulty have both been selected
+    if (genre && difficulty) {
         textType = "notDailyText";
         const textBank = JSON.parse(JSONString);
         suppliedText = textBank[difficulty][genre]["suppliedText"];
         correctText = textBank[difficulty][genre]["correctText"];
+    } else {
+        textType = "dailyText";
+        loadDaily();
     }
     const passageSurr = separateWords();
     document.getElementById("gameText").innerHTML = passageSurr;
