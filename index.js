@@ -591,7 +591,7 @@ window.onclick = function (event) {
 
 //prevent Crt+ F
 window.addEventListener("keydown", function (event) {
-    if (event.metaKey && event.key === "f" || event.ctrlKey && event.key === "f") {
+    if (e.keyCode === 114 || event.metaKey && event.key === "f" || event.ctrlKey && event.key === "f") {
         event.preventDefault()
     }
 })
