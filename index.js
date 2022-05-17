@@ -254,6 +254,7 @@ function confirmChangeOnBlueHighlight() {
     const gameTextElements = document.getElementById("gameText").children;
     for (let i = 0; i < gameTextArr.length; i++) {
         const gameTextElement = gameTextElements[i];
+        //need to change indexOf, to look for where it is the blue, currently, uses 'style' as it distinguish it from yellow parts
         if (gameTextElement.innerHTML.indexOf("style") !== -1) {
             indexOfBlueHighlight = i
         }
@@ -301,6 +302,7 @@ function checkUserInput(element) {
                 document.getElementById("combo").innerText = "combo: \n" + comboCounter;
                 countCorrect++;
                 // to update the comparator passage
+                //can refactor currentSuppliedTextDuplicate- just for helping revert it back to pretyping state
                 currentSuppliedTextDuplicate = suppliedText;
                 // to try reset the changed texts after correction
                 revertDynamicHighlightChanges();
