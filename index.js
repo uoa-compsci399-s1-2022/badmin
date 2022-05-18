@@ -9,7 +9,7 @@ function showGame() {
     document.getElementById("pageInfo").style.display = "none";
     document.getElementById("title").style.color = "#60525F";
     document.getElementById("score").style.display = "grid";
-    document.getElementById("comboContainer").style.display = "flex";
+    document.getElementById("combo").style.display = "grid";
     document.getElementById("timer").style.display = "inline";
     document.getElementById("readyMessage").style.display = "none";
     document.getElementById("doneDailyMessage").style.display = "none";
@@ -23,7 +23,7 @@ function hideGame() {
     document.getElementById("gameHidden").style.display = "block";
     document.getElementById("gameControls").style.display = "none";
     document.getElementById("score").style.display = "none";
-    document.getElementById("comboContainer").style.display = "none";
+    document.getElementById("combo").style.display = "none";
     document.getElementById("timer").style.display = "none";
     document.getElementById("infoIcon").style.display = "block";
     document.getElementById("infoIcon").style.color = "#60525F";
@@ -349,7 +349,7 @@ function checkUserInput(element) {
             //when wrong, also reset highlights, and change back all dynamically change text from highlighting
             revertDynamicHighlightChanges();
 
-            document.getElementById("inputTextBox").classList.add("error");
+            document.getElementById("inputTextBoxContainer").classList.add("error");
             comboCounter = 0;
             prevScore = score;
             score - 30 <= 0 ? score = 0 : score -= 30;
@@ -364,7 +364,7 @@ function checkUserInput(element) {
         }
     }
     setTimeout(() => {
-        document.getElementById("inputTextBox").classList.remove("error");
+        document.getElementById("inputTextBoxContainer").classList.remove("error");
     }, 500);
     document.getElementById("inputTextBox").innerText = "";
 }
@@ -548,6 +548,19 @@ function refresh() {
 }
 
 window.onload = function () {
+    // when icon is clicked the text must show
+    const infoText = document.getElementById('infoText');
+    const infoIcon = document.getElementById('infoIcon');
+    infoIcon.addEventListener('click', function getInfo() {
+        if (infoText.style.display === 'none') {
+            infoText.style.display = 'block';
+            infoIcon.style.color = "#EDD9A3";
+        }
+        else {
+            infoIcon.style.color = "#B2A3B5";
+            infoText.style.display = 'none';
+        }
+    });
     firstTimeUserCheck();
     getVersion();
     loadText();
@@ -1293,22 +1306,6 @@ function separateWords() {
     }
     return wordArr.join(" ");
 }
-
-// when icon is clicked the text must show
-const infoText = document.getElementById('infoText');
-const infoIcon = document.getElementById('infoIcon');
-
-infoIcon.addEventListener('click', function getInfo() {
-    if (infoText.style.display === 'none') {
-        infoText.style.display = 'block';
-        infoIcon.style.color = "#EDD9A3";
-    }
-    else {
-        infoIcon.style.color = "#B2A3B5";
-        infoText.style.display = 'none';
-
-    }
-});
 
 // when information icon is clicked these colours must be set in order to avoid confusion
 function getInfo() {
