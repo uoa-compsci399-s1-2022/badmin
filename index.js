@@ -642,7 +642,14 @@ function stopTimer() {
 function showModal() {
     document.getElementById("endGameModal").style.display = "flex";
     displayStats();
+    document.getElementById("gameControls").style.display = "none";
 }
+
+function reShowComboContainer() {
+    document.getElementById("gameControls").style.display = "flex";
+}
+
+
 /**
  * Everything that will appear on modal
  */
@@ -850,6 +857,7 @@ function showToast() {
 function closeGameModal() {
     endGameModal.style.display = "none";
     myChart.destroy();
+    reShowComboContainer();
 }
 
 function closeInfoPage() {
@@ -864,6 +872,7 @@ window.onclick = function (event) {
     if (event.target == endGameModal) {
         endGameModal.style.display = "none";
         closeGameModal();
+        reShowComboContainer();
     }
 };
 
