@@ -40,7 +40,8 @@ body {
 }
 
 #infoIcon {
-    color: #EDD9A3;
+    color: #B2A3B5;
+    /* color: #EDD9A3; */
     grid-area: 2 / 2 / 2 / 3;
     cursor: pointer;
     -webkit-touch-callout: none;
@@ -92,9 +93,9 @@ body {
 
 h1,
 h2,
-h3{
+h3 {
     color: #EDD9A3;
-} 
+}
 
 
 /* Difficulty */
@@ -579,8 +580,8 @@ h3{
 
 
 #shareContainer {
-      width: 100%;
-      padding-top: 20px;
+    width: 100%;
+    padding-top: 20px;
 }
 
 #shareButton {
@@ -603,5 +604,5 @@ h3{
     display: inline-flex;
     vertical-align: middle;
     padding: 2px;
-    font-weight:bold;
+    font-weight: bold;
 }
