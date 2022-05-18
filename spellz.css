@@ -92,9 +92,9 @@ body {
 
 h1,
 h2,
-h3{
+h3 {
     color: #EDD9A3;
-} 
+}
 
 
 /* Difficulty */
@@ -181,7 +181,13 @@ h3{
         "lf input input rf";
 }
 
-
+#currentGenreLevel {
+    grid-area: timer;
+    font-size: 17px;
+    align-self: end;
+    color: #EDD9A3;
+    margin-left: 20%;
+}
 
 #gameText {
     display: none;
@@ -579,8 +585,8 @@ h3{
 
 
 #shareContainer {
-      width: 100%;
-      padding-top: 20px;
+    width: 100%;
+    padding-top: 20px;
 }
 
 #shareButton {
@@ -603,5 +609,5 @@ h3{
     display: inline-flex;
     vertical-align: middle;
     padding: 2px;
-    font-weight:bold;
+    font-weight: bold;
 }

@@ -40,7 +40,7 @@ function pause() {
 }
 
 function getVersion() {
-    document.getElementById("vers").innerText = "v. Beta";
+    document.getElementById("vers").innerText = "v. Beta1.3";
 }
 
 /**
@@ -451,6 +451,20 @@ function showHint() {
             document.getElementById("hint").style.visibility = "visible";
         }
     }
+}
+
+
+function generatePassageGenreHeader() {
+    if (genre && difficulty) {
+        document.getElementById("currentGenreLevel").innerText = genre + " - " + difficulty;
+    } else {
+        today = new Date();
+        number = Math.floor(today.getTime() / 86400000) - 19122;
+        shareString = "Spellz #" + number;
+        document.getElementById("currentGenreLevel").innerText = shareString;
+    }
+
+
 }
 
 function resetHint() {
@@ -1258,6 +1272,8 @@ function loadDaily() {
     correctText = textBank[key]["correctText"];
     currentSuppliedTextDuplicate = suppliedText
     document.getElementById("infoText").style.display = "none";
+
+
 }
 
 let correctText;
@@ -1271,6 +1287,8 @@ function loadText() {
         const textBank = JSON.parse(JSONString);
         suppliedText = textBank[difficulty][genre]["suppliedText"];
         correctText = textBank[difficulty][genre]["correctText"];
+
+
     } else {
         textType = "dailyText";
         loadDaily();
@@ -1281,6 +1299,9 @@ function loadText() {
     //to work for any supplied text
     currentSuppliedTextDuplicate = suppliedText
     document.getElementById("infoText").style.display = "none";
+
+    generatePassageGenreHeader();
+
 }
 
 // to add divs between each word
