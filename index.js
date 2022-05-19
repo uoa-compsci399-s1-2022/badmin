@@ -771,7 +771,7 @@ let scoreOverTime = [0];
 
 let myChart;
 let ctx;
-function calculateModalGraph(p) {
+function calculateModalGraph() {
     ctx = document.getElementById("myChart");
     myChart = new Chart(ctx, {
         type: "line",
