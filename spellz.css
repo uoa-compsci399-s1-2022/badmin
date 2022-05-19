@@ -181,12 +181,17 @@ h3 {
         "lf input input rf";
 }
 
+
+
 #currentGenreLevel {
-    grid-area: timer;
     font-size: 17px;
-    align-self: end;
     color: #EDD9A3;
-    margin-left: auto;
+    /* margin-left: auto; */
+    grid-area: m;
+    font-size: 19px;
+    text-align: justify;
+    text-align-last: center;
+    margin: -23px;
 }
 
 #gameText {
