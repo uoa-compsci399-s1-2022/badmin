@@ -886,9 +886,9 @@ function animateScore(start, end, duration) {
 
 function countTimer() {
     const timeElapsed = Date.now() - gameStartTime;
-    const seconds = Math.floor(timeElapsed / 1000) % 60;
-    totalSeconds = seconds;
-    const minutes = Math.floor(timeElapsed / 1000 / 60);
+    totalSeconds = Math.floor(timeElapsed / 1000);
+    const seconds = totalSeconds % 60;
+    const minutes = Math.floor(totalSeconds / 60);
     document.getElementById("timer").innerHTML = `${minutes
         .toString()
         .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
