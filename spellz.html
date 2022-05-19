@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="spellz.css" />
     <link rel="icon" href="Images/logo.png" type="image/png" />
     <script src="index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/diff-match-patch-js-browser-and-nodejs@1.0.2/diff_match_patch.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/diff-match-patch-js-browser-and-nodejs@1.0.2/diff_match_patch.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -19,11 +20,15 @@
         </div>
 
         <!-- information icon which when clicked shows all details -->
-        <div id="infoBtn" onclick="getInfo()"> <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" width="30" height="30" id="infoIcon" viewBox="0 0 512 512">
+        <div id="infoBtn" onclick="getInfo()"> <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" width="30"
+                height="30" id="infoIcon" viewBox="0 0 512 512">
                 <title>Information Circle</title>
-                <path d="M248 64C146.39 64 64 146.39 64 248s82.39 184 184 184 184-82.39 184-184S349.61 64 248 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M220 220h32v116" />
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M208 340h88" />
+                <path d="M248 64C146.39 64 64 146.39 64 248s82.39 184 184 184 184-82.39 184-184S349.61 64 248 64z"
+                    fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                    d="M220 220h32v116" />
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32"
+                    d="M208 340h88" />
                 <path fill="currentColor" stroke="#currentColor" d="M248 130a26 26 0 1026 26 26 26 0 00-26-26z" />
             </svg></div>
 
@@ -34,24 +39,26 @@
         <div id="text-sel" onclick="showReadyMessage()">
 
             <div id="blank"></div>
-            <div id="easy" onclick="setEasy()">easy</div>
-            <div id="medium" onclick="setMedium()">medium</div>
-            <div id="hard" onclick="setHard()">hard</div>
+            <div id="easy" onclick="setEasy(); generatePassageGenreHeader()">easy</div>
+            <div id="medium" onclick="setMedium(); generatePassageGenreHeader()">medium</div>
+            <div id="hard" onclick="setHard(); generatePassageGenreHeader()">hard</div>
 
-            <div id="sci-fi" onclick="setSF()">sci-fi</div>
-            <div id="slice_of_life" onclick="setSoL()">slice of life</div>
-            <div id="non-fiction" onclick="setNF()">non-fiction</div>
-            <div id="article" onclick="setArt()">article</div>
-            <div id="romance" onclick="setRom()">romance</div>
-            <div id="comedy" onclick="setCom()">comedy</div>
-            <div id="wikipedia" onclick="setWiki()">wikipedia</div>
-            <div id="mystery" onclick="setMy()">mystery</div>
+            <div id="sci-fi" onclick="setSF(); generatePassageGenreHeader()">sci-fi</div>
+            <div id="slice_of_life" onclick="setSoL(); generatePassageGenreHeader()">slice of life</div>
+            <div id="non-fiction" onclick="setNF(); generatePassageGenreHeader()">non-fiction</div>
+            <div id="article" onclick="setArt(); generatePassageGenreHeader()">article</div>
+            <div id="romance" onclick="setRom(); generatePassageGenreHeader()">romance</div>
+            <div id="comedy" onclick="setCom(); generatePassageGenreHeader()">comedy</div>
+            <div id="wikipedia" onclick="setWiki(); generatePassageGenreHeader()">wikipedia</div>
+            <div id="mystery" onclick="setMy(); generatePassageGenreHeader()">mystery</div>
         </div>
 
     </div>
 
     <div class="mid">
+
         <div id="gameText"></div>
+        <div id="currentGenreLevel"></div>
         <!-- All the information on the click of info button -->
         <div id="infoText">
             <span class="close" id="infoClose" onclick="closeInfoPage()">&times;</span>
@@ -120,8 +127,11 @@
                 <div id="shareContainer">
                     <button id="shareButton" onclick="shareGame()">
                         <span class="btn-text">SHARE</span><span class="btn-icon">
-                            <svg t="1580465783605" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9773" width="18" height="18">
-                                <path d="M767.99994 585.142857q75.995429 0 129.462857 53.394286t53.394286 129.462857-53.394286 129.462857-129.462857 53.394286-129.462857-53.394286-53.394286-129.462857q0-6.875429 1.170286-19.456l-205.677714-102.838857q-52.589714 49.152-124.562286 49.152-75.995429 0-129.462857-53.394286t-53.394286-129.462857 53.394286-129.462857 129.462857-53.394286q71.972571 0 124.562286 49.152l205.677714-102.838857q-1.170286-12.580571-1.170286-19.456 0-75.995429 53.394286-129.462857t129.462857-53.394286 129.462857 53.394286 53.394286 129.462857-53.394286 129.462857-129.462857 53.394286q-71.972571 0-124.562286-49.152l-205.677714 102.838857q1.170286 12.580571 1.170286 19.456t-1.170286 19.456l205.677714 102.838857q52.589714-49.152 124.562286-49.152z" p-id="9774" fill="#EDD9A3"></path>
+                            <svg t="1580465783605" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                xmlns="http://www.w3.org/2000/svg" p-id="9773" width="18" height="18">
+                                <path
+                                    d="M767.99994 585.142857q75.995429 0 129.462857 53.394286t53.394286 129.462857-53.394286 129.462857-129.462857 53.394286-129.462857-53.394286-53.394286-129.462857q0-6.875429 1.170286-19.456l-205.677714-102.838857q-52.589714 49.152-124.562286 49.152-75.995429 0-129.462857-53.394286t-53.394286-129.462857 53.394286-129.462857 129.462857-53.394286q71.972571 0 124.562286 49.152l205.677714-102.838857q-1.170286-12.580571-1.170286-19.456 0-75.995429 53.394286-129.462857t129.462857-53.394286 129.462857 53.394286 53.394286 129.462857-53.394286 129.462857-129.462857 53.394286q-71.972571 0-124.562286-49.152l-205.677714 102.838857q1.170286 12.580571 1.170286 19.456t-1.170286 19.456l205.677714 102.838857q52.589714-49.152 124.562286-49.152z"
+                                    p-id="9774" fill="#EDD9A3"></path>
                             </svg>
                         </span>
                     </button>
