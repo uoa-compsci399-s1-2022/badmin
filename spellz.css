@@ -184,14 +184,12 @@ h3 {
 
 
 #currentGenreLevel {
-    font-size: 17px;
     color: #EDD9A3;
-    /* margin-left: auto; */
-    grid-area: m;
-    font-size: 19px;
-    text-align: justify;
+    grid-area: 1 / 2 / 2 / 4;
+    font-size: 15px;
     text-align-last: center;
-    margin: -23px;
+    align-self: end;
+    
 }
 
 #gameText {
