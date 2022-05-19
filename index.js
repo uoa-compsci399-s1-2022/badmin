@@ -460,7 +460,7 @@ function generatePassageGenreHeader() {
     } else {
         today = new Date();
         number = Math.floor(today.getTime() / 86400000) - 19122;
-        shareString = "Spellz #" + number;
+        shareString = "Spellz Daily Challenge #" + number;
         document.getElementById("currentGenreLevel").innerText = shareString;
     }
 
@@ -1300,7 +1300,8 @@ function loadText() {
     currentSuppliedTextDuplicate = suppliedText
     document.getElementById("infoText").style.display = "none";
 
-    generatePassageGenreHeader();
+    generatePassageGenreHeader()
+
 
 }
 
