@@ -40,7 +40,8 @@ body {
 }
 
 #infoIcon {
-    color: #EDD9A3;
+    color: #B2A3B5;
+    /* color: #EDD9A3; */
     grid-area: 2 / 2 / 2 / 3;
     cursor: pointer;
     -webkit-touch-callout: none;

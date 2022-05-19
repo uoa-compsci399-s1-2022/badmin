@@ -862,7 +862,7 @@ function closeGameModal() {
 
 function closeInfoPage() {
     document.getElementById("infoText").style.display = "none";
-    document.getElementById("infoIcon").style.color = "#EDD9A3";
+    document.getElementById("infoIcon").style.color = "#B2A3B5";
     document.getElementById("title").style.color = "#EDD9A3";
 
 }
