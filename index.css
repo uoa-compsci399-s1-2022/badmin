@@ -59,7 +59,7 @@ body {
 #text-sel {
     grid-area: text-sel;
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: 1fr;
     grid-template-rows: 2fr 1fr 1fr;
     font-size: 14px;
     text-align: right;
@@ -68,6 +68,7 @@ body {
     row-gap: 0px;
     align-items: end;
     justify-items: end;
+    cursor: pointer;
 }
 
 #infoBtn {
@@ -94,67 +95,72 @@ h3 {
     color: #EDD9A3;
 }
 
+#text-sel-row1 {
+    display: block;
+    font-size: 10px;
+}
 
-/* Difficulty */
+/* Difficulty 
 
 #easy {
     grid-area: 1 / 2 / 2 / 3;
     font-size: 22px;
-    cursor: pointer;
+    
 }
 
 #medium {
     grid-area: 1 / 3 / 2 / 4;
     font-size: 22px;
-    cursor: pointer;
+    
 }
 
 #hard {
     grid-area: 1 / 4 / 2 / 5;
     font-size: 22px;
-    cursor: pointer;
+    
 }
+*/
 
 /* genre*/
 
 #sci-fi {
     grid-area: 2 / 1 / 3 / 2;
-    cursor: pointer;
+    
 }
 
 #slice_of_life {
     grid-area: 2 / 2 / 3 / 3;
-    cursor: pointer;
+    
 }
 
 #non-fiction {
     grid-area: 2 / 3 / 3 / 4;
-    cursor: pointer;
+    
 }
 
 #article {
     grid-area: 2 / 4 / 3 / 5;
-    cursor: pointer;
+    
 }
 
 #romance {
     grid-area: 3 / 1 / 4 / 2;
-    cursor: pointer;
+    
 }
 
 #comedy {
     grid-area: 3 / 2 / 4 / 3;
-    cursor: pointer;
+    
 }
 
 #wikipedia {
     grid-area: 3 / 3 / 4 / 4;
-    cursor: pointer;
+    
 }
 
 #mystery {
     grid-area: 3 / 4 / 4 / 5;
-    cursor: pointer;
+    
 }
 
 
