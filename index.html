@@ -21,7 +21,7 @@
 
         <div id="title-op">
 
-            <div id="homeBtn">
+            <div id="homeBtn" onclick="refresh()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 24 24">
                     <path fill="currentColor" stroke="#currentColor"
                         d="M20 7.093v-5.093h-3v2.093l3 3zm4 5.907l-12-12-12 12h3v10h18v-10h3zm-5 
@@ -31,7 +31,7 @@
 
             <!-- information icon which when clicked shows all details -->
             <div id="infoBtn" onclick="getInfo()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" id="infoIcon" viewBox="0 0 512 512">
+                <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" id="infoIcon" viewBox="0 0 512 512">
                     <title>Information Circle</title>
                     <path d="M248 64C146.39 64 64 146.39 64 248s82.39 184 184 184 184-82.39 184-184S349.61 64 248 64z"
                         fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
@@ -43,7 +43,7 @@
                 </svg>
 
             </div>
-            <div id="tutorial">
+            <div id="tutorial" onclick="showFirstTimeModal()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 24 24">
                     <path fill="currentColor" stroke="#currentColor" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 
                         10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1.25 
@@ -55,7 +55,7 @@
                 </svg>
             </div>
 
-            <div id="dailyBtn">
+            <div id="dailyBtn" onclick="setDaily(); generatePassageGenreHeader(); showReadyMessage()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 24 24">
                     <path fill="currentColor" stroke="#currentColor" d="M5.495 2h16.505v-2h-17c-1.656 0-3 1.343-3 3v18c0 1.657 1.344 3 
                         3 3h17v-20h-16.505c-1.376 0-1.376-2 0-2zm.505 4h7v7l2-2 2 2v-7h3v16h-14v-16z" />

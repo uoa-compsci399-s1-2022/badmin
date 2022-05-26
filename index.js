@@ -13,11 +13,13 @@ function showGame() {
     document.getElementById("timer").style.display = "inline";
     document.getElementById("readyMessage").style.display = "none";
     document.getElementById("doneDailyMessage").style.display = "none";
-    document.getElementById("infoIcon").style.display = "none";
+    document.getElementById("title-op").style.display = "none";
 }
 /**
  * Blur text function
- */
+ * 
+ *  This function is never used???!
+
 function hideGame() {
     document.getElementById("gameText").style.display = "none";
     document.getElementById("gameHidden").style.display = "block";
@@ -28,6 +30,7 @@ function hideGame() {
     document.getElementById("infoIcon").style.display = "block";
     document.getElementById("infoIcon").style.color = "#60525F";
 }
+ */
 
 function pause() {
     document.getElementById("gameText").style.display = "none";
@@ -36,7 +39,7 @@ function pause() {
     document.getElementById("text-sel").style.display = "grid";
     document.getElementById("pageInfo").style.display = "flex";
     document.getElementById("title").style.color = "#EDD9A3";
-    document.getElementById("infoIcon").style.display = "block";
+    document.getElementById("title-op").style.display = "flex";
 }
 
 function getVersion() {
@@ -519,10 +522,17 @@ function firstTimeUserCheck() {
 }
 function showFirstTimeModal() {
     document.getElementById("firstTimeModal").style.display = "block";
+    document.getElementById("gameControls").style.display = "none";
+    document.getElementById("tutorial").style.color = "#EDD9A3";
 }
 
 function closeFirstTimeModal() {
     document.getElementById("firstTimeModal").style.display = "none";
+    document.getElementById("tutorial").style.color = "#B2A3B5";
+    if (myChart !== undefined) {
+        reShowComboContainer();
+    }
+
 }
 
 // closes modal when anywhere is clicked
@@ -568,10 +578,10 @@ window.onload = function () {
     infoIcon.addEventListener('click', function getInfo() {
         if (infoText.style.display === 'none') {
             infoText.style.display = 'block';
-            infoIcon.style.color = "#EDD9A3";
+            document.getElementById("infoIcon").style.color = "#EDD9A3";
         }
         else {
-            infoIcon.style.color = "#B2A3B5";
+            document.getElementById("infoIcon").style.color = "#B2A3B5";
             infoText.style.display = 'none';
         }
     });
@@ -877,8 +887,6 @@ function closeGameModal() {
 function closeInfoPage() {
     document.getElementById("infoText").style.display = "none";
     document.getElementById("infoIcon").style.color = "#B2A3B5";
-    document.getElementById("title").style.color = "#EDD9A3";
-
 }
 
 // closes modal when anywhere is clicked
@@ -936,9 +944,30 @@ function countTimer() {
 let difficulty;
 let genre;
 
+function setDaily() {
+    difficulty = undefined;
+    genre = undefined;
+
+    document.getElementById("easy").style.color = "#B2A3B5";
+    document.getElementById("medium").style.color = "#B2A3B5";
+    document.getElementById("hard").style.color = "#B2A3B5";
+
+    document.getElementById("sci-fi").style.color = "#B2A3B5";
+    document.getElementById("slice_of_life").style.color = "#B2A3B5";
+    document.getElementById("non-fiction").style.color = "#B2A3B5";
+    document.getElementById("article").style.color = "#B2A3B5";
+    document.getElementById("romance").style.color = "#B2A3B5";
+    document.getElementById("comedy").style.color = "#B2A3B5";
+    document.getElementById("wikipedia").style.color = "#B2A3B5";
+    document.getElementById("mystery").style.color = "#B2A3B5";
+
+    document.getElementById("infoText").style.display = "none";
+    document.getElementById('infoIcon').style.color = "#B2A3B5";
+}
+
 function setEasy() {
     difficulty = "Easy";
-    
+
     document.getElementById("easy").style.color = "#EDD9A3";
     document.getElementById("medium").style.color = "#B2A3B5";
     document.getElementById("hard").style.color = "#B2A3B5";
