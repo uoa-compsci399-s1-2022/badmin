@@ -34,13 +34,13 @@ function pause() {
     document.getElementById("gameHidden").style.display = "block";
     document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "grid";
-    document.getElementById("pageInfo").style.display = "grid";
+    document.getElementById("pageInfo").style.display = "flex";
     document.getElementById("title").style.color = "#EDD9A3";
     document.getElementById("infoIcon").style.display = "block";
 }
 
 function getVersion() {
-    document.getElementById("vers").innerText = "v. Beta1.3";
+    document.getElementById("vers").innerText = "v.Beta1.3";
 }
 
 /**
@@ -938,7 +938,7 @@ let genre;
 
 function setEasy() {
     difficulty = "Easy";
-
+    
     document.getElementById("easy").style.color = "#EDD9A3";
     document.getElementById("medium").style.color = "#B2A3B5";
     document.getElementById("hard").style.color = "#B2A3B5";
