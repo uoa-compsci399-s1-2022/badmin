@@ -6,7 +6,7 @@ function showGame() {
     document.getElementById("gameHidden").style.display = "none";
     document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "none";
-    document.getElementById("pageInfo").style.display = "none";
+    document.getElementById("bot").style.display = "none";
     document.getElementById("title").style.color = "#60525F";
     document.getElementById("score").style.display = "grid";
     document.getElementById("combo").style.display = "grid";
@@ -14,6 +14,7 @@ function showGame() {
     document.getElementById("readyMessage").style.display = "none";
     document.getElementById("doneDailyMessage").style.display = "none";
     document.getElementById("title-op").style.display = "none";
+    document.getElementById("controls").style.display = "none";
 }
 /**
  * Blur text function
@@ -37,9 +38,10 @@ function pause() {
     document.getElementById("gameHidden").style.display = "block";
     document.getElementById("gameControls").style.display = "flex";
     document.getElementById("text-sel").style.display = "grid";
-    document.getElementById("pageInfo").style.display = "flex";
+    document.getElementById("bot").style.display = "flex";
     document.getElementById("title").style.color = "#EDD9A3";
     document.getElementById("title-op").style.display = "flex";
+    document.getElementById("controls").style.display = "grid";
 }
 
 function getVersion() {
@@ -869,6 +871,11 @@ function shareGame() {
         }
     }
     navigator.clipboard.writeText(shareString);
+    showToast();
+}
+
+function shareEmail() {
+    navigator.clipboard.writeText("spellz399@gmail.com");
     showToast();
 }
 

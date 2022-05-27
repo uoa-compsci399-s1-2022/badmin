@@ -9,6 +9,7 @@
     <script
         src="https://cdn.jsdelivr.net/npm/diff-match-patch-js-browser-and-nodejs@1.0.2/diff_match_patch.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/f8306250ba.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -23,8 +24,7 @@
 
             <div id="homeBtn" onclick="refresh()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 24 24">
-                    <path fill="currentColor" stroke="#currentColor"
-                        d="M20 7.093v-5.093h-3v2.093l3 3zm4 5.907l-12-12-12 12h3v10h18v-10h3zm-5 
+                    <path fill="currentColor" stroke="#currentColor" d="M20 7.093v-5.093h-3v2.093l3 3zm4 5.907l-12-12-12 12h3v10h18v-10h3zm-5 
                         8h-14v-10.26l7-6.912 7 6.99v10.182zm-5-1h-4v-6h4v6z" />
                 </svg>
             </div>
@@ -212,13 +212,38 @@
             <div id="stopTimer" onclick="stopTimer();">stop</div>
         </div>
 
+        <div id="controls">
+            <div>
+                <p>enter</p> / <p>space</p> - input word
+            </div>
+            <div>
+                <p>arrow keys</p> - select word
+            </div>
+            <div>
+                <p>backspace</p> or <p>ctrl</p> + <p>backspace</p> - delete word/s
+            </div>
+        </div>
+
         <div id="combo"></div>
     </div>
 
-    <div class="bot">
+    <div id="bot">
         <div id="toast">Copied to Clipboard!</div>
-        <div class="footSel">
 
+        <div id="footSel">
+            <a onclick="shareEmail()">
+                <i class="fa-solid fa-envelope"></i>
+                <div>contact</div>
+            </a>
+
+            <a href="https://github.com/uoa-compsci399-s1-2022/badmin" target="_blank">
+                <i class="fa fa-code-branch"></i>
+                <div>github</div>
+            </a>
+            <a href="https://discord.gg/BVnumdFTJ2" target="_blank">
+                <i class="fa-brands fa-discord"></i>
+                <div>discord</div>
+            </a>
         </div>
 
         <div id="pageInfo">
