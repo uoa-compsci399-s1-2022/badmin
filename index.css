@@ -122,6 +122,7 @@ body {
     padding: 0 15rem;
 }
 
+
 h1,
 h2,
 h3 {
@@ -190,6 +191,12 @@ h3 {
     user-select: none;
 }
 
+mark {
+    color: #443742;
+    background-color: #B2A3B5;
+    border-radius: 3px;
+}
+
 #readyMessage {
     grid-area: m;
     display: block;
@@ -220,6 +227,7 @@ h3 {
     text-shadow: 0 0 13px rgba(178, 163, 181, 0.8);
     text-align: justify;
     text-align-last: center;
+    line-height: 1.5;
     margin: 10px;
 
     -webkit-touch-callout: none;
@@ -268,7 +276,8 @@ h3 {
 
 #gameControls {
     gap: 0.5rem;
-    display: none;
+    display: flex;
+    visibility: hidden;
     flex-direction: column;
     align-items: center;
     grid-area: input;
@@ -292,6 +301,8 @@ h3 {
     outline-style: none;
     text-align: center;
     border-radius: 3px;
+    content: "hello";
+    min-height: 22px;
 }
 
 #score {
@@ -372,8 +383,8 @@ h3 {
     transition: 0.6s;
 }
 
-#pageInfo {
-    gap: 10px;
+#pageInfo div{
+    display: inline;
     text-align: right;
 }
 
@@ -473,22 +484,11 @@ h3 {
     padding-left: 20px;
 }
 
-#modalScore {
-    padding-top: 5px;
-}
-
-#infoClose {
-    position: absolute;
-    left: 100px;
-    font-size: 50px;
-
-}
-
 
 .close {
     color: #aaaaaa;
     position: relative;
-    left: 0;
+    left: 460px;
     top: 0;
     font-size: 28px;
     font-weight: bold;
@@ -501,13 +501,12 @@ h3 {
     cursor: pointer;
 }
 
-#modalText {
+#mTitle {
     text-align: center;
     font-size: 17px;
-
 }
 
-#modalScore {
+#mScore {
     padding-top: 5px;
 }
 
@@ -542,11 +541,11 @@ h3 {
 #toast {
     visibility: hidden;
     min-width: 250px;
-    margin-left: -125px;
+    margin-left: -135px;
     background-color: #60525F;
     color: #EDD9A3;
     text-align: center;
-    border-radius: 2px;
+    border-radius: 5px;
     padding: 16px;
     position: fixed;
     z-index: 1;
