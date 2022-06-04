@@ -11,17 +11,16 @@ Technologies:
 The project was completed using vanilla Javascript, HTML and CSS. Libraries such as Diff-Match-Patch and Chart.js were also used. We used Jira as our project management tool and used FireBase to deploy our website. All members used VSCode as their main IDE and used extensions such as LiveShare to allow for peer-programming.
 
 Setup:
-There are no prerequitistes for our project. In order to play Spellz, simply go to :LINK:! 
+There are no prerequitistes for our project. In order to play Spellz, simply go to https://spellz2022.web.app/ ! 
 
 Usage:
 Spellz has a simple user interface and provides first time users with a tutorial which explains basic game mechanics. Below are some screenshots that demostrate sample gameplay.
 
-Usage Example 1: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/blob/main/Images/Usage2.jpg)
+Usage Example 1: ![Landing Page](https://github.com/uoa-compsci399-s1-2022/badmin/blob/main/Images/Usage1.jpg)
 
-Usage Example 2: ![Jira Roadmap](https://github.com/uoa-compsci399-s1-2022/badmin/blob/main/Images/Usage1.jpg)
+Usage Example 2: ![Game Session](https://github.com/uoa-compsci399-s1-2022/badmin/blob/main/Images/Usage2.jpg)
 
-URL:
-:LINK: of Spellz.
+URL: https://spellz2022.web.app/
 
 Future Plans:
 Potential ideas for future releases is to incorporate a leader board, have additional themes, a badge system and more animations. These will help to increase user engagement with our game!
