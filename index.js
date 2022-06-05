@@ -84,8 +84,7 @@ const ENUM_Difficulty = {
 //** FUNCTIONS */
 
 /**
- * Checks if it is a first time user, sets the cookie appropriately
- * If true, then show the first time modal
+ * @function checkFirstTimeUser Checks if it is a first time user, sets the cookie appropriately, then displays the first time modal
  */
 function checkFirstTimeUser() {
     const isFirstTimeUser = Boolean(document.cookie == "");
@@ -95,21 +94,37 @@ function checkFirstTimeUser() {
     }
 }
 
+/**
+ * @function showFirstTimeModal Displays the first-time user modal
+ */
 function showFirstTimeModal() {
     closeInfoPage();
     document.getElementById("firstTimeModal").style.display = "block";
 }
 
+/**
+ * @function closeFirstTimeModal Hides the first-time user modal
+ */
 function closeFirstTimeModal() {
     document.getElementById("firstTimeModal").style.display = "none";
 }
 
+/**
+ * @function setCookie Sets cookies for users
+ * @param cname - name of the cookie
+ * @param cvalue - value of the cookie
+ * @param exdays - the number of days before the cookie expires
+ */
 function setCookie(cname, cvalue, exdays) {
     const d = new Date(new Date().setHours(24 * exdays, 0, 0, 0)); //midnight
     const expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
+/**
+ * @function getCookie Retrieves the value of a cookie from users
+ * @param cname - name of the cookie
+ */
 function getCookie(cname) {
     const name = cname + "=";
     const ca = document.cookie.split(';');
@@ -125,10 +140,16 @@ function getCookie(cname) {
     return "";
 }
 
+/**
+ * @function refresh Reloads the current document
+ */
 function refresh() {
     window.location.reload();
 }
 
+/**
+ * @function toggleInfoTextVisibility Displays the Information Tab when clicked
+ */
 function toggleInfoTextVisibility() {
     if (infoTextElement.style.display === 'none') {
         infoTextElement.style.display = 'block';
@@ -138,11 +159,17 @@ function toggleInfoTextVisibility() {
     }
 }
 
+/**
+ * @function closeInfoPage Closes the Information Tab
+ */
 function closeInfoPage() {
     infoTextElement.style.display = "none";
     infoIcon.style.color = "#B2A3B5";
 }
 
+/**
+ * @function setDaily Displays the Daily Challenge, resets all genre/difficulty buttons
+ */
 function setDaily() {
     difficulty = undefined;
     genre = undefined;
@@ -166,6 +193,9 @@ function setDaily() {
     loadText();
 }
 
+/**
+ * @function loadText Loads text from the textbank, depending on selected text, checking if Daily Challenge has been played. 
+ */
 function loadText() {
     document.getElementById("gameText").style.display = "none";
     document.getElementById("gameHidden").style.display = "block";
@@ -195,8 +225,9 @@ function loadText() {
     document.getElementById("gameText").innerHTML = innerHTML;
     document.getElementById("gameHidden").innerHTML = innerHTML;
     generatePassageGenreHeader();
+    
     /**
-     * @function loadDaily displays today's text
+     * @function loadDaily Displays the Daily Challenge
      */
     function loadDaily() {
         const today = new Date();
@@ -210,6 +241,9 @@ function loadText() {
     }
 }
 
+/**
+ * @function checkDailyPlayed Checks if the user has already played the Daily Challenge
+ */
 function checkDailyPlayed() {
     const isDailyPlayed = getCookie(ENUM_Cookies.DAILY);
     if (isDailyPlayed === "") {
@@ -219,6 +253,9 @@ function checkDailyPlayed() {
     return (isDailyPlayed === "true");
 }
 
+/**
+ * @function generatePassageGenreHeader Creates the text header that indicates the current text in play
+ */
 function generatePassageGenreHeader() {
     if (genre && difficulty) {
         document.getElementById("currentGenreLevel").innerText = `${ENUM_Genre[genre]} - ${difficulty}`;
@@ -230,6 +267,10 @@ function generatePassageGenreHeader() {
     }
 }
 
+/**
+ * @function selectText Updates text based on the genre and difficulty selected
+ * @param event - User selection of difficulty/genre
+ */
 function selectText(event) {
     if (event.target.className === 'difficulty') {
         if (difficulty) {
@@ -252,11 +293,17 @@ function selectText(event) {
     }
 }
 
+/**
+ * @function showReadyMessage Displays an overlay on the text that changes if the user has already completed the Daily Challenge
+ */
 function showReadyMessage() {
     document.getElementById("doneDailyMessage").style.display = "none";
     document.getElementById("readyMessage").style.display = "block";
 }
 
+/**
+ * @function startGame Starts the game
+ */
 function startGame() {
     if (isTextTypeDaily) {
         const isDailyPlayed = checkDailyPlayed();
@@ -296,6 +343,10 @@ function startGame() {
             document.getElementById("timer").innerHTML = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
         }
     }
+
+    /**
+    * @function resetDataSet Resets data for the graph on the End Game modal
+    */
     function resetDataSet() {
         scoreOverTime = [0];
         xValues = [0];
@@ -303,6 +354,10 @@ function startGame() {
         comboStreakArr = [0];
         totalSeconds = 0;
     }
+
+    /**
+    * @function generateCorrectIndicies Calculates the incorrect words and creates an array based on this information
+    */
     function generateCorrectIndicies() {
         for (const [indexOfWord, word] of correctWordsArray.entries()) {
             if (word != suppliedWordsArray[indexOfWord]) {
@@ -312,6 +367,9 @@ function startGame() {
     }
 }
 
+/**
+* @function showGame Displays the Active Game Overlay
+*/
 function showGame() {
     document.getElementById("gameText").style.display = "block";
     document.getElementById("gameHidden").style.display = "none";
@@ -328,6 +386,9 @@ function showGame() {
     document.getElementById("controls").style.display = "none";
 }
 
+/**
+* @function hideGame Hides the Active Game Overlay
+*/
 function hideGame() {
     document.getElementById("gameControls").style.visibility = "hidden";
     document.getElementById("text-sel").style.visibility = "visible";
@@ -341,6 +402,9 @@ function hideGame() {
     document.getElementById("bot").style.visibility = "visible";
 }
 
+/**
+* @function endGame Ends the current game, resetting game instance variables
+*/
 function endGame() {
     comboStreakArr.push(Math.floor((Date.now() - comboStreak) / 1000));
     inputTextBox.innerText = "";
@@ -374,6 +438,9 @@ function sanitizeInput(e) {
     return true;
 }
 
+/**
+* @function highlightText Highlights words in the text, based on user input
+*/
 function highlightText() {
     clearPreviousDynamicText();
     const searchText = document.getElementById("inputTextBox").innerText;
@@ -405,6 +472,11 @@ function highlightText() {
     if (previousSearchIndicies.length >= 1) {
         gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "#EDD9A3"; //highlighted color
     }
+
+    /**
+    * @function fuzzySearch Searches for similarity between the user input and words in the text, highlights it, and then replaces words in the text with user input at a certain threshold of similarity
+    * @param searchText - The user input
+    */
     function fuzzySearch(searchText) {
         const searchResults = new Array();
         for (const [indexOfWord, word] of correctWordsArray.entries()) {
@@ -415,6 +487,11 @@ function highlightText() {
         }
         return searchResults
     }
+
+    /**
+    * @function exactSearch Searches for exact matches in the text with user input and highlights it
+    * @param searchText - The user input
+    */
     function exactSearch(searchText) {
         const searchResults = new Array();
         const myArray = new Array();
@@ -428,6 +505,9 @@ function highlightText() {
     }
 }
 
+/**
+* @function clearPreviousDynamicText Reverts the changes to text that has been modified by Fuzzy Search
+*/
 function clearPreviousDynamicText() {
     const gameTextElements = document.getElementById("gameText").children;
     for (const index of previousSearchIndicies) {
@@ -437,6 +517,10 @@ function clearPreviousDynamicText() {
     currentSearchIndex = 0;
 }
 
+/**
+* @function inputHandler Checks if the user presses certain buttons such as Enter, Space and the Arrow Keys
+* @param event - User input in input box
+*/
 function inputHandler(event) {
     if (event.code === "Enter" || event.code === "Space") {
         checkUserInput();
@@ -445,6 +529,11 @@ function inputHandler(event) {
         navigateSearchResults(event.code);
         event.preventDefault();
     }
+
+    /**
+    * @function navigateSearchResults Moves the highlight from word to word when Arrow Keys are presssed
+    * @param key - Arrow Key user input
+    */
     function navigateSearchResults(key) {
         if (previousSearchIndicies.length >= 1) {
             const gameTextElements = document.getElementById("gameText").children;
@@ -459,6 +548,10 @@ function inputHandler(event) {
             gameTextElements[previousSearchIndicies[currentSearchIndex]].firstElementChild.style.backgroundColor = "#EDD9A3"; //highlighted color
         }
     }
+
+    /**
+    * @function checkUserInput Checks user imput to make sure it is valid, if valid replace incorrect word with correct word and increase score + combo, else decrease score and break combo
+    */
     function checkUserInput() {
         const inputText = inputTextBox.innerText;
         if (inputText.length >= 1) {
@@ -493,6 +586,11 @@ function inputHandler(event) {
         }
     }
 
+    /**
+    * @function correctSpelling Replaces incorrect word in the text with the correct word
+    * @param correctWord - The correct version of the word 
+    * @param correctedIndex - The index of the word to be corrected
+    */
     function correctSpelling(correctWord, correctedIndex) {
         const gameTextElement = document.getElementById("gameText").children[correctedIndex];
         gameTextElement.innerHTML = correctWord;
@@ -520,6 +618,9 @@ function inputHandler(event) {
         };
         window.requestAnimationFrame(step);
     }
+    /**
+    * @function animateError Animates the input box to shake when an error is made
+    */
     function animateError() {
         const inputTextBoxContainer = document.getElementById("inputTextBoxContainer");
         inputTextBoxContainer.classList.add("error");
@@ -527,6 +628,9 @@ function inputHandler(event) {
     }
 }
 
+/**
+* @function restartComboTimer Resets the combo timer
+*/
 function restartComboTimer() {
     previousComboTime = Date.now();
     clearTimeout(comboTimeOut); //passing invalid ID to clearTimeout() throws no exceptions
@@ -539,6 +643,9 @@ function restartComboTimer() {
     comboBar.style.width = `0px`;
 }
 
+/**
+* @function decrementCombo Decreases the combo by 1
+*/
 function decrementCombo() {
     comboCounter = Math.max(0, comboCounter - 1);
     document.getElementById("combo").innerText = `combo: \n ${comboCounter}`;
@@ -547,6 +654,9 @@ function decrementCombo() {
     }
 }
 
+/**
+* @function stopComboTimer Stops the combo timer
+*/
 function stopComboTimer() {
     const comboBar = document.getElementById("comboBar");
     comboBar.style.transition = `none`;
@@ -554,29 +664,44 @@ function stopComboTimer() {
     clearTimeout(comboTimeOut);
 }
 
+/**
+* @function shareEmail Copies the email to the clipboard
+*/
 function shareEmail() {
     navigator.clipboard.writeText("spellz399@gmail.com");
     showToast();
 }
 
+/**
+* @function showToast Displays toast, giving a visual indication to the user that they have copied something
+*/
 function showToast() {
     const toast = document.getElementById("toast");
     toast.className = "show";
     setTimeout(function () { toast.className = toast.className.replace("show", ""); }, 3000);
 }
 
+/**
+* @function showHint Displays Hint button after 20 seconds of no user activity
+*/
 function showHint() {
     if (!isHintProvided && Date.now() - lastUserInputTime >= 20000) {
         document.getElementById("hint").style.visibility = "visible";
     }
 }
 
+/**
+* @function resetHint Hides the Hint button and resets for the next game
+*/
 function resetHint() {
     document.getElementById("hint").innerText = "Hint";
     document.getElementById("hint").style.visibility = "hidden";
     document.getElementById("hint").classList.remove("fade-out");
 }
 
+/**
+* @function provideHint Provides a hint to the user which displays how many words are left to correct in the text
+*/
 function provideHint() {
     if (!isHintProvided) {
         const wordsLeft = correctIndicies.length - countCorrect;
@@ -590,16 +715,25 @@ function provideHint() {
     }
 }
 
+/**
+* @function showGameEndModal Display the End Game modal
+*/
 function showGameEndModal() {
     document.getElementById("endModal").style.display = "flex";
     displayStats();
 }
 
+/**
+* @function closeGameEndModal Hide the End Game modal
+*/
 function closeGameEndModal() {
     document.getElementById("endModal").style.display = "none";
     myChart.destroy();
 }
 
+/**
+* @function displayStats Generate statistics for the End Game modal such as Score and Accuracy which are displayed
+*/
 function displayStats() {
     document.getElementById("mScore").innerText = `Score: ${score}`;
     document.getElementById("mAccuracy").innerText = `Accuracy: ${Math.max(0, Math.round((countCorrect / (correctIndicies.length + countWrong)) * 100))}%`;
@@ -610,8 +744,8 @@ function displayStats() {
 }
 
 /**
- * Everything that will appear on modal
- */
+* @function calculateComboStreak Calculate the time of longest combo streak for the current game session
+*/
 function calculateComboStreak() {
     const maxComboStreak = Math.max(...comboStreakArr);
     const minTimeCombo = Math.min(maxComboStreak, totalSeconds);
@@ -628,8 +762,8 @@ function calculateComboStreak() {
 }
 
 /**
- * See how long the combo was held for in seconds
- */
+* @function formatTimeTaken Calculate the total time take for the current game session
+*/
 function formatTimeTaken() {
     let hour = Math.floor(totalSeconds / 3600);
     let minute = Math.floor((totalSeconds - hour * 3600) / 60);
@@ -644,8 +778,8 @@ function formatTimeTaken() {
 }
 
 /**
- * On the stats page display how many words the user got and how much words they did not get
- */
+* @function getEveryWord Calculate how many words were missed for the current game session
+*/
 function getEveryWord() {
     if (correctIndicies.length === correctedWordsIndicies.length) {
         document.getElementById("mMissedWords").innerText =
@@ -667,8 +801,8 @@ function getEveryWord() {
 }
 
 /**
- * Graph function which is displayed in modal
- */
+* @function calculateModalGraph Create graph to show the users score over timer for the current game session
+*/
 function calculateModalGraph() {
     ctx = document.getElementById("endModalChart");
     myChart = new Chart(ctx, {
@@ -725,6 +859,9 @@ function calculateModalGraph() {
     });
 }
 
+/**
+* @function shareGame Copies the score, text identifier and a visual representation of the words that they found and missed to the clipboard
+*/
 function shareGame() {
     let shareString;
     if (genre && difficulty) {
@@ -752,6 +889,9 @@ function shareGame() {
     showToast();
 }
 
+/**
+* @function showWordsNotFound Highlights the words missed by the user at the end of the current game session
+*/
 function showWordsNotFound() {
     const gameTextElements = document.getElementById("gameText").children;
     for (const index of correctIndicies) {
