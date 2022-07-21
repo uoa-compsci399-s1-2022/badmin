@@ -32,3 +32,6 @@ Potential ideas for future releases is to incorporate a leader board, have addit
 
 ## Acknowledgements:
 Team Badmin would like to acknowledge our lecturer, tutors and clients for the efforts, resources and time spent to help improve Spellz.
+
+##Terms of Use
+The ReType technology embodied in the game logic of this codebase is protected by Patent US application Nr 63002376. The publication of this codebase and receiving this codebase does not constitute a license to the ReType technology and the aforementioned patent or any other ReType IP; Usage of this repository and the ReType embodiment in this repository is limited to those narrow exceptions to patent protection established by law, in particular the experimental use exception. 
